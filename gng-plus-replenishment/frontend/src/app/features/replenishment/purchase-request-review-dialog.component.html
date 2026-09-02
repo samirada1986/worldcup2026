@@ -1,0 +1,155 @@
+<dx-popup
+  [visible]="visible"
+  (visibleChange)="visible = $event; visibleChange.emit($event)"
+  title="بازبینی درخواست خرید"
+  [width]="900"
+  [height]="600"
+  [showCloseButton]="true"
+  [dragEnabled]="true"
+  [hideOnOutsideClick]="false">
+
+  <div *dxTemplate="let data of 'content'">
+
+    @if (!createdRequest()) {
+      <!-- ---------------------------------------------------------- -->
+      <!-- گام ۱ — بازبینی و اصلاح مقادیر                              -->
+      <!-- ---------------------------------------------------------- -->
+      <p class="review__hint">
+        مقدار درخواست را در صورت نیاز اصلاح کنید. اختلاف بیش از ۲۰٪ با مقدار پیشنهادی،
+        ثبت «دلیل تغییر مقدار پیشنهادی» را الزامی می‌کند.
+      </p>
+
+      <dx-data-grid
+        [dataSource]="lines()"
+        keyExpr="recommendationId"
+        [showBorders]="true"
+        [showRowLines]="true"
+        [columnAutoWidth]="true"
+        [height]="330"
+        (onRowUpdated)="onQuantityChanged()"
+        noDataText="ردیفی انتخاب نشده است">
+
+        <dxo-editing mode="cell" [allowUpdating]="true"></dxo-editing>
+        <dxo-master-detail [enabled]="false"></dxo-master-detail>
+
+        <dxi-column dataField="productCode" caption="کد کالا" [width]="100"
+          [allowEditing]="false" cssClass="gng-ltr"></dxi-column>
+        <dxi-column dataField="productName" caption="کالا" [minWidth]="150"
+          [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="warehouseName" caption="انبار" [width]="130"
+          [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="unitOfMeasureName" caption="واحد سنجش" [width]="90"
+          [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="suggestedQuantity" caption="مقدار پیشنهادی" [width]="110"
+          dataType="number" format="#,##0.##" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+        <dxi-column dataField="requestedQuantity" caption="مقدار درخواست" [width]="110"
+          dataType="number" format="#,##0.##" cssClass="dx-numeric-cell">
+          <dxi-validation-rule type="required" message="مقدار درخواست الزامی است"></dxi-validation-rule>
+          <dxi-validation-rule type="range" [min]="0.0001" message="مقدار باید بزرگ‌تر از صفر باشد"></dxi-validation-rule>
+        </dxi-column>
+        <dxi-column caption="انحراف" [width]="80" [allowEditing]="false"
+          cellTemplate="deviationCell" alignment="center"></dxi-column>
+
+        <div *dxTemplate="let cell of 'deviationCell'">
+          <span [class.dx-numeric-cell]="true"
+            [style.color]="requiresReason(cell.data) ? 'var(--gng-warning)' : 'var(--gng-text-muted)'">
+            {{ deviationText(cell.data) }}
+          </span>
+        </div>
+      </dx-data-grid>
+
+      <!-- دلیل تغییر برای ردیف‌هایی که از آستانه گذشته‌اند -->
+      @for (line of lines(); track line.recommendationId) {
+        @if (requiresReason(line)) {
+          <div class="review__reason">
+            <label class="review__reason-label">
+              دلیل تغییر مقدار پیشنهادی — {{ line.productName }}
+              (پیشنهاد {{ line.suggestedQuantity }} ← درخواست {{ line.requestedQuantity }})
+            </label>
+            <dx-text-area
+              [height]="52"
+              [value]="line.quantityChangeReason ?? ''"
+              placeholder="دلیل تغییر مقدار را وارد کنید"
+              (onValueChanged)="line.quantityChangeReason = $event.value; onQuantityChanged()">
+            </dx-text-area>
+          </div>
+        }
+      }
+
+    } @else {
+      <!-- ---------------------------------------------------------- -->
+      <!-- گام ۲ — نتیجه ایجاد پیش‌نویس                                -->
+      <!-- ---------------------------------------------------------- -->
+      <div class="review__result">
+        <p>
+          پیش‌نویس درخواست خرید با شماره
+          <span class="review__result-number gng-ltr">{{ createdRequest()!.requestNumber }}</span>
+          ایجاد شد.
+        </p>
+
+        <p>
+          وضعیت فعلی: <strong>{{ createdRequest()!.statusName }}</strong>
+          — گردش‌کار: <strong>{{ createdRequest()!.workflowStatusName }}</strong>
+          @if (createdRequest()!.workflowInstanceId) {
+            (<span class="gng-ltr">{{ createdRequest()!.workflowInstanceId }}</span>)
+          }
+        </p>
+
+        <p>
+          <a [routerLink]="['/purchase-requests', createdRequest()!.id]" (click)="close()">
+            مشاهده جزئیات درخواست خرید
+          </a>
+        </p>
+
+        @if (createdRequest()!.skippedLines.length > 0) {
+          <div class="review__skipped">
+            <strong>ردیف‌های ثبت‌نشده:</strong>
+            @for (skipped of createdRequest()!.skippedLines; track skipped.recommendationId) {
+              <div class="review__skipped-item">• {{ skipped.productName }} — {{ skipped.reason }}</div>
+            }
+          </div>
+        }
+
+        <dx-data-grid
+          [dataSource]="createdRequest()!.items"
+          keyExpr="id"
+          [showBorders]="true"
+          [columnAutoWidth]="true"
+          [height]="250">
+          <dxi-column dataField="productCode" caption="کد کالا" [width]="100" cssClass="gng-ltr"></dxi-column>
+          <dxi-column dataField="productName" caption="کالا" [minWidth]="150"></dxi-column>
+          <dxi-column dataField="warehouseName" caption="انبار" [width]="130"></dxi-column>
+          <dxi-column dataField="suggestedQuantity" caption="مقدار پیشنهادی" [width]="110"
+            dataType="number" format="#,##0.##" cssClass="dx-numeric-cell"></dxi-column>
+          <dxi-column dataField="requestedQuantity" caption="مقدار درخواست" [width]="110"
+            dataType="number" format="#,##0.##" cssClass="dx-numeric-cell"></dxi-column>
+          <dxi-column dataField="unitOfMeasureName" caption="واحد سنجش" [width]="90"></dxi-column>
+          <dxi-column dataField="quantityChangeReason" caption="دلیل تغییر مقدار" [minWidth]="150"></dxi-column>
+        </dx-data-grid>
+      </div>
+    }
+  </div>
+
+  @if (!createdRequest()) {
+    <dxi-toolbar-item
+      widget="dxButton"
+      toolbar="bottom"
+      location="after"
+      [options]="{ text: 'ایجاد پیش‌نویس درخواست خرید', type: 'default', stylingMode: 'contained', icon: 'save', disabled: saving() || lines().length === 0, onClick: createDraft.bind(this) }">
+    </dxi-toolbar-item>
+  } @else if (canSubmit) {
+    <dxi-toolbar-item
+      widget="dxButton"
+      toolbar="bottom"
+      location="after"
+      [options]="{ text: 'ارسال به گردش‌کار', type: 'default', stylingMode: 'contained', icon: 'send', disabled: saving(), onClick: submitToWorkflow.bind(this) }">
+    </dxi-toolbar-item>
+  }
+
+  <dxi-toolbar-item
+    widget="dxButton"
+    toolbar="bottom"
+    location="after"
+    [options]="{ text: createdRequest() ? 'بستن' : 'انصراف', stylingMode: 'outlined', disabled: saving(), onClick: close.bind(this) }">
+  </dxi-toolbar-item>
+</dx-popup>
