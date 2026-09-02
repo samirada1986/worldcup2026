@@ -1,0 +1,90 @@
+@if (request(); as pr) {
+  <gng-page-header
+    [title]="'درخواست خرید ' + pr.requestNumber"
+    subtitle="جزئیات ردیف‌ها و وضعیت گردش‌کار">
+
+    <a routerLink="/purchase-requests" class="dx-link">بازگشت به فهرست</a>
+
+    @if (canSubmit) {
+      <dx-button text="ارسال به گردش‌کار" icon="send" type="default" stylingMode="contained"
+        [disabled]="submitting()" (onClick)="submit()"></dx-button>
+    }
+  </gng-page-header>
+
+  <section class="gng-card">
+    <div class="gng-card__header">
+      <span>مشخصات درخواست</span>
+      <gng-status-badge [text]="pr.statusName" [variant]="statusVariant(pr.status)"></gng-status-badge>
+    </div>
+    <div class="gng-card__body detail-grid">
+      <div>
+        <span class="detail-grid__label">شماره درخواست</span>
+        <span class="detail-grid__value gng-ltr">{{ pr.requestNumber }}</span>
+      </div>
+      <div>
+        <span class="detail-grid__label">منبع</span>
+        <span class="detail-grid__value">{{ pr.sourceName }}</span>
+      </div>
+      <div>
+        <span class="detail-grid__label">ایجادکننده</span>
+        <span class="detail-grid__value">{{ pr.createdBy }}</span>
+      </div>
+      <div>
+        <span class="detail-grid__label">تاریخ ایجاد</span>
+        <span class="detail-grid__value gng-ltr">{{ pr.createdAt | date: 'yyyy/MM/dd HH:mm' }}</span>
+      </div>
+      <div>
+        <span class="detail-grid__label">تاریخ ارسال</span>
+        <span class="detail-grid__value gng-ltr">{{ pr.submittedAt ? (pr.submittedAt | date: 'yyyy/MM/dd HH:mm') : '—' }}</span>
+      </div>
+      <div>
+        <span class="detail-grid__label">وضعیت گردش‌کار</span>
+        <span class="detail-grid__value">{{ pr.workflowStatusName }}</span>
+      </div>
+      <div>
+        <span class="detail-grid__label">شناسه گردش‌کار</span>
+        <span class="detail-grid__value gng-ltr">{{ pr.workflowInstanceId || '—' }}</span>
+      </div>
+      <div>
+        <span class="detail-grid__label">شناسه اجرای اتوماسیون</span>
+        <span class="detail-grid__value gng-ltr">{{ pr.automationRunId || '—' }}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="gng-card">
+    <div class="gng-card__header">
+      <span>ردیف‌های درخواست</span>
+      <span>{{ pr.items.length }} ردیف</span>
+    </div>
+
+    <dx-data-grid
+      [dataSource]="pr.items"
+      keyExpr="id"
+      [showBorders]="false"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+      [columnAutoWidth]="true"
+      noDataText="ردیفی ثبت نشده است">
+
+      <dxi-column dataField="productCode" caption="کد کالا" [width]="100" cssClass="gng-ltr"></dxi-column>
+      <dxi-column dataField="productName" caption="کالا" [minWidth]="150"></dxi-column>
+      <dxi-column dataField="warehouseName" caption="انبار" [width]="130"></dxi-column>
+      <dxi-column dataField="siteName" caption="سایت" [width]="130"></dxi-column>
+      <dxi-column dataField="suggestedQuantity" caption="مقدار پیشنهادی" dataType="number"
+        format="#,##0.##" [width]="115" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="requestedQuantity" caption="مقدار درخواست" dataType="number"
+        format="#,##0.##" [width]="115" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="unitOfMeasureName" caption="واحد سنجش" [width]="90"></dxi-column>
+      <dxi-column dataField="requestClassificationName" caption="طبقه‌بندی درخواست" [width]="130"></dxi-column>
+      <dxi-column dataField="quantityChangeReason" caption="دلیل تغییر مقدار" [minWidth]="180"></dxi-column>
+
+      <dxo-summary>
+        <dxi-total-item column="requestedQuantity" summaryType="sum"
+          displayFormat="جمع: {0}" valueFormat="#,##0.##"></dxi-total-item>
+      </dxo-summary>
+    </dx-data-grid>
+  </section>
+} @else {
+  <div class="gng-empty">در حال بارگذاری درخواست خرید…</div>
+}

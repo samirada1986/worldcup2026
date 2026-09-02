@@ -1,0 +1,117 @@
+@if (summary(); as run) {
+  <gng-page-header
+    [title]="'جزئیات اجرای ' + run.automationRunId"
+    subtitle="سوابق محاسبه و دلیل تصمیم برای هر کالا">
+    <a routerLink="/automation" class="dx-link">بازگشت به اتوماسیون</a>
+  </gng-page-header>
+
+  <section class="gng-card">
+    <div class="gng-card__header">
+      <span>خلاصه اجرا — {{ run.triggerTypeName }}</span>
+      <span class="run-meta">
+        شروع: <span class="gng-ltr">{{ run.startedAt | date: 'yyyy/MM/dd HH:mm:ss' }}</span>
+        &nbsp;•&nbsp;
+        پایان: <span class="gng-ltr">{{ run.finishedAt ? (run.finishedAt | date: 'yyyy/MM/dd HH:mm:ss') : '—' }}</span>
+      </span>
+    </div>
+    <div class="gng-card__body">
+      <gng-summary-bar [summary]="run" [showRunInfo]="false"></gng-summary-bar>
+    </div>
+  </section>
+
+  <dx-tab-panel [dataSource]="tabs" [animationEnabled]="false" [swipeEnabled]="false">
+    <div *dxTemplate="let tab of 'item'">
+
+      <!-- ---------------------------------------------------------- -->
+      <!-- پیشنهادهای این اجرا                                         -->
+      <!-- ---------------------------------------------------------- -->
+      @if (tab.title === 'پیشنهادهای اجرا') {
+        <dx-data-grid
+          [dataSource]="recommendations()"
+          keyExpr="id"
+          [showBorders]="false"
+          [showRowLines]="true"
+          [rowAlternationEnabled]="true"
+          [columnAutoWidth]="true"
+          [allowColumnResizing]="true"
+          noDataText="پیشنهادی ثبت نشده است">
+
+          <dxo-paging [pageSize]="25"></dxo-paging>
+          <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50]" [showInfo]="true"
+            infoText="صفحه {0} از {1} ({2} ردیف)"></dxo-pager>
+          <dxo-filter-row [visible]="true"></dxo-filter-row>
+          <dxo-sorting mode="multiple"></dxo-sorting>
+
+          <dxi-column dataField="productCode" caption="کد کالا" [width]="100" cssClass="gng-ltr"></dxi-column>
+          <dxi-column dataField="productName" caption="کالا" [minWidth]="140"></dxi-column>
+          <dxi-column dataField="warehouseName" caption="انبار" [width]="125"></dxi-column>
+          <dxi-column dataField="siteName" caption="سایت" [width]="125"></dxi-column>
+          <dxi-column dataField="effectiveStock" caption="موجودی موثر" dataType="number"
+            format="#,##0.##" [width]="100" cssClass="dx-numeric-cell"></dxi-column>
+          <dxi-column dataField="averageDailyConsumption" caption="میانگین مصرف روزانه" dataType="number"
+            format="#,##0.##" [width]="130" cssClass="dx-numeric-cell"></dxi-column>
+          <dxi-column dataField="reorderPoint" caption="نقطه سفارش" dataType="number"
+            format="#,##0.##" [width]="95" cssClass="dx-numeric-cell"></dxi-column>
+          <dxi-column dataField="orderingMethodName" caption="نحوه سفارش‌دهی" [width]="115"></dxi-column>
+          <dxi-column dataField="suggestedQuantity" caption="مقدار پیشنهادی" dataType="number"
+            format="#,##0.##" [width]="115" cssClass="dx-numeric-cell"></dxi-column>
+          <dxi-column dataField="reason" caption="دلیل پیشنهاد" [minWidth]="240"></dxi-column>
+          <dxi-column dataField="statusName" caption="وضعیت" [width]="158"
+            cellTemplate="statusCell" alignment="center"></dxi-column>
+
+          <div *dxTemplate="let cell of 'statusCell'">
+            <gng-status-badge [text]="cell.data.statusName"
+              [variant]="statusVariant(cell.data.status)" [tooltip]="cell.data.reason"></gng-status-badge>
+          </div>
+        </dx-data-grid>
+      }
+
+      <!-- ---------------------------------------------------------- -->
+      <!-- رویدادهای ثبت‌شده                                           -->
+      <!-- ---------------------------------------------------------- -->
+      @if (tab.title === 'رویدادهای اجرا') {
+        @if (auditLogs().length === 0) {
+          <gng-empty-state title="رویدادی ثبت نشده است"></gng-empty-state>
+        } @else {
+          <dx-data-grid
+            [dataSource]="auditLogs()"
+            keyExpr="id"
+            [showBorders]="false"
+            [showRowLines]="true"
+            [rowAlternationEnabled]="true"
+            [columnAutoWidth]="true"
+            [wordWrapEnabled]="true"
+            noDataText="رویدادی ثبت نشده است">
+
+            <dxo-paging [pageSize]="50"></dxo-paging>
+            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[25, 50, 100]" [showInfo]="true"
+              infoText="صفحه {0} از {1} ({2} رویداد)"></dxo-pager>
+            <dxo-filter-row [visible]="true"></dxo-filter-row>
+            <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+
+            <dxi-column dataField="id" caption="ردیف" [width]="70" alignment="left" cssClass="dx-numeric-cell"></dxi-column>
+            <dxi-column dataField="eventTypeName" caption="نوع رویداد" [width]="150"></dxi-column>
+            <dxi-column dataField="productCode" caption="کد کالا" [width]="100" cssClass="gng-ltr"></dxi-column>
+            <dxi-column dataField="warehouseName" caption="انبار" [width]="125"></dxi-column>
+            <dxi-column dataField="message" caption="شرح" [minWidth]="340"></dxi-column>
+            <dxi-column caption="پیش از / پس از" [width]="140" cellTemplate="valuesCell"></dxi-column>
+            <dxi-column dataField="createdAt" caption="زمان" dataType="datetime"
+              format="yyyy/MM/dd HH:mm:ss" [width]="150"></dxi-column>
+
+            <div *dxTemplate="let cell of 'valuesCell'">
+              @if (cell.data.beforeValue || cell.data.afterValue) {
+                <span class="audit-values gng-ltr">
+                  {{ cell.data.beforeValue || '—' }} → {{ cell.data.afterValue || '—' }}
+                </span>
+              }
+            </div>
+          </dx-data-grid>
+        }
+      }
+    </div>
+  </dx-tab-panel>
+} @else if (loaded()) {
+  <gng-empty-state title="اجرای موردنظر یافت نشد"></gng-empty-state>
+} @else {
+  <div class="gng-empty">در حال بارگذاری جزئیات اجرا…</div>
+}

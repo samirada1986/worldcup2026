@@ -1,0 +1,181 @@
+<gng-page-header
+  title="پارامترهای سفارش‌دهی کالا"
+  subtitle="تعریف نقطه سفارش، سطوح موجودی و مقادیر سفارش برای هر ترکیب کالا، انبار و سایت">
+</gng-page-header>
+
+<!-- ---------------------------------------------------------------- -->
+<!-- فیلتر                                                             -->
+<!-- ---------------------------------------------------------------- -->
+<section class="gng-card">
+  <div class="gng-card__header">جستجو</div>
+  <div class="gng-card__body">
+    <div class="gng-form-grid">
+
+      <div class="gng-field">
+        <label class="gng-field__label">کالا</label>
+        <gng-lookup-select-box
+          [items$]="lookups.products$"
+          [showCode]="true"
+          [value]="filter.productId ?? null"
+          placeholder="همه کالاها"
+          (valueChange)="filter.productId = $event">
+        </gng-lookup-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">انبار</label>
+        <gng-lookup-select-box
+          [items$]="lookups.warehouses$"
+          [value]="filter.warehouseId ?? null"
+          placeholder="همه انبارها"
+          (valueChange)="filter.warehouseId = $event">
+        </gng-lookup-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">سایت</label>
+        <gng-lookup-select-box
+          [items$]="lookups.sites$"
+          [value]="filter.siteId ?? null"
+          placeholder="همه سایت‌ها"
+          (valueChange)="filter.siteId = $event">
+        </gng-lookup-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">وضعیت</label>
+        <dx-select-box
+          [dataSource]="activeOptions"
+          valueExpr="value"
+          displayExpr="name"
+          [value]="filter.isActive"
+          (onValueChanged)="filter.isActive = $event.value ?? null">
+        </dx-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">جستجو در نام یا کد کالا</label>
+        <dx-text-box
+          [value]="filter.search ?? ''"
+          (onValueChanged)="filter.search = $event.value || null"
+          placeholder="مثال: کاغذ یا KLA-1001"
+          [showClearButton]="true"
+          (onEnterKey)="search()">
+        </dx-text-box>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ---------------------------------------------------------------- -->
+<!-- نوار عملیات                                                       -->
+<!-- ---------------------------------------------------------------- -->
+<div class="gng-toolbar">
+  <dx-button text="جستجو" icon="search" type="default" stylingMode="contained"
+    [disabled]="loading()" (onClick)="search()"></dx-button>
+
+  <dx-button text="بازنشانی" icon="revert" stylingMode="outlined"
+    [disabled]="loading()" (onClick)="reset()"></dx-button>
+
+  <span class="gng-toolbar__spacer"></span>
+
+  <dx-button text="پارامتر جدید" icon="plus" type="default" stylingMode="contained"
+    (onClick)="add()"></dx-button>
+</div>
+
+<!-- ---------------------------------------------------------------- -->
+<!-- گرید نتایج                                                        -->
+<!-- ---------------------------------------------------------------- -->
+<section class="gng-card">
+  <div class="gng-card__header">
+    <span>فهرست پارامترها</span>
+    <span>{{ rows().length }} ردیف</span>
+  </div>
+
+  @if (searched() && rows().length === 0) {
+    <gng-empty-state
+      title="پارامتری یافت نشد"
+      description="فیلتر را تغییر دهید یا با دکمه «پارامتر جدید» یک پارامتر سفارش‌دهی تعریف کنید.">
+    </gng-empty-state>
+  } @else {
+    <dx-data-grid
+      [dataSource]="rows()"
+      keyExpr="id"
+      [showBorders]="false"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+      [columnAutoWidth]="true"
+      [allowColumnResizing]="true"
+      [hoverStateEnabled]="true"
+      [wordWrapEnabled]="false"
+      noDataText="داده‌ای برای نمایش وجود ندارد">
+
+      <dxo-scrolling mode="standard"></dxo-scrolling>
+      <dxo-paging [pageSize]="20"></dxo-paging>
+      <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"
+        infoText="صفحه {0} از {1} ({2} ردیف)"></dxo-pager>
+      <dxo-filter-row [visible]="true"></dxo-filter-row>
+      <dxo-header-filter [visible]="true"></dxo-header-filter>
+      <dxo-sorting mode="multiple"></dxo-sorting>
+      <dxo-column-chooser [enabled]="true" title="انتخاب ستون"></dxo-column-chooser>
+
+      <dxi-column dataField="id" caption="شناسه" [width]="70" alignment="left" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="productCode" caption="کد کالا" [width]="100" cssClass="gng-ltr"></dxi-column>
+      <dxi-column dataField="productName" caption="کالا" [minWidth]="140"></dxi-column>
+      <dxi-column dataField="warehouseName" caption="انبار" [width]="130"></dxi-column>
+      <dxi-column dataField="siteName" caption="سایت" [width]="130"></dxi-column>
+      <dxi-column dataField="parameterScopeName" caption="محدوده پارامتر" [width]="120"></dxi-column>
+      <dxi-column dataField="unitOfMeasureName" caption="واحد سنجش" [width]="90"></dxi-column>
+      <dxi-column dataField="requestTypeName" caption="نوع درخواست" [width]="140"></dxi-column>
+      <dxi-column dataField="orderingMethodName" caption="نحوه سفارش‌دهی" [width]="120"></dxi-column>
+
+      <dxi-column dataField="reorderPoint" caption="نقطه سفارش" dataType="number" format="#,##0.##" [width]="95" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="minimumStock" caption="حداقل موجودی" dataType="number" format="#,##0.##" [width]="100" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="maximumStock" caption="حداکثر موجودی" dataType="number" format="#,##0.##" [width]="105" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="desiredStockLevel" caption="سطح مطلوب" dataType="number" format="#,##0.##" [width]="95" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="safetyStock" caption="مقدار ذخیره" dataType="number" format="#,##0.##" [width]="95" [visible]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="minimumOrderQuantity" caption="حداقل سفارش" dataType="number" format="#,##0.##" [width]="100" [visible]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="maximumOrderQuantity" caption="حداکثر سفارش" dataType="number" format="#,##0.##" [width]="100" [visible]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="orderBatchSize" caption="اندازه انباشته" dataType="number" format="#,##0.##" [width]="100" [visible]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="economicOrderQuantity" caption="مقدار بهینه" dataType="number" format="#,##0.##" [width]="95" [visible]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="leadTimeDays" caption="زمان تامین (روز)" dataType="number" [width]="105" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="averageConsumptionDays" caption="روز میانگین مصرف" dataType="number" [width]="115" [visible]="false" cssClass="dx-numeric-cell"></dxi-column>
+
+      <dxi-column dataField="validFrom" caption="اعتبار از" dataType="date" format="yyyy/MM/dd" [width]="95"></dxi-column>
+      <dxi-column dataField="validTo" caption="اعتبار تا" dataType="date" format="yyyy/MM/dd" [width]="95"></dxi-column>
+
+      <dxi-column dataField="isActive" caption="وضعیت" [width]="80" cellTemplate="statusCell" alignment="center"></dxi-column>
+      <dxi-column caption="عملیات" [width]="120" [allowFiltering]="false" [allowSorting]="false"
+        cellTemplate="actionsCell" alignment="center" [fixed]="true" fixedPosition="left"></dxi-column>
+
+      <div *dxTemplate="let cell of 'statusCell'">
+        <gng-status-badge
+          [text]="cell.data.isActive ? 'فعال' : 'غیرفعال'"
+          [variant]="statusVariant(cell.data.isActive)">
+        </gng-status-badge>
+      </div>
+
+      <div *dxTemplate="let cell of 'actionsCell'">
+        <dx-button icon="edit" hint="ویرایش" stylingMode="text"
+          (onClick)="edit(cell.data)"></dx-button>
+        <dx-button
+          [icon]="cell.data.isActive ? 'clearsquare' : 'check'"
+          [hint]="cell.data.isActive ? 'غیرفعال کردن' : 'فعال کردن'"
+          stylingMode="text"
+          (onClick)="toggleStatus(cell.data)"></dx-button>
+      </div>
+
+    </dx-data-grid>
+  }
+</section>
+
+<!-- ---------------------------------------------------------------- -->
+<!-- فرم افزودن/ویرایش                                                 -->
+<!-- ---------------------------------------------------------------- -->
+<gng-parameter-form-dialog
+  [visible]="dialogVisible()"
+  (visibleChange)="dialogVisible.set($event)"
+  [parameter]="editingParameter()"
+  (saved)="onSaved()">
+</gng-parameter-form-dialog>

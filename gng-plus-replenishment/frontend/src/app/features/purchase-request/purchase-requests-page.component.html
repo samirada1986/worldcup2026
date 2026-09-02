@@ -1,0 +1,62 @@
+<gng-page-header
+  title="درخواست‌های خرید"
+  subtitle="پیش‌نویس‌های ایجادشده توسط اتوماسیون و درخواست‌های ارسال‌شده به گردش‌کار">
+  <dx-button text="تازه‌سازی" icon="refresh" stylingMode="outlined" (onClick)="load()"></dx-button>
+</gng-page-header>
+
+<section class="gng-card">
+  <div class="gng-card__header">
+    <span>فهرست درخواست‌ها</span>
+    <span>{{ rows().length }} ردیف</span>
+  </div>
+
+  @if (loaded() && rows().length === 0) {
+    <gng-empty-state
+      title="درخواست خریدی ثبت نشده است"
+      description="از صفحه «سفارش‌دهی کالا» می‌توانید پیش‌نویس درخواست خرید ایجاد کنید.">
+    </gng-empty-state>
+  } @else {
+    <dx-data-grid
+      [dataSource]="rows()"
+      keyExpr="id"
+      [showBorders]="false"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+      [columnAutoWidth]="true"
+      [hoverStateEnabled]="true"
+      (onRowDblClick)="open($event.data)"
+      noDataText="داده‌ای برای نمایش وجود ندارد">
+
+      <dxo-paging [pageSize]="20"></dxo-paging>
+      <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"
+        infoText="صفحه {0} از {1} ({2} ردیف)"></dxo-pager>
+      <dxo-filter-row [visible]="true"></dxo-filter-row>
+      <dxo-sorting mode="multiple"></dxo-sorting>
+
+      <dxi-column dataField="requestNumber" caption="شماره درخواست" [width]="150" cssClass="gng-ltr"></dxi-column>
+      <dxi-column dataField="statusName" caption="وضعیت" [width]="110" cellTemplate="statusCell" alignment="center"></dxi-column>
+      <dxi-column dataField="sourceName" caption="منبع" [width]="100"></dxi-column>
+      <dxi-column dataField="createdBy" caption="ایجادکننده" [width]="140"></dxi-column>
+      <dxi-column dataField="createdAt" caption="تاریخ ایجاد" dataType="datetime" format="yyyy/MM/dd HH:mm" [width]="140"></dxi-column>
+      <dxi-column dataField="submittedAt" caption="تاریخ ارسال" dataType="datetime" format="yyyy/MM/dd HH:mm" [width]="140"></dxi-column>
+      <dxi-column dataField="workflowStatusName" caption="گردش‌کار" [width]="110"></dxi-column>
+      <dxi-column dataField="workflowInstanceId" caption="شناسه گردش‌کار" [width]="160" cssClass="gng-ltr"></dxi-column>
+      <dxi-column dataField="automationRunId" caption="شناسه اجرا" [width]="90" alignment="left" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column caption="تعداد ردیف" [width]="90" alignment="center" cellTemplate="countCell"></dxi-column>
+      <dxi-column caption="عملیات" [width]="90" [allowFiltering]="false" [allowSorting]="false"
+        cellTemplate="actionsCell" alignment="center"></dxi-column>
+
+      <div *dxTemplate="let cell of 'statusCell'">
+        <gng-status-badge [text]="cell.data.statusName" [variant]="statusVariant(cell.data.status)"></gng-status-badge>
+      </div>
+
+      <div *dxTemplate="let cell of 'countCell'">
+        <span class="dx-numeric-cell">{{ itemCount(cell.data) | number }}</span>
+      </div>
+
+      <div *dxTemplate="let cell of 'actionsCell'">
+        <dx-button icon="find" hint="مشاهده جزئیات" stylingMode="text" (onClick)="open(cell.data)"></dx-button>
+      </div>
+    </dx-data-grid>
+  }
+</section>

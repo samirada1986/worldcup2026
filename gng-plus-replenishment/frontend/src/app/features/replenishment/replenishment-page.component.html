@@ -1,0 +1,270 @@
+<gng-page-header
+  title="سفارش‌دهی کالا"
+  subtitle="محاسبه خودکار نیاز سفارش بر اساس پارامترهای سفارش‌دهی، موجودی موثر و میانگین مصرف">
+</gng-page-header>
+
+<!-- ---------------------------------------------------------------- -->
+<!-- فیلتر                                                             -->
+<!-- ---------------------------------------------------------------- -->
+<section class="gng-card">
+  <div class="gng-card__header">فیلتر</div>
+  <div class="gng-card__body">
+    <div class="gng-form-grid">
+
+      <div class="gng-field">
+        <label class="gng-field__label">از تاریخ</label>
+        <dx-date-box [value]="$any(filter.fromDate)" type="date" displayFormat="yyyy/MM/dd"
+          [showClearButton]="true" placeholder="ابتدای بازه مصرف"
+          (onValueChanged)="filter.fromDate = toIsoDate($event.value)"></dx-date-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">تا تاریخ</label>
+        <dx-date-box [value]="$any(filter.toDate)" type="date" displayFormat="yyyy/MM/dd"
+          [showClearButton]="true" placeholder="انتهای بازه مصرف"
+          (onValueChanged)="filter.toDate = toIsoDate($event.value)"></dx-date-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">کالا</label>
+        <gng-lookup-select-box
+          [items$]="lookups.products$" [showCode]="true"
+          [value]="filter.productId ?? null" placeholder="همه کالاها"
+          (valueChange)="filter.productId = $event">
+        </gng-lookup-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">انبار</label>
+        <gng-lookup-select-box
+          [items$]="lookups.warehouses$"
+          [value]="filter.warehouseId ?? null" placeholder="همه انبارها"
+          (valueChange)="filter.warehouseId = $event">
+        </gng-lookup-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">سایت</label>
+        <gng-lookup-select-box
+          [items$]="lookups.sites$"
+          [value]="filter.siteId ?? null" placeholder="همه سایت‌ها"
+          (valueChange)="filter.siteId = $event">
+        </gng-lookup-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">گروه کالا</label>
+        <gng-lookup-select-box
+          [items$]="lookups.productGroups$"
+          [value]="filter.productGroupId ?? null" placeholder="همه گروه‌ها"
+          (valueChange)="filter.productGroupId = $event">
+        </gng-lookup-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">ماهیت کالا</label>
+        <gng-lookup-select-box
+          [items$]="lookups.productNatures$"
+          [value]="filter.productNatureId ?? null" placeholder="همه ماهیت‌ها"
+          (valueChange)="filter.productNatureId = $event">
+        </gng-lookup-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">محدوده پارامتر</label>
+        <gng-lookup-select-box
+          [items$]="lookups.parameterScopes$"
+          [value]="filter.parameterScopeId ?? null" placeholder="همه محدوده‌ها"
+          (valueChange)="filter.parameterScopeId = $event">
+        </gng-lookup-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">پارامتر مقایسه</label>
+        <dx-select-box
+          [dataSource]="(lookups.comparisonParameters$ | async) ?? []"
+          valueExpr="value" displayExpr="name"
+          [value]="filter.comparisonParameter"
+          [showClearButton]="true"
+          placeholder="بدون مقایسه"
+          (onValueChanged)="filter.comparisonParameter = $event.value ?? null">
+        </dx-select-box>
+      </div>
+
+      <div class="gng-field">
+        <label class="gng-field__label">درصد مازاد موجودی به پارامتر مقایسه</label>
+        <dx-number-box [value]="$any(filter.surplusPercentage)" [min]="0" [max]="1000"
+          [showSpinButtons]="true" format="#,##0.##" placeholder="مثال: ۲۰"
+          [showClearButton]="true"
+          (onValueChanged)="filter.surplusPercentage = $event.value ?? null"></dx-number-box>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ---------------------------------------------------------------- -->
+<!-- نوار عملیات                                                       -->
+<!-- ---------------------------------------------------------------- -->
+<div class="gng-toolbar">
+  <dx-button text="جستجو" icon="search" type="default" stylingMode="contained"
+    [disabled]="calculating()" (onClick)="search()"></dx-button>
+
+  <dx-button text="بازنشانی" icon="revert" stylingMode="outlined"
+    [disabled]="calculating()" (onClick)="reset()"></dx-button>
+
+  <dx-button text="محاسبه نیاز سفارش" icon="refresh" type="default" stylingMode="contained"
+    [disabled]="calculating()" (onClick)="calculate()"></dx-button>
+
+  <span class="gng-toolbar__spacer"></span>
+
+  @if (selectedKeys().length > 0) {
+    <span class="toolbar__selection">{{ selectedKeys().length }} ردیف انتخاب شده</span>
+  }
+
+  <dx-button text="ارسال درخواست خرید" icon="send" type="default" stylingMode="contained"
+    [disabled]="!canSend" (onClick)="openReview()"></dx-button>
+</div>
+
+<!-- ---------------------------------------------------------------- -->
+<!-- خلاصه نتیجه                                                       -->
+<!-- ---------------------------------------------------------------- -->
+@if (summary(); as runSummary) {
+  <section class="gng-card">
+    <div class="gng-card__header">
+      <span>خلاصه محاسبه</span>
+      <span class="summary__duration">مدت اجرا: {{ runSummary.durationMs | number: '1.0-0' }} میلی‌ثانیه</span>
+    </div>
+    <div class="gng-card__body">
+      <gng-summary-bar [summary]="runSummary"></gng-summary-bar>
+    </div>
+  </section>
+}
+
+<!-- ---------------------------------------------------------------- -->
+<!-- گرید نتایج                                                        -->
+<!-- ---------------------------------------------------------------- -->
+<section class="gng-card">
+  <div class="gng-card__header">
+    <span>کالاهای نیازمند بررسی سفارش</span>
+    <span>{{ rows().length }} ردیف</span>
+  </div>
+
+  @if (calculated() && rows().length === 0) {
+    <gng-empty-state
+      title="نتیجه‌ای یافت نشد"
+      description="برای این فیلتر، پارامتر سفارش‌دهی یا موجودی ثبت‌شده‌ای وجود ندارد.">
+    </gng-empty-state>
+  } @else {
+    <dx-data-grid
+      #grid
+      [dataSource]="rows()"
+      keyExpr="id"
+      [showBorders]="false"
+      [showRowLines]="true"
+      [rowAlternationEnabled]="true"
+      [columnAutoWidth]="true"
+      [allowColumnResizing]="true"
+      [allowColumnReordering]="true"
+      [hoverStateEnabled]="true"
+      [repaintChangesOnly]="true"
+      (selectedRowKeysChange)="onSelectionChanged($event)"
+      noDataText="داده‌ای برای نمایش وجود ندارد">
+
+      <dxo-selection
+        mode="multiple"
+        [allowSelectAll]="true"
+        showCheckBoxesMode="always"
+        [deferred]="false"
+        selectAllMode="page">
+      </dxo-selection>
+
+      <dxo-editing mode="cell" [allowUpdating]="true"></dxo-editing>
+      <dxo-scrolling mode="standard" columnRenderingMode="virtual"></dxo-scrolling>
+      <dxo-paging [pageSize]="25"></dxo-paging>
+      <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 25, 50, 100]"
+        [showInfo]="true" infoText="صفحه {0} از {1} ({2} ردیف)"></dxo-pager>
+      <dxo-filter-row [visible]="true"></dxo-filter-row>
+      <dxo-header-filter [visible]="true"></dxo-header-filter>
+      <dxo-sorting mode="multiple"></dxo-sorting>
+      <dxo-column-chooser [enabled]="true" title="انتخاب ستون"></dxo-column-chooser>
+      <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+      <dxi-column dataField="id" caption="شناسه" [width]="70" alignment="left"
+        [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="productName" caption="کالا" [minWidth]="140"
+        [allowEditing]="false" [fixed]="true" fixedPosition="right"></dxi-column>
+      <dxi-column dataField="productCode" caption="کد کالا" [width]="100"
+        [allowEditing]="false" cssClass="gng-ltr"></dxi-column>
+      <dxi-column dataField="warehouseName" caption="انبار" [width]="125" [allowEditing]="false"></dxi-column>
+      <dxi-column dataField="siteName" caption="سایت" [width]="125" [allowEditing]="false"></dxi-column>
+      <dxi-column dataField="unitOfMeasureName" caption="واحد سنجش" [width]="85" [allowEditing]="false"></dxi-column>
+
+      <dxi-column dataField="onHandQuantity" caption="موجودی فعلی" dataType="number" format="#,##0.##"
+        [width]="100" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="reservedQuantity" caption="موجودی رزرو شده" dataType="number" format="#,##0.##"
+        [width]="110" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="confirmedIncomingQuantity" caption="ورودی قطعی" dataType="number" format="#,##0.##"
+        [width]="95" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="existingOpenRequestQuantity" caption="درخواست باز" dataType="number" format="#,##0.##"
+        [width]="100" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="effectiveStock" caption="موجودی موثر" dataType="number" format="#,##0.##"
+        [width]="100" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="averageDailyConsumption" caption="میانگین مصرف روزانه" dataType="number" format="#,##0.##"
+        [width]="130" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+
+      <dxi-column dataField="reorderPoint" caption="نقطه سفارش" dataType="number" format="#,##0.##"
+        [width]="95" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="minimumStock" caption="حداقل موجودی" dataType="number" format="#,##0.##"
+        [width]="100" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="maximumStock" caption="حداکثر موجودی" dataType="number" format="#,##0.##"
+        [width]="105" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="orderingMethodName" caption="نحوه سفارش‌دهی" [width]="115"
+        [allowEditing]="false" [visible]="false"></dxi-column>
+
+      <dxi-column dataField="suggestedQuantity" caption="مقدار پیشنهادی سفارش" dataType="number" format="#,##0.##"
+        [width]="130" [allowEditing]="false" cssClass="dx-numeric-cell"></dxi-column>
+      <dxi-column dataField="requestedQuantity" caption="مقدار درخواست" dataType="number" format="#,##0.##"
+        [width]="110" cssClass="dx-numeric-cell">
+        <dxi-validation-rule type="range" [min]="0" message="مقدار درخواست نمی‌تواند منفی باشد"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column dataField="requestClassificationName" caption="طبقه‌بندی درخواست" [width]="120"
+        [allowEditing]="false"></dxi-column>
+
+      <dxi-column dataField="reason" caption="دلیل پیشنهاد" [minWidth]="220"
+        [allowEditing]="false" cellTemplate="reasonCell"></dxi-column>
+      <dxi-column dataField="statusName" caption="وضعیت" [width]="158" [allowEditing]="false"
+        cellTemplate="statusCell" alignment="center" [fixed]="true" fixedPosition="left"></dxi-column>
+
+      <div *dxTemplate="let cell of 'statusCell'">
+        <gng-status-badge
+          [text]="cell.data.statusName"
+          [variant]="statusVariant(cell.data.status)"
+          [tooltip]="cell.data.reason">
+        </gng-status-badge>
+      </div>
+
+      <div *dxTemplate="let cell of 'reasonCell'">
+        <span [title]="cell.data.reason">{{ cell.data.reason }}</span>
+      </div>
+
+      <dxo-summary>
+        <dxi-total-item column="suggestedQuantity" summaryType="sum"
+          displayFormat="جمع پیشنهاد: {0}" valueFormat="#,##0.##"></dxi-total-item>
+        <dxi-total-item column="productName" summaryType="count"
+          displayFormat="{0} ردیف"></dxi-total-item>
+      </dxo-summary>
+    </dx-data-grid>
+  }
+</section>
+
+<!-- ---------------------------------------------------------------- -->
+<!-- بازبینی و ایجاد پیش‌نویس                                          -->
+<!-- ---------------------------------------------------------------- -->
+<gng-purchase-request-review-dialog
+  [visible]="reviewVisible()"
+  (visibleChange)="reviewVisible.set($event)"
+  [recommendations]="reviewRows()"
+  [automationRunId]="automationRunId"
+  (completed)="onReviewCompleted($event)">
+</gng-purchase-request-review-dialog>

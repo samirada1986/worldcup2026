@@ -1,0 +1,269 @@
+<dx-popup
+  [visible]="visible"
+  (visibleChange)="visible = $event; visibleChange.emit($event)"
+  [title]="title"
+  [width]="960"
+  [height]="640"
+  [showCloseButton]="true"
+  [dragEnabled]="true"
+  [hideOnOutsideClick]="false">
+
+  <div *dxTemplate="let data of 'content'" class="dialog" [formGroup]="form">
+
+    <!-- ------------------------------------------------------------ -->
+    <!-- شناسایی                                                       -->
+    <!-- ------------------------------------------------------------ -->
+    <section class="gng-card">
+      <div class="gng-card__header">مشخصات کالا و محل</div>
+      <div class="gng-card__body gng-form-grid">
+
+        <gng-form-field label="کالا" [required]="true"
+          [control]="form.controls.productId" [serverError]="serverErrorFor('productId')">
+          <gng-lookup-select-box
+            [items$]="lookups.products$"
+            [showCode]="true"
+            [value]="form.controls.productId.value"
+            [isValid]="!(form.controls.productId.invalid && form.controls.productId.touched)"
+            placeholder="انتخاب کالا"
+            (valueChange)="setControl('productId', $event)">
+          </gng-lookup-select-box>
+        </gng-form-field>
+
+        <gng-form-field label="انبار" [required]="true"
+          [control]="form.controls.warehouseId" [serverError]="serverErrorFor('warehouseId')">
+          <gng-lookup-select-box
+            [items$]="lookups.warehouses$"
+            [value]="form.controls.warehouseId.value"
+            placeholder="انتخاب انبار"
+            (valueChange)="onWarehouseChange($event)">
+          </gng-lookup-select-box>
+        </gng-form-field>
+
+        <gng-form-field label="سایت" [required]="true"
+          [control]="form.controls.siteId" [serverError]="serverErrorFor('siteId')">
+          <gng-lookup-select-box
+            [items$]="lookups.sites$"
+            [value]="form.controls.siteId.value"
+            placeholder="انتخاب سایت"
+            (valueChange)="setControl('siteId', $event)">
+          </gng-lookup-select-box>
+        </gng-form-field>
+
+        <gng-form-field label="محدوده پارامتر" [required]="true"
+          [control]="form.controls.parameterScopeId" [serverError]="serverErrorFor('parameterScopeId')">
+          <gng-lookup-select-box
+            [items$]="lookups.parameterScopes$"
+            [value]="form.controls.parameterScopeId.value"
+            placeholder="انتخاب محدوده"
+            (valueChange)="setControl('parameterScopeId', $event)">
+          </gng-lookup-select-box>
+        </gng-form-field>
+
+        <gng-form-field label="واحد سنجش" [required]="true"
+          [control]="form.controls.unitOfMeasureId" [serverError]="serverErrorFor('unitOfMeasureId')">
+          <gng-lookup-select-box
+            [items$]="lookups.unitsOfMeasure$"
+            [value]="form.controls.unitOfMeasureId.value"
+            placeholder="انتخاب واحد"
+            (valueChange)="setControl('unitOfMeasureId', $event)">
+          </gng-lookup-select-box>
+        </gng-form-field>
+
+        <gng-form-field label="نوع درخواست" [required]="true"
+          [control]="form.controls.requestTypeId" [serverError]="serverErrorFor('requestTypeId')">
+          <gng-lookup-select-box
+            [items$]="lookups.requestTypes$"
+            [value]="form.controls.requestTypeId.value"
+            placeholder="انتخاب نوع درخواست"
+            (valueChange)="setControl('requestTypeId', $event)">
+          </gng-lookup-select-box>
+        </gng-form-field>
+
+        <gng-form-field label="نحوه سفارش‌دهی" [required]="true"
+          [control]="form.controls.orderingMethod" [serverError]="serverErrorFor('orderingMethod')">
+          <dx-select-box
+            [dataSource]="(lookups.orderingMethods$ | async) ?? []"
+            valueExpr="value"
+            displayExpr="name"
+            [value]="form.controls.orderingMethod.value"
+            [isValid]="!(form.controls.orderingMethod.invalid && form.controls.orderingMethod.touched)"
+            placeholder="انتخاب روش"
+            (onValueChanged)="setControl('orderingMethod', $event.value)">
+          </dx-select-box>
+        </gng-form-field>
+
+        <gng-form-field label="طبقه‌بندی پیش‌فرض"
+          [control]="form.controls.defaultRequestClassificationId">
+          <gng-lookup-select-box
+            [items$]="lookups.requestClassifications$"
+            [value]="form.controls.defaultRequestClassificationId.value"
+            placeholder="انتخاب طبقه‌بندی"
+            (valueChange)="setControl('defaultRequestClassificationId', $event)">
+          </gng-lookup-select-box>
+        </gng-form-field>
+
+        <gng-form-field label="پارامتر کنترل کیفیت"
+          [control]="form.controls.qualityControlParameterId">
+          <gng-lookup-select-box
+            [items$]="lookups.qualityControlParameters$"
+            [value]="form.controls.qualityControlParameterId.value"
+            placeholder="انتخاب پارامتر"
+            (valueChange)="setControl('qualityControlParameterId', $event)">
+          </gng-lookup-select-box>
+        </gng-form-field>
+
+        <gng-form-field label="طرح آزمایش" [control]="form.controls.testPlanId">
+          <gng-lookup-select-box
+            [items$]="lookups.testPlans$"
+            [value]="form.controls.testPlanId.value"
+            placeholder="انتخاب طرح"
+            (valueChange)="setControl('testPlanId', $event)">
+          </gng-lookup-select-box>
+        </gng-form-field>
+
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------ -->
+    <!-- سطوح موجودی                                                   -->
+    <!-- ------------------------------------------------------------ -->
+    <section class="gng-card">
+      <div class="gng-card__header">سطوح موجودی</div>
+      <div class="gng-card__body gng-form-grid">
+
+        <gng-form-field label="نقطه سفارش"
+          [control]="form.controls.reorderPoint" [serverError]="serverErrorFor('reorderPoint')">
+          <dx-number-box formControlName="reorderPoint" [min]="0" [showSpinButtons]="true" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="حداقل موجودی"
+          [control]="form.controls.minimumStock" [serverError]="serverErrorFor('minimumStock')">
+          <dx-number-box formControlName="minimumStock" [min]="0" [showSpinButtons]="true" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="حداکثر موجودی"
+          [control]="form.controls.maximumStock" [serverError]="serverErrorFor('maximumStock')">
+          <dx-number-box formControlName="maximumStock" [min]="0" [showSpinButtons]="true" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="سطح مطلوب"
+          [control]="form.controls.desiredStockLevel" [serverError]="serverErrorFor('desiredStockLevel')">
+          <dx-number-box formControlName="desiredStockLevel" [min]="0" [showSpinButtons]="true" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="مقدار ذخیره"
+          [control]="form.controls.safetyStock" [serverError]="serverErrorFor('safetyStock')">
+          <dx-number-box formControlName="safetyStock" [min]="0" [showSpinButtons]="true" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="ضریب ارزش ویژه"
+          [control]="form.controls.specialValueCoefficient">
+          <dx-number-box formControlName="specialValueCoefficient" [min]="0" [step]="0.1" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------ -->
+    <!-- مقادیر سفارش                                                  -->
+    <!-- ------------------------------------------------------------ -->
+    <section class="gng-card">
+      <div class="gng-card__header">مقادیر سفارش</div>
+      <div class="gng-card__body gng-form-grid">
+
+        <gng-form-field label="مقدار حداقل سفارش"
+          [control]="form.controls.minimumOrderQuantity" [serverError]="serverErrorFor('minimumOrderQuantity')">
+          <dx-number-box formControlName="minimumOrderQuantity" [min]="0" [showSpinButtons]="true" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="مقدار حداکثر سفارش"
+          [control]="form.controls.maximumOrderQuantity" [serverError]="serverErrorFor('maximumOrderQuantity')">
+          <dx-number-box formControlName="maximumOrderQuantity" [min]="0" [showSpinButtons]="true" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="اندازه انباشته سفارش"
+          [control]="form.controls.orderBatchSize" [serverError]="serverErrorFor('orderBatchSize')">
+          <dx-number-box formControlName="orderBatchSize" [min]="0" [showSpinButtons]="true" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="مقدار بهینه سفارش"
+          [control]="form.controls.economicOrderQuantity" [serverError]="serverErrorFor('economicOrderQuantity')">
+          <dx-number-box formControlName="economicOrderQuantity" [min]="0" [showSpinButtons]="true" format="#,##0.##"></dx-number-box>
+        </gng-form-field>
+
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------ -->
+    <!-- زمان و پوشش                                                   -->
+    <!-- ------------------------------------------------------------ -->
+    <section class="gng-card">
+      <div class="gng-card__header">زمان تامین و پوشش</div>
+      <div class="gng-card__body gng-form-grid">
+
+        <gng-form-field label="زمان تقریبی تامین (روز)"
+          [control]="form.controls.leadTimeDays" [serverError]="serverErrorFor('leadTimeDays')">
+          <dx-number-box formControlName="leadTimeDays" [min]="0" [showSpinButtons]="true" format="#,##0"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="تعداد روز محاسبه میانگین مصرف"
+          [control]="form.controls.averageConsumptionDays" [serverError]="serverErrorFor('averageConsumptionDays')">
+          <dx-number-box formControlName="averageConsumptionDays" [min]="0" [showSpinButtons]="true" format="#,##0"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="تعداد روز پوشش حداقل موجودی"
+          [control]="form.controls.minimumCoverageDays" [serverError]="serverErrorFor('minimumCoverageDays')">
+          <dx-number-box formControlName="minimumCoverageDays" [min]="0" [showSpinButtons]="true" format="#,##0"></dx-number-box>
+        </gng-form-field>
+
+        <gng-form-field label="تعداد روز پوشش فروش"
+          [control]="form.controls.salesCoverageDays" [serverError]="serverErrorFor('salesCoverageDays')">
+          <dx-number-box formControlName="salesCoverageDays" [min]="0" [showSpinButtons]="true" format="#,##0"></dx-number-box>
+        </gng-form-field>
+
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------ -->
+    <!-- اعتبار                                                        -->
+    <!-- ------------------------------------------------------------ -->
+    <section class="gng-card">
+      <div class="gng-card__header">اعتبار</div>
+      <div class="gng-card__body gng-form-grid">
+
+        <gng-form-field label="تاریخ اعتبار (از)" [required]="true"
+          [control]="form.controls.validFrom" [serverError]="serverErrorFor('validFrom')">
+          <dx-date-box formControlName="validFrom" type="date" displayFormat="yyyy/MM/dd"></dx-date-box>
+        </gng-form-field>
+
+        <gng-form-field label="تاریخ اعتبار (تا)"
+          [control]="form.controls.validTo" [serverError]="serverErrorFor('validTo')">
+          <dx-date-box formControlName="validTo" type="date" displayFormat="yyyy/MM/dd"></dx-date-box>
+        </gng-form-field>
+
+        <gng-form-field label="وضعیت">
+          <dx-check-box formControlName="isActive" text="فعال"></dx-check-box>
+        </gng-form-field>
+
+      </div>
+    </section>
+
+    @if (serverErrorFor('businessKey')) {
+      <div class="dialog__server-error">{{ serverErrorFor('businessKey') }}</div>
+    }
+  </div>
+
+  <dxi-toolbar-item
+    widget="dxButton"
+    toolbar="bottom"
+    location="after"
+    [options]="{ text: 'ذخیره', type: 'default', stylingMode: 'contained', disabled: saving(), onClick: save.bind(this) }">
+  </dxi-toolbar-item>
+
+  <dxi-toolbar-item
+    widget="dxButton"
+    toolbar="bottom"
+    location="after"
+    [options]="{ text: 'انصراف', stylingMode: 'outlined', disabled: saving(), onClick: close.bind(this) }">
+  </dxi-toolbar-item>
+</dx-popup>
