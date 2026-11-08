@@ -96,7 +96,7 @@ Set `SMTP_*` and enter the private recipient in **Site settings → Contact form
 
 ## Security checklist
 
-- A long random `PAYLOAD_SECRET`; HTTPS only; `NEXT_PUBLIC_SERVER_URL` set to the https origin (it drives CORS/CSRF, canonical URLs and the sitemap).
+- A long random `PAYLOAD_SECRET`; HTTPS only; **`NEXT_PUBLIC_SERVER_URL` must be set** to the https origin. It enables the CORS/CSRF origin allowlist and drives canonical URLs and the sitemap; when it is empty (temporary previews only) URLs are relative and no origin allowlist is enforced.
 - Change the seeded administrator password on first login; give the artist their own Administrator account and assistants Editor accounts.
 - The admin is at `/admin`; logins lock after 5 failed attempts for 15 minutes.
 - Security headers are set in `next.config.ts` (nosniff, referrer policy, frame options, permissions policy).

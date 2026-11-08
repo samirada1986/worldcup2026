@@ -84,7 +84,7 @@ export default async function LocaleLayout({
           <div className="preview-bar" role="status">
             <span>{d.preview}</span>
             <a href={`/preview/exit?path=/${locale}`}>{d.exitPreview}</a>
-            <RefreshRouteOnSave serverURL={siteUrl} />
+            <RefreshRouteOnSave serverURL={process.env.NEXT_PUBLIC_SERVER_URL || ''} />
           </div>
         )}
         <a href="#main" className="skip-link">

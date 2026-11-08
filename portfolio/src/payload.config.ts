@@ -24,7 +24,10 @@ import { SiteSettings } from './globals/SiteSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+// Set NEXT_PUBLIC_SERVER_URL in production: it enables the CORS/CSRF origin
+// allowlist. Without it (e.g. a temporary preview address) URLs stay relative
+// and no origin allowlist is enforced.
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || ''
 
 const plugins: Plugin[] = [
   seoPlugin({
@@ -112,6 +115,6 @@ export default buildConfig({
   sharp,
   plugins,
   upload: { limits: { fileSize: 200_000_000 } },
-  cors: [serverURL],
-  csrf: [serverURL],
+  cors: serverURL ? [serverURL] : [],
+  csrf: serverURL ? [serverURL] : [],
 })
