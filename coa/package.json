@@ -1,0 +1,16 @@
+{
+  "name": "coa-backend",
+  "version": "1.0.0",
+  "description": "Backend REST API + test server for the COA storefront prototype (Persian fashion demo shop).",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "smoke": "node test/smoke.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true,
+  "license": "MIT"
+}
