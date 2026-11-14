@@ -10,7 +10,7 @@ Pick one. **Render** is the simplest free, no-credit-card option.
 1. Go to <https://render.com> and sign up (GitHub login is fine).
 2. **New → Blueprint**.
 3. Connect the repo `samirada1986/worldcup2026` and pick the branch.
-4. Render reads `coa/render.yaml` and creates the service automatically.
+4. Render reads `render.yaml` (repo root) and creates the service automatically.
 5. After ~1–2 min you get a permanent URL: `https://coa-backend-XXXX.onrender.com`
    - storefront: `/`
    - API docs:  `/api/docs`
