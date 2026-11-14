@@ -1,0 +1,60 @@
+{
+  "notes": [
+    {
+      "slug": "the-will-to-persist",
+      "date": "2026-03-01",
+      "title": {
+        "en": "The will to persist",
+        "fa": "میل به ادامه‌یافتن"
+      },
+      "kicker": {
+        "en": "Note · Conatus",
+        "fa": "یادداشت · کوناتوس"
+      },
+      "pull": {
+        "en": "To preserve itself, a thing must wear away, erase, or remove something else.",
+        "fa": "برای حفظِ خود، چیز ناگزیر چیزی دیگر را می‌فرساید، حذف می‌کند یا از میان برمی‌دارد."
+      },
+      "body": {
+        "en": [
+          "Every form of life carries a will to persist — a pull that, before choice and before awareness, moves the living thing to preserve itself and resist its own undoing.",
+          "I have come to think that continuing and eroding are not two separate processes. Each attempt to persist contains both at once. A presence advances in silence, passes through the fissures, and transforms whatever it touches, leaving no clear border between itself and its surroundings.",
+          "This is where Conatus began: not with illness as a subject, but with the strange simultaneity of two wills to survive inside one body — both obeying the same logic, yet one threatening the other's capacity to live."
+        ],
+        "fa": [
+          "هر شکلِ حیات میل به ادامه‌یافتن دارد — میلی که پیش از انتخاب و پیش از آگاهی، موجودِ زنده را به حفظِ خود و مقاومت در برابرِ زوال وا می‌دارد.",
+          "به این فکر رسیده‌ام که تداوم و فرسایش دو فرایندِ جدا نیستند. هر تلاشی برای ادامه‌یافتن، هم‌زمان هر دو را در خود دارد. حضوری در سکوت پیش می‌رود، از میانِ شکاف‌ها می‌گذرد و آنچه را لمس می‌کند دگرگون می‌سازد، بی‌آنکه مرزی روشن میانِ خود و پیرامونش باقی بگذارد.",
+          "کوناتوس از همین‌جا آغاز شد: نه با بیماری به‌عنوان موضوع، بلکه با هم‌زمانیِ غریبِ دو میل به بقا در یک بدن — که هر دو از منطقی واحد پیروی می‌کنند، اما یکی امکانِ زیستنِ دیگری را تهدید می‌کند."
+        ]
+      }
+    },
+    {
+      "slug": "illness-is-not-a-metaphor",
+      "date": "2026-04-18",
+      "title": {
+        "en": "Illness is not a metaphor",
+        "fa": "بیماری استعاره نیست"
+      },
+      "kicker": {
+        "en": "Note · Reading",
+        "fa": "یادداشت · خوانش"
+      },
+      "pull": {
+        "en": "I wanted to study it not as a symbol but as a form of life with its own internal logic.",
+        "fa": "می‌خواستم آن را نه به‌عنوان نماد، بلکه به‌عنوان شکلی از حیات با منطقِ درونیِ خود مطالعه کنم."
+      },
+      "body": {
+        "en": [
+          "The project's first aim was to picture illness. But over the course of making, that approach changed. Its focus moved away from the appearance of illness toward the forces at work beneath it.",
+          "Susan Sontag insists, in Illness as Metaphor, that illness must not be reduced to metaphor. I took that seriously. A tumour, like any other form of life, seeks to preserve and extend its own existence — it follows the same non-linear, invasive logic as a root reaching through soil.",
+          "So the root became the central form of the work. Not a symbol of disease, but a way to make the logic of growth, penetration and the occupation of space materially visible."
+        ],
+        "fa": [
+          "هدفِ اولیه‌ی پروژه تصویرکردنِ بیماری بود. اما در روندِ ساخت، این رویکرد تغییر کرد. تمرکز از ظاهرِ بیماری به نیروهایی که در پسِ آن عمل می‌کنند معطوف شد.",
+          "سوزان سانتاگ در بیماری به‌مثابه استعاره تأکید می‌کند که بیماری نباید به استعاره تقلیل یابد. این را جدی گرفتم. تومور، مانندِ هر شکلِ دیگری از حیات، در پیِ حفظ و گسترشِ وجودِ خویش است — از همان منطقِ غیرخطی و نفوذیِ ریشه‌ای پیروی می‌کند که در خاک راه می‌گشاید.",
+          "پس ریشه به فرمِ اصلیِ کار بدل شد. نه نمادی از بیماری، بلکه راهی برای آشکارکردنِ مادیِ منطقِ رشد، نفوذ و اشغالِ فضا."
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Netlify configuration for the Next.js site.
+# The official Next.js Runtime is installed automatically; this makes it explicit.
+[build]
+  command = "npm run build"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

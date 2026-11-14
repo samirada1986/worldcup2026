@@ -1,0 +1,101 @@
+# Decap CMS — browser-based editing, backed by your Git repo.
+#
+# Deploying on NETLIFY (recommended): the git-gateway backend below works once
+# you enable Identity + Git Gateway in the Netlify dashboard (see README). No
+# GitHub OAuth app needed.
+#
+# Prefer plain GitHub instead? Replace the backend block with:
+#   backend:
+#     name: github
+#     repo: OWNER/REPOSITORY
+#     branch: main
+# …and connect a GitHub OAuth proxy.
+#
+# Try it locally (no login): `npx decap-server` + `npm run dev`, then open
+# http://localhost:3000/admin
+
+backend:
+  name: git-gateway
+  branch: main                  # the branch the CMS commits to
+
+local_backend: true             # enables local editing via `npx decap-server`
+
+media_folder: "public/uploads"  # where uploaded files are stored in the repo
+public_folder: "/uploads"       # how they are referenced on the site
+
+locale: "en"
+
+collections:
+  - name: "content"
+    label: "Content"
+    files:
+      # ─────────────── Journal ───────────────
+      - name: "journal"
+        label: "Journal"
+        file: "src/content/data/journal.json"
+        description: "Notes and short essays. Each note is bilingual (English + Persian)."
+        fields:
+          - label: "Notes"
+            name: "notes"
+            widget: "list"
+            label_singular: "Note"
+            summary: "{{fields.title.en}}"
+            fields:
+              - { label: "Slug (URL)", name: "slug", widget: "string", pattern: ["^[a-z0-9-]+$", "lowercase letters, numbers and hyphens only"] }
+              - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+              - label: "Title"
+                name: "title"
+                widget: "object"
+                fields:
+                  - { label: "English", name: "en", widget: "string" }
+                  - { label: "Persian", name: "fa", widget: "string" }
+              - label: "Kicker (small label)"
+                name: "kicker"
+                widget: "object"
+                fields:
+                  - { label: "English", name: "en", widget: "string", required: false }
+                  - { label: "Persian", name: "fa", widget: "string", required: false }
+              - label: "Pull quote"
+                name: "pull"
+                widget: "object"
+                required: false
+                fields:
+                  - { label: "English", name: "en", widget: "text", required: false }
+                  - { label: "Persian", name: "fa", widget: "text", required: false }
+              - label: "Body"
+                name: "body"
+                widget: "object"
+                fields:
+                  - { label: "English paragraphs", name: "en", widget: "list", field: { label: "Paragraph", name: "p", widget: "text" } }
+                  - { label: "Persian paragraphs", name: "fa", widget: "list", field: { label: "Paragraph", name: "p", widget: "text" } }
+
+      # ─────────────── Contact & CV ───────────────
+      - name: "settings"
+        label: "Contact & CV"
+        file: "src/content/data/settings.json"
+        description: "Email, Instagram, and the curator-facing CV lists."
+        fields:
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Instagram handle (no @)", name: "instagram", widget: "string" }
+          - label: "CV"
+            name: "cv"
+            widget: "object"
+            fields:
+              - label: "Exhibitions"
+                name: "exhibitions"
+                widget: "object"
+                fields:
+                  - { label: "English", name: "en", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
+                  - { label: "Persian", name: "fa", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
+              - label: "Publications"
+                name: "publications"
+                widget: "object"
+                fields:
+                  - { label: "English", name: "en", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
+                  - { label: "Persian", name: "fa", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
+              - label: "Awards & grants"
+                name: "awards"
+                widget: "object"
+                fields:
+                  - { label: "English", name: "en", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
+                  - { label: "Persian", name: "fa", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }

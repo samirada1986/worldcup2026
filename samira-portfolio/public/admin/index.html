@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Samira Dadashi — Content</title>
+    <!-- Netlify Identity: handles login for the git-gateway backend -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+  <body>
+    <!-- Decap CMS: a git-based, browser editor. See README for one-time backend setup. -->
+    <script src="https://unpkg.com/decap-cms@3.5.0/dist/decap-cms.js"></script>
+    <script>
+      // After an Identity invite/confirmation, bounce back to the CMS.
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
