@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COA API — مستندات</title>
+<style>
+  :root{
+    --bg:#f6f4ef; --card:#fff; --ink:#1d1b16; --mut:#6b6459; --line:#e6e0d6;
+    --accent:#1F2A44; --ok:#0a7a45; --get:#0a7a45; --post:#1F2A44; --put:#9a6b00; --patch:#8a3b00;
+    --code:#2b2b2b; --codebg:#f2efe9;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#15140f; --card:#1e1c17; --ink:#efe9df; --mut:#a49c8d; --line:#332f28;
+    --accent:#bcd3ee; --code:#e8e4db; --codebg:#121009;
+  }}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Vazirmatn,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  header{padding:28px 20px;border-bottom:1px solid var(--line);background:var(--card)}
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px}
+  h1{margin:0 0 4px;font-size:1.5rem}
+  .sub{color:var(--mut);font-size:.95rem}
+  .links a{color:var(--accent);text-decoration:none;margin-inline-end:14px;font-size:.9rem}
+  main{padding:22px 0 60px}
+  .ep{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:12px 0;overflow:hidden}
+  .ep summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .ep summary::-webkit-details-marker{display:none}
+  .m{font-weight:700;font-size:.72rem;padding:3px 9px;border-radius:7px;color:#fff;letter-spacing:.04em}
+  .m.GET{background:var(--get)} .m.POST{background:var(--post)} .m.PUT{background:var(--put)} .m.PATCH{background:var(--patch)}
+  code.path{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;unicode-bidi:bidi-override;font-size:.92rem;color:var(--ink)}
+  .desc{color:var(--mut);font-size:.88rem;margin-inline-start:auto}
+  .body{padding:0 14px 14px;border-top:1px solid var(--line)}
+  pre{background:var(--codebg);color:var(--code);padding:12px;border-radius:10px;overflow:auto;direction:ltr;text-align:left;font-size:.82rem;margin:10px 0}
+  button.try{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:.86rem}
+  button.try:active{transform:translateY(1px)}
+  textarea{width:100%;min-height:92px;font-family:ui-monospace,monospace;direction:ltr;text-align:left;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--codebg);color:var(--code);font-size:.82rem}
+  label.fld{display:block;font-size:.8rem;color:var(--mut);margin:8px 0 4px}
+  .out{font-size:.8rem}
+  .pill{display:inline-block;background:var(--codebg);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.78rem;color:var(--mut);direction:ltr}
+  .note{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:14px;margin:14px 0;color:var(--mut);font-size:.88rem}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>COA API — مستندات زنده</h1>
+  <div class="sub">بک‌اند فروشگاه COA · واحد پول: تومان (IRT) · همه پاسخ‌ها JSON هستند.</div>
+  <div class="links" style="margin-top:10px">
+    <a href="/">↗ فروشگاه (Storefront)</a>
+    <a href="/api/health">/api/health</a>
+    <a href="/api/products">/api/products</a>
+    <a href="/api/orders">/api/orders</a>
+  </div>
+</div></header>
+<main class="wrap">
+  <div class="note">
+    این صفحه به‌صورت زنده به همین سرور وصل است. روی هر مسیر کلیک کنید، در صورت نیاز بدنهٔ درخواست را ویرایش کنید و «اجرا» را بزنید.
+    دادهٔ اولیه دقیقاً همان کاتالوگ، سفارش‌ها و کدهای تخفیف پروتوتایپ اصلی است.
+  </div>
+  <div id="eps"></div>
+</main>
+
+<script>
+const BASE = location.origin;
+const EPS = [
+  {m:'GET', p:'/api/health', d:'سلامت سرور'},
+  {m:'GET', p:'/api/store', d:'پروفایل فروشگاه و دسته‌ها'},
+  {m:'GET', p:'/api/categories', d:'دسته‌بندی‌ها'},
+  {m:'GET', p:'/api/products?sort=new', d:'فهرست محصولات (cat, sort, all)'},
+  {m:'GET', p:'/api/products/p1', d:'جزئیات یک محصول'},
+  {m:'GET', p:'/api/products/p1/stock', d:'موجودی هر تنوع'},
+  {m:'GET', p:'/api/shipping', d:'روش‌های ارسال'},
+  {m:'POST', p:'/api/cart/quote', d:'محاسبهٔ سبد (جمع، تخفیف، ارسال)', body:{items:[{pid:'p1',color:'کرم',size:'۱',qty:1}],code:'COA10',shipId:'post'}},
+  {m:'POST', p:'/api/discounts/validate', d:'اعتبارسنجی کد تخفیف', body:{code:'COA10',subtotal:1850000}},
+  {m:'GET', p:'/api/customers', d:'مشتریان نمایشی'},
+  {m:'GET', p:'/api/orders', d:'فهرست سفارش‌ها (status, customerId)'},
+  {m:'GET', p:'/api/orders/COA-1004', d:'یک سفارش'},
+  {m:'POST', p:'/api/orders', d:'ثبت سفارش (کسر موجودی)', body:{customer:{name:'مشتری آزمون',mobile:'09120000009'},items:[{pid:'p3',color:'صورتی',size:'۱',qty:1}],code:'COA10',shipId:'express'}},
+  {m:'PATCH', p:'/api/orders/COA-1006/status', d:'تغییر وضعیت سفارش', body:{status:'preparing',note:'در حال بسته‌بندی'}},
+  {m:'GET', p:'/api/inventory', d:'انبار + پرچم کم‌موجودی'},
+  {m:'POST', p:'/api/inventory/move', d:'ثبت حرکت انبار', body:{pid:'p5',variant:'سبز|فری‌سایز',delta:3,why:'ورود کالا'}},
+  {m:'GET', p:'/api/inventory/moves', d:'تاریخچهٔ حرکات انبار'},
+  {m:'GET', p:'/api/discounts', d:'کدهای تخفیف'},
+  {m:'GET', p:'/api/settings', d:'تنظیمات فروشگاه'},
+  {m:'PUT', p:'/api/settings', d:'ویرایش تنظیمات', body:{shipCost:90000,freeOver:3000000}},
+  {m:'POST', p:'/api/admin/reset', d:'بازنشانی داده به حالت اولیه'},
+];
+const host = document.getElementById('eps');
+EPS.forEach((e,idx)=>{
+  const det=document.createElement('details'); det.className='ep';
+  const hasBody = e.body!==undefined;
+  det.innerHTML =
+    '<summary><span class="m '+e.m+'">'+e.m+'</span>'+
+    '<code class="path">'+e.p+'</code><span class="desc">'+e.d+'</span></summary>'+
+    '<div class="body">'+
+      (hasBody? '<label class="fld">بدنهٔ درخواست (JSON):</label><textarea id="ta'+idx+'">'+JSON.stringify(e.body,null,2)+'</textarea>' : '')+
+      '<div style="margin:10px 0"><button class="try" data-i="'+idx+'">اجرا ▶</button> '+
+      '<span class="pill">'+e.m+' '+BASE+e.p+'</span></div>'+
+      '<pre class="out" id="out'+idx+'">—</pre>'+
+    '</div>';
+  host.appendChild(det);
+});
+host.addEventListener('click', async (ev)=>{
+  const btn=ev.target.closest('button.try'); if(!btn) return;
+  const i=+btn.dataset.i, e=EPS[i], out=document.getElementById('out'+i);
+  out.textContent='… در حال اجرا';
+  const opt={method:e.m, headers:{'Content-Type':'application/json'}};
+  if(e.body!==undefined){ try{ opt.body=document.getElementById('ta'+i).value; }catch(_){ } }
+  try{
+    const t0=performance.now();
+    const r=await fetch(BASE+e.p, opt);
+    const txt=await r.text();
+    let pretty=txt; try{ pretty=JSON.stringify(JSON.parse(txt),null,2); }catch(_){}
+    out.textContent='HTTP '+r.status+'  ·  '+Math.round(performance.now()-t0)+'ms\n\n'+pretty;
+  }catch(err){ out.textContent='خطا: '+err.message; }
+});
+</script>
+</body>
+</html>

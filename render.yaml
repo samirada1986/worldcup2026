@@ -1,0 +1,13 @@
+# Render Blueprint — free, no credit card.
+# On render.com: New → Blueprint → connect this GitHub repo. Render reads this
+# file and creates the service. You get a permanent https://<name>.onrender.com URL.
+services:
+  - type: web
+    name: coa-backend
+    runtime: node
+    plan: free
+    rootDir: coa
+    buildCommand: "echo no build needed"
+    startCommand: "node server.js"
+    healthCheckPath: /api/health
+    autoDeploy: true
