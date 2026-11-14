@@ -21,6 +21,7 @@ const R=['/','/shop','/product/p1','/product/p4','/cart','/collection','/journal
  }
  const agg={};
  for(const k in res)for(const v of res[k]){const a=agg[v.id]=agg[v.id]||{impact:v.impact,pages:[],ex:v.ex};a.pages.push(k)}
+ console.log('axe violations:',Object.keys(agg).length);
  for(const id in agg)console.log(id,agg[id].impact,agg[id].pages.length+' pages',JSON.stringify(agg[id].ex),agg[id].pages.slice(0,4).join(','));
  await b.close();
 })();
