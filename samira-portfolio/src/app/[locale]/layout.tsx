@@ -43,8 +43,8 @@ export async function generateMetadata({
     l === "fa" ? "سمیرا داداشی — هنرمند تجسمی و عکاس" : "Samira Dadashi — Visual Artist & Photographer";
   const description =
     l === "fa"
-      ? "پورتفولیوی سمیرا داداشی، هنرمند تجسمی و عکاسِ ایرانی. کوناتوس و آثار مستند."
-      : "Portfolio of Samira Dadashi, Iranian visual artist and photographer. Conatus and documentary work.";
+      ? "پورتفولیوی سمیرا داداشی، هنرمند تجسمی و عکاسِ ایرانی. آثار مستند و خیابانی."
+      : "Portfolio of Samira Dadashi, Iranian visual artist and photographer. Documentary and street photography.";
   return {
     title,
     description,

@@ -8,11 +8,13 @@ import { blur } from "@/lib/blur";
 import { getProject } from "@/content/projects";
 import Reveal from "@/components/Reveal";
 import ChapterGallery from "@/components/ChapterGallery";
+import { PUBLISH_CONATUS } from "@/content/visibility";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const l: Locale = isLocale(locale) ? locale : "en";
-  const p = getProject("conatus")!;
+  const p = getProject("conatus");
+  if (!PUBLISH_CONATUS || !p) return { title: "Not found", robots: { index: false } };
   return {
     title: `${p.title[l]} — Samira Dadashi`,
     description: p.intro[l][0],
@@ -22,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function ConatusPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  if (!isLocale(locale)) notFound();
+  if (!isLocale(locale) || !PUBLISH_CONATUS) notFound();
   const l: Locale = locale;
   const d = getDict(l);
   const p = getProject("conatus")!;

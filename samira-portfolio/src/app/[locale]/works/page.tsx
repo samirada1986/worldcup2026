@@ -7,6 +7,7 @@ import { href } from "@/lib/nav";
 import { blur } from "@/lib/blur";
 import { projects } from "@/content/projects";
 import Reveal from "@/components/Reveal";
+import { PUBLISH_CONATUS } from "@/content/visibility";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -28,7 +29,7 @@ export default async function WorksPage({ params }: { params: Promise<{ locale: 
           {d.works.title}
         </h1>
         <p className="prose-quiet mt-6 max-w-reading">
-          <span className="font-serif text-stone">{d.works.intro}</span>
+          <span className="font-serif text-stone">{PUBLISH_CONATUS ? d.works.intro : d.works.introSolo}</span>
         </p>
       </Reveal>
 

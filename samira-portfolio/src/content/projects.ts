@@ -1,4 +1,5 @@
 import type { Project } from "@/lib/types";
+import { PUBLISH_CONATUS } from "./visibility";
 
 /**
  * Source of truth: the artist's own portfolio (Summer 1405 / 2026).
@@ -223,6 +224,10 @@ const documentary: Project = {
   ],
 };
 
-export const projects: Project[] = [conatus, documentary].sort((a, b) => a.order - b.order);
+const all: Project[] = [conatus, documentary].sort((a, b) => a.order - b.order);
+
+/** Only released projects. Unreleased work never reaches a page, list or sitemap. */
+export const projects: Project[] = all.filter((p) => PUBLISH_CONATUS || p.slug !== "conatus");
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
-export const featuredProject = conatus;
+/** The project shown first on the home page. */
+export const featuredProject: Project = PUBLISH_CONATUS ? conatus : documentary;

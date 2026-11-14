@@ -17,6 +17,7 @@ export const dict = {
     site: { role: "Visual artist & photographer", location: "Tehran" },
     home: {
       featured: "Current project",
+      selectedSeries: "Selected series",
       selectedWorks: "Selected works",
       enterConatus: "Enter Conatus",
       practiceTitle: "On the practice",
@@ -26,6 +27,8 @@ export const dict = {
       title: "Works",
       intro:
         "Two bodies of work, a decade apart: a documentary attention to the street, and Conatus — an ongoing inquiry into the body, persistence and the limits of the photographic image.",
+      introSolo:
+        "A documentary attention to the street: people and their surroundings, and the moment the everyday turns strange.",
       ongoing: "Ongoing",
       medium: "Medium",
       year: "Year",
@@ -103,15 +106,18 @@ export const dict = {
     site: { role: "هنرمند تجسمی و عکاس", location: "تهران" },
     home: {
       featured: "پروژه‌ی جاری",
+      selectedSeries: "مجموعه‌ی منتخب",
       selectedWorks: "آثار منتخب",
       enterConatus: "ورود به کوناتوس",
-      practiceTitle: "درباره‌ی پرَکتیس",
+      practiceTitle: "درباره‌ی کار",
       viewAll: "همه‌ی آثار",
     },
     works: {
       title: "آثار",
       intro:
         "دو مجموعه با فاصله‌ی یک دهه: نگاهی مستند به خیابان، و کوناتوس — جست‌وجویی در جریان درباره‌ی بدن، تداوم و مرزهای تصویرِ عکاسانه.",
+      introSolo:
+        "نگاهی مستند به خیابان: انسان و پیرامونش، و لحظه‌ای که امرِ روزمره غریب می‌شود.",
       ongoing: "در حال انجام",
       medium: "مدیوم",
       year: "سال",

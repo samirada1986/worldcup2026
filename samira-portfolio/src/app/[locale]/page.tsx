@@ -7,6 +7,7 @@ import { blur } from "@/lib/blur";
 import { site, about } from "@/content/site";
 import { projects, featuredProject } from "@/content/projects";
 import Reveal from "@/components/Reveal";
+import { PUBLISH_CONATUS } from "@/content/visibility";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -14,6 +15,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const l: Locale = locale;
   const d = getDict(l);
   const f = featuredProject;
+  const fHref = href(l, `/works/${f.slug}`);
+  const featuredLabel = PUBLISH_CONATUS ? d.home.featured : d.home.selectedSeries;
+  const enterLabel = PUBLISH_CONATUS ? d.home.enterConatus : d.works.view;
 
   return (
     <>
@@ -21,7 +25,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <section className="mx-auto max-w-wide px-6 sm:px-10">
         <div className="grid items-end gap-10 pb-10 pt-10 sm:pt-16 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
           <Reveal className="order-2 lg:order-1">
-            <p className="eyebrow mb-7">{d.home.featured}</p>
+            <p className="eyebrow mb-7">{featuredLabel}</p>
             <h1 className="font-serif text-display-lg font-light text-ink">
               {site.name[l]}
             </h1>
@@ -29,10 +33,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               {d.site.role} · {site.location[l]}
             </p>
             <Link
-              href={href(l, "/works/conatus")}
+              href={fHref}
               className="group mt-9 inline-flex items-center gap-3 font-sans text-sm text-ink"
             >
-              <span className="link-quiet">{d.home.enterConatus}</span>
+              <span className="link-quiet">{enterLabel}</span>
               <span className="transition-transform duration-500 ease-quiet group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
                 {l === "fa" ? "←" : "→"}
               </span>
@@ -41,7 +45,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
           <Reveal delay={0.12} className="order-1 lg:order-2">
             <Link
-              href={href(l, "/works/conatus")}
+              href={fHref}
               className="group relative block overflow-hidden bg-paper-deep"
             >
               <Image
@@ -66,7 +70,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </div>
       </section>
 
-      {/* ───── Featured statement ───── */}
+      {PUBLISH_CONATUS && f.statement && (
       <section className="mx-auto mt-24 max-w-wide px-6 sm:mt-32 sm:px-10">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.4fr] lg:gap-20">
           <Reveal>
@@ -77,18 +81,20 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <p className="eyebrow mt-4">{f.kicker[l]}</p>
           </Reveal>
           <Reveal delay={0.1} className="prose-quiet max-w-reading">
-            {f.statement![l].slice(0, 2).map((p, i) => (
+            {f.statement[l].slice(0, 2).map((p, i) => (
               <p key={i}>{p}</p>
             ))}
             <Link
-              href={href(l, "/works/conatus")}
+              href={fHref}
               className="mt-2 inline-block font-sans text-sm text-ink link-quiet"
             >
-              {d.home.enterConatus} {l === "fa" ? "←" : "→"}
+              {enterLabel} {l === "fa" ? "←" : "→"}
             </Link>
           </Reveal>
         </div>
       </section>
+
+      )}
 
       {/* ───── Selected works ───── */}
       <section className="mx-auto mt-28 max-w-wide px-6 sm:mt-40 sm:px-10">

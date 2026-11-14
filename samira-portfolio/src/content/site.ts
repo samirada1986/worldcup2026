@@ -1,6 +1,7 @@
 import type { Localized, JournalNote } from "@/lib/types";
 import settings from "./data/settings.json";
 import journalData from "./data/journal.json";
+import { PUBLISH_CONATUS, CONATUS_NOTE_SLUGS } from "./visibility";
 
 export const site = {
   name: { en: "Samira Dadashi", fa: "سمیرا داداشی" } as Localized,
@@ -12,7 +13,10 @@ export const site = {
   url: "https://samiradadashi.com",
 };
 
-export const about = {
+/** Keep only the first `n` paragraphs while unreleased work is hidden. */
+const released = <T,>(items: T[], n: number) => (PUBLISH_CONATUS ? items : items.slice(0, n));
+
+const aboutFull = {
   portrait: {
     src: "/about/portrait-samira.jpg",
     w: 962,
@@ -54,6 +58,14 @@ export const about = {
   } as Localized<string[]>,
 };
 
+export const about = {
+  ...aboutFull,
+  biography: {
+    en: released(aboutFull.biography.en, 3),
+    fa: released(aboutFull.biography.fa, 3),
+  } as Localized<string[]>,
+};
+
 /** CV: verified entries only; curator-facing sections the artist keeps current. */
 export const cv = {
   profile: about.biography,
@@ -63,11 +75,11 @@ export const cv = {
   } as Localized<string[]>,
   projects: {
     en: [
-      "Conatus — ongoing (2025–)",
+      ...(PUBLISH_CONATUS ? ["Conatus — ongoing (2025–)"] : []),
       "Documentary & street photography (2016–2022)",
     ],
     fa: [
-      "کوناتوس — در حال انجام (۱۴۰۴–)",
+      ...(PUBLISH_CONATUS ? ["کوناتوس — در حال انجام (۱۴۰۴–)"] : []),
       "عکاسیِ مستند و خیابانی (۱۳۹۵–۱۴۰۱)",
     ],
   } as Localized<string[]>,
@@ -77,6 +89,10 @@ export const cv = {
   awards: settings.cv.awards as Localized<string[]>,
 };
 
-export const journal: JournalNote[] = (journalData.notes as unknown as JournalNote[]);
+/** Notes written about unreleased work stay hidden until it is released. */
+const hiddenNotes = new Set(CONATUS_NOTE_SLUGS);
+export const journal: JournalNote[] = (journalData.notes as unknown as JournalNote[]).filter(
+  (n) => PUBLISH_CONATUS || !hiddenNotes.has(n.slug)
+);
 
 export const getNote = (slug: string) => journal.find((n) => n.slug === slug);

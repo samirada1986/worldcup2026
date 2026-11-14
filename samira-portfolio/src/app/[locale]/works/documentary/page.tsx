@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { isLocale, type Locale, getDict } from "@/lib/i18n";
 import { href } from "@/lib/nav";
-import { getProject } from "@/content/projects";
+import { getProject, projects } from "@/content/projects";
 import Reveal from "@/components/Reveal";
 import Figure from "@/components/Figure";
 
@@ -21,6 +21,7 @@ export default async function DocumentaryPage({ params }: { params: Promise<{ lo
   const d = getDict(l);
   const p = getProject("documentary")!;
   const imgs = p.images!;
+  const next = projects.find((x) => x.slug !== "documentary");
   const faTitle = l === "fa" ? "font-fa" : "font-serif";
 
   return (
@@ -96,10 +97,12 @@ export default async function DocumentaryPage({ params }: { params: Promise<{ lo
         <Link href={href(l, "/works")} className="font-sans text-sm text-stone link-quiet">
           {l === "fa" ? "→" : "←"} {d.project.back}
         </Link>
-        <Link href={href(l, "/works/conatus")} className="group font-sans text-sm text-ink">
+        {next && (
+        <Link href={href(l, `/works/${next.slug}`)} className="group font-sans text-sm text-ink">
           <span className="eyebrow block text-end">{d.project.next}</span>
-          <span className={`${faTitle} text-xl`}>{getProject("conatus")!.title[l]} {l === "fa" ? "←" : "→"}</span>
+          <span className={`${faTitle} text-xl`}>{next.title[l]} {l === "fa" ? "←" : "→"}</span>
         </Link>
+        )}
       </div>
     </article>
   );
