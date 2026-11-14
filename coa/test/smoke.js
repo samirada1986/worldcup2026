@@ -7,8 +7,8 @@ const assert = require('assert');
 const http = require('http');
 
 process.env.COA_DATA_DIR = require('path').join(require('os').tmpdir(), 'coa-smoke-' + Date.now());
-process.env.PORT = '0';
 const server = require('../server');
+server.listen(0, '127.0.0.1');
 
 function req(method, path, body) {
   return new Promise((resolve, reject) => {

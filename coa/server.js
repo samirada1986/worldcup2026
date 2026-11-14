@@ -340,7 +340,7 @@ function serveStatic(req, res, pathname) {
 }
 
 /* -------------------------------- server --------------------------------- */
-const server = http.createServer(async (req, res) => {
+const requestHandler = async (req, res) => {
   const u = new URL(req.url, 'http://' + (req.headers.host || 'localhost'));
   const pathname = u.pathname;
   const query = Object.fromEntries(u.searchParams.entries());
@@ -380,14 +380,21 @@ const server = http.createServer(async (req, res) => {
 
   // everything else -> static storefront
   serveStatic(req, res, pathname);
-});
+};
 
-server.listen(PORT, HOST, () => {
-  db.get(); // ensure seeded
-  console.log(`COA backend listening on http://${HOST}:${PORT}`);
-  console.log(`  storefront : http://localhost:${PORT}/`);
-  console.log(`  API docs   : http://localhost:${PORT}/api/docs`);
-  console.log(`  data file  : ${db.DATA_FILE}`);
-});
+const server = http.createServer(requestHandler);
+
+// Only start listening when run directly (`node server.js`). When imported —
+// e.g. by the Netlify serverless wrapper — we just expose the handler.
+if (require.main === module) {
+  server.listen(PORT, HOST, () => {
+    db.get(); // ensure seeded
+    console.log(`COA backend listening on http://${HOST}:${PORT}`);
+    console.log(`  storefront : http://localhost:${PORT}/`);
+    console.log(`  API docs   : http://localhost:${PORT}/api/docs`);
+    console.log(`  data file  : ${db.DATA_FILE}`);
+  });
+}
 
 module.exports = server;
+module.exports.requestHandler = requestHandler;

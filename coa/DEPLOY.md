@@ -1,7 +1,13 @@
 # Deploying COA to a free public URL
 
-The backend is zero-dependency Node and reads `$PORT`, so it runs on any host.
-Pick one. **Netlify** (storefront only) needs no card; **Render** needs a card on file even for the free plan (checked Nov 2026).
+The COA frontend is standalone, so a **static** host shows the full storefront on
+its own; the **dynamic `/api/*` backend** needs a Node host. Pick accordingly:
+
+- **Netlify** — static storefront, **no card** needed. `/api/*` is not available
+  there (no server runs). A `netlify.toml` (repo root) already sets this up.
+- **Render / Koyeb / Cloud Run / VPS** — run the real `server.js`, so the live
+  API (orders, stock, coupons) works. Render's free plan now asks for a card to
+  verify identity even though it isn't charged (checked Nov 2026).
 
 ---
 
@@ -62,14 +68,15 @@ docker build -t coa . && docker run -p 8080:8080 coa
 
 ---
 
-## Option C — Netlify (storefront only, no card)
+## Option E — Netlify (storefront only, no card) ★ easiest
 
 The storefront is a static app, so it can be hosted without the Node backend (the
 `/api/*` routes and `/api/docs` are then not available; the shop itself keeps its
 data in the browser).
 
 1. <https://app.netlify.com/start> → sign up with GitHub → pick the repo.
-2. Branch: the branch you want to publish. Base directory: empty.
-   Build command: empty. **Publish directory: `coa/public`**.
+2. Pick the branch to publish. The repo-root `netlify.toml` already sets the
+   publish directory to `coa/public`, so leave base/build/publish at their
+   defaults — no manual config needed.
 3. Deploy. Every push to that branch redeploys automatically.
    `coa/public/_headers` already sets cache rules for `assets/`.
