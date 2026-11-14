@@ -25,7 +25,10 @@ const MIME = {
   '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.map': 'application/json',
+  '.webp': 'image/webp', '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml; charset=utf-8',
+  '.webmanifest': 'application/manifest+json',
 };
+const COMPRESSIBLE = new Set(['.html', '.js', '.css', '.json', '.svg', '.txt', '.xml', '.webmanifest']);
 
 function send(res, status, body, headers) {
   const h = Object.assign(
@@ -324,8 +327,15 @@ function serveStatic(req, res, pathname) {
       return notFound(res, 'not found');
     }
     const ext = path.extname(safe).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
-    fs.createReadStream(safe).pipe(res);
+    const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream' };
+    // Fingerprint-free assets: cache for a week and revalidate; HTML always revalidates.
+    headers['Cache-Control'] = rel.startsWith('/assets/') ? 'public, max-age=604800' : 'no-cache';
+    headers['Vary'] = 'Accept-Encoding';
+    const gz = COMPRESSIBLE.has(ext) && /\bgzip\b/.test(req.headers['accept-encoding'] || '');
+    if (gz) headers['Content-Encoding'] = 'gzip';
+    res.writeHead(200, headers);
+    const rs = fs.createReadStream(safe);
+    if (gz) rs.pipe(require('zlib').createGzip()).pipe(res); else rs.pipe(res);
   });
 }
 

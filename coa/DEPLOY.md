@@ -1,13 +1,13 @@
 # Deploying COA to a free public URL
 
 The backend is zero-dependency Node and reads `$PORT`, so it runs on any host.
-Pick one. **Render** is the simplest free, no-credit-card option.
+Pick one. **Netlify** (storefront only) needs no card; **Render** needs a card on file even for the free plan (checked Nov 2026).
 
 ---
 
-## Option A — Render (free, no card) ★ recommended
+## Option A — Render (free plan, card required for verification)
 
-1. Go to <https://render.com> and sign up (GitHub login is fine).
+1. Go to <https://render.com> and sign up (GitHub login is fine). Render asks for a card to verify identity (a temporary $1 authorization; the free plan is not charged).
 2. **New → Blueprint**.
 3. Connect the repo `samirada1986/worldcup2026` and pick the branch.
 4. Render reads `render.yaml` (repo root) and creates the service automatically.
@@ -59,3 +59,17 @@ For 24/7, run it under `pm2` or a systemd service. With the `Dockerfile`:
 cd coa
 docker build -t coa . && docker run -p 8080:8080 coa
 ```
+
+---
+
+## Option C — Netlify (storefront only, no card)
+
+The storefront is a static app, so it can be hosted without the Node backend (the
+`/api/*` routes and `/api/docs` are then not available; the shop itself keeps its
+data in the browser).
+
+1. <https://app.netlify.com/start> → sign up with GitHub → pick the repo.
+2. Branch: the branch you want to publish. Base directory: empty.
+   Build command: empty. **Publish directory: `coa/public`**.
+3. Deploy. Every push to that branch redeploys automatically.
+   `coa/public/_headers` already sets cache rules for `assets/`.
