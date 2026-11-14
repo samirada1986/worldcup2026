@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bahar Aflatoonian</title>
+<meta name="description" content="Bahar Aflatoonian — visual artist and photographer.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bahar Aflatoonian">
+<meta property="og:description" content="Bahar Aflatoonian — visual artist and photographer.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<noscript><style>body{font:16px/1.6 system-ui,sans-serif;padding:40px}</style>Bahar Aflatoonian — this website needs JavaScript. / این سایت برای نمایش به جاوااسکریپت نیاز دارد.</noscript>
+<script src="./config.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta charset="utf-8">
+<link rel="stylesheet" href="./fonts/fonts.css">
+<style>
+  html, body { margin: 0; height: 100%; background: #fff; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { opacity: 0.6; }
+  button { font-family: inherit; }
+  ::selection { background: #a04425; color: #fff; }
+  :focus { outline: none; }
+  :focus-visible { outline: 2px solid #a04425; outline-offset: 2px; }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .om-scroll::-webkit-scrollbar { width: 10px; }
+  .om-scroll::-webkit-scrollbar-thumb { background: rgba(128,110,80,0.28); border-radius: 6px; }
+  .om-scroll::-webkit-scrollbar-track { background: transparent; }
+</style>
+</helmet>
+
+<div style="position:fixed; inset:0; display:flex; flex-direction:column; overflow:hidden; background: {{ c.bg }}; color: {{ c.fg }}; direction: {{ dir }}; font-family: {{ f.body }}; transition: background 420ms ease, color 420ms ease;">
+
+  <!-- ===== LOADING (until the API answers) ===== -->
+  <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+    <div role="status" aria-live="polite" style="position:absolute; inset:0; z-index:300; display:flex; flex-direction:column; gap:14px; align-items:center; justify-content:center; background: {{ c.bg }}; font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:26px; color: {{ c.dim }};">
+      <div>{{ t.name }}</div>
+      <div style="font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em;">{{ loadingLabel }}</div>
+    </div>
+  </sc-if>
+
+  <!-- ===== LOAD ERROR (API unreachable): never show sample content instead ===== -->
+  <sc-if value="{{ loadError }}" hint-placeholder-val="{{ false }}">
+    <div role="alert" style="position:absolute; inset:0; z-index:300; display:flex; flex-direction:column; gap:16px; align-items:center; justify-content:center; padding:24px; text-align:center; background: {{ c.bg }};">
+      <div style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:28px;">{{ t.errTitle }}</div>
+      <div style="font-family: {{ f.body }}; font-size:14px; line-height:1.6; color: {{ c.soft }}; max-width:420px;">{{ t.errBody }}</div>
+      <button onClick="{{ retry }}" style="padding:11px 20px; cursor:pointer; border:1px solid {{ c.fg }}; background: {{ c.fg }}; color: {{ c.bg }}; font-family: {{ f.body }}; font-size:11.5px; letter-spacing:0.12em; text-transform:uppercase;">{{ t.retry }}</button>
+    </div>
+  </sc-if>
+
+  <!-- ===== HEADER ===== -->
+  <header style="flex:0 0 auto; display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding: {{ r.headPad }}; z-index: 40;">
+    <a href="#/" style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.nameSize }}; line-height:1; letter-spacing:0.002em; white-space:nowrap; cursor:pointer;">{{ t.name }}</a>
+
+    <nav aria-label="{{ t.mainNav }}" style="display:flex; align-items:baseline; gap: {{ f.navGap }}; flex-wrap:wrap; justify-content:flex-end;">
+      <sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}"><sc-for list="{{ nav }}" as="n" hint-placeholder-count="7">
+        <a href="{{ n.href }}" aria-current="{{ n.current }}" style="font-family: {{ f.nav }}; font-size: {{ f.navSize }}; letter-spacing: {{ f.navTrack }}; text-transform: {{ f.navCase }}; line-height:1; padding-bottom:4px; cursor:pointer; color: {{ n.col }}; border-bottom: {{ n.rule }};">{{ n.label }}</a>
+      </sc-for></sc-if>
+      <sc-if value="{{ showMenuBtn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpen }}" style="border:none; background:transparent; padding:10px 0; cursor:pointer; color: {{ c.fg }}; font-family: {{ f.nav }}; font-size: {{ f.navSize }}; letter-spacing: {{ f.navTrack }}; text-transform: {{ f.navCase }};">{{ menuLabel }}</button></sc-if>
+
+      <span style="display:inline-flex; align-items:center; gap:10px; margin-inline-start:8px; padding-inline-start: {{ r.langPad }}; border-inline-start: 1px solid {{ c.line }};">
+        <button onClick="{{ setEn }}" lang="en" aria-pressed="{{ ui.isEn }}" aria-label="English" style="border:none; background:transparent; padding:0; font: 400 11px/1 'IBM Plex Sans', sans-serif; letter-spacing:0.14em; cursor:pointer; color: {{ ui.enCol }};">EN</button>
+        <span aria-hidden="true" style="font: 400 11px/1 'IBM Plex Sans', sans-serif; color: {{ c.dim }};">/</span>
+        <button onClick="{{ setFa }}" lang="fa" aria-pressed="{{ ui.isFa }}" aria-label="فارسی" style="border:none; background:transparent; padding:0; font: 400 12px/1 'Vazirmatn', sans-serif; cursor:pointer; color: {{ ui.faCol }};">فا</button>
+        <button onClick="{{ toggleDark }}" title="{{ t.themeHint }}" aria-label="{{ t.themeHint }}" aria-pressed="{{ ui.isDark }}" style="width:15px; height:15px; border-radius:50%; margin-inline-start:6px; cursor:pointer; padding:0; border: 1px solid {{ c.fg }}; background: {{ ui.dotBg }}; transition: background 300ms ease;"></button>
+      </span>
+    </nav>
+  </header>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <nav aria-label="{{ t.mainNav }}" style="position:absolute; top:58px; inset-inline:0; bottom:0; z-index:60; background: {{ c.bg }}; border-top:1px solid {{ c.line }}; padding: 12px 20px 32px; display:flex; flex-direction:column; overflow-y:auto;">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="7">
+        <a href="{{ n.href }}" aria-current="{{ n.current }}" style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:34px; line-height:1.2; padding:12px 0; border-bottom:1px solid {{ c.line }}; cursor:pointer; color: {{ n.mcol }};">{{ n.label }}</a>
+      </sc-for>
+    </nav>
+  </sc-if>
+
+  <!-- ===== MAIN ===== -->
+  <main class="om-scroll" ref="{{ mainRef }}" style="flex:1 1 auto; overflow-y: {{ ui.scroll }}; overflow-x:hidden; position:relative;">
+
+    <!-- ---------- HOME ---------- -->
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute; inset: 0 {{ r.pad }} 6px; overflow:hidden; background: {{ c.void }};">
+        <h1 class="sr-only">{{ t.name }}</h1>
+        <sc-for list="{{ heroes }}" as="h" hint-placeholder-count="7">
+          <div onClick="{{ h.click }}" role="img" aria-label="{{ h.alt }}" aria-hidden="{{ h.hidden }}" style="position:absolute; inset:0; cursor: pointer; background: {{ h.bg }}; opacity: {{ h.op }}; transition: opacity 1500ms cubic-bezier(0.4,0,0.2,1);">
+            <div style="position:absolute; inset:0; box-shadow: inset 0 0 160px rgba(0,0,0,0.3);"></div>
+            <div style="position:absolute; inset-inline-start:24px; bottom:20px; color:#f2e7cf; font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:17px; text-shadow: 0 1px 8px rgba(0,0,0,0.55); opacity: {{ h.capOp }}; transition: opacity 900ms ease;">{{ h.caption }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- ---------- WORKS ---------- -->
+    <sc-if value="{{ isWorks }}" hint-placeholder-val="{{ true }}">
+      <div style="padding: 12px {{ r.pad }} 64px; max-width:1520px; margin:0 auto;">
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:32px; flex-wrap:wrap; padding-bottom:22px; border-bottom: 1px solid {{ c.line }};">
+          <div>
+            <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.h1 }}; line-height:1; letter-spacing:-0.01em; margin:0 0 8px;">{{ t.works }}</h1>
+            <div style="font: 400 12px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; color: {{ c.dim }};">{{ worksMeta }}</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="display:flex; align-items:center; gap:8px; padding:8px 14px; border:1px solid {{ c.line }}; background: {{ c.panel }};">
+              <span aria-hidden="true" style="font-size:13px; color: {{ c.dim }};">⌕</span>
+              <input type="search" value="{{ query }}" onChange="{{ onQuery }}" placeholder="{{ t.searchPh }}" aria-label="{{ t.searchPh }}" style="border:none; background:transparent; width: {{ r.searchW }}; color: {{ c.fg }}; font-family: {{ f.body }}; font-size:12.5px;">
+            </div>
+            <div style="display:flex; gap:2px; padding:2px; background: {{ c.panel }};">
+              <button onClick="{{ viewList }}" aria-pressed="{{ isList }}" style="padding:6px 11px; border:none; cursor:pointer; font: 500 10px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; background: {{ ui.listBg }}; color: {{ ui.listFg }};">{{ t.list }}</button>
+              <button onClick="{{ viewGrid }}" aria-pressed="{{ isGrid }}" style="padding:6px 11px; border:none; cursor:pointer; font: 500 10px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; background: {{ ui.gridBg }}; color: {{ ui.gridFg }};">{{ t.grid }}</button>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ worksEmptyMsg }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="padding:80px 0; text-align:center; font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-size:26px; color: {{ c.dim }};">{{ worksEmptyMsg }}</div>
+        </sc-if>
+
+        <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <sc-for list="{{ filtered }}" as="s" hint-placeholder-count="5">
+              <a href="{{ s.href }}" style="display:grid; grid-template-columns: {{ r.listCols }}; gap: {{ r.listGap }}; align-items:center; padding:26px 0; border-bottom:1px solid {{ c.line }}; cursor:pointer;">
+                <div style="display: {{ r.numD }}; font: 500 12px/1 'IBM Plex Mono', monospace; color: {{ c.dim }};">{{ s.num }}</div>
+                <div role="img" aria-label="{{ s.coverAlt }}" style="width:100%; aspect-ratio:3/2; overflow:hidden; background: {{ s.cover }};">
+                  <div style="width:100%; height:100%; box-shadow: inset 0 0 44px rgba(0,0,0,0.24);"></div>
+                </div>
+                <div>
+                  <h2 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:30px; line-height:1.1; margin:0 0 7px;">{{ s.title }}</h2>
+                  <div style="font-family: {{ f.body }}; font-size:13.5px; line-height:1.55; color: {{ c.soft }}; max-width:560px;">{{ s.blurb }}</div>
+                  <div style="margin-top:11px; font: 400 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; text-transform:uppercase; color: {{ c.dim }};">{{ s.tags }}</div>
+                </div>
+                <div style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.listYear }}; text-align: {{ r.listYearAlign }};">{{ s.year }}</div>
+                <div aria-hidden="true" style="display: {{ r.arrowD }}; justify-self:end; font-size:15px; color: {{ c.dim }};">{{ t.arrow }}</div>
+              </a>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isGrid }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns: {{ r.cols3 }}; gap: 40px 30px; padding-top:34px;">
+            <sc-for list="{{ filtered }}" as="s" hint-placeholder-count="5">
+              <a href="{{ s.href }}" style="display:block; cursor:pointer;">
+                <div role="img" aria-label="{{ s.coverAlt }}" style="width:100%; aspect-ratio:4/3; background: {{ s.cover }};">
+                  <div style="width:100%; height:100%; box-shadow: inset 0 0 60px rgba(0,0,0,0.24);"></div>
+                </div>
+                <div style="display:flex; align-items:baseline; justify-content:space-between; gap:14px; margin-top:14px;">
+                  <h2 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:24px; line-height:1.1; margin:0;">{{ s.title }}</h2>
+                  <div style="font: 400 11px/1 'IBM Plex Mono', monospace; color: {{ c.dim }};">{{ s.year }}</div>
+                </div>
+                <div style="margin-top:6px; font: 400 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; text-transform:uppercase; color: {{ c.dim }};">{{ s.tags }}</div>
+              </a>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ---------- SERIES DETAIL ---------- -->
+    <sc-if value="{{ isSeries }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 12px {{ r.pad }} 72px; max-width:1520px; margin:0 auto;">
+        <nav aria-label="{{ t.breadcrumb }}" style="font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.07em; text-transform:uppercase; color: {{ c.dim }}; margin-bottom:22px;">
+          <a href="#/works" style="cursor:pointer;">{{ t.works }}</a> · {{ cur.title }}
+        </nav>
+
+        <div style="display:grid; grid-template-columns: {{ r.seriesHead }}; gap: {{ r.gapM }}; align-items:end; padding-bottom:26px; border-bottom:1px solid {{ c.line }};">
+          <div>
+            <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.h1Series }}; line-height:0.98; letter-spacing:-0.015em; margin:0 0 10px;">{{ cur.title }}</h1>
+            <div style="font: 400 13px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; color: {{ c.dim }};">{{ cur.meta }}</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items: {{ r.headAlign }}; gap:9px;">
+            <div style="display:flex; gap:8px;">
+              <sc-if value="{{ cur.canBook }}" hint-placeholder-val="{{ true }}"><button onClick="{{ toggleBook }}" aria-pressed="{{ bookMode }}" style="padding:10px 17px; cursor:pointer; border:1px solid {{ c.fg }}; background: {{ ui.bookBg }}; color: {{ ui.bookFg }}; font-family: {{ f.body }}; font-size:11px; letter-spacing:0.09em; text-transform:uppercase;">{{ t.readBook }}</button></sc-if>
+              <button onClick="{{ openFirst }}" style="padding:10px 17px; cursor:pointer; border:1px solid {{ c.fg }}; background: {{ c.fg }}; color: {{ c.bg }}; font-family: {{ f.body }}; font-size:11px; letter-spacing:0.09em; text-transform:uppercase;">{{ t.openLb }}</button>
+            </div>
+            <div style="font: 400 10.5px/1.4 'IBM Plex Mono', monospace; color: {{ c.dim }}; text-align:end; display: {{ r.dsk }};">{{ t.keyHint }}</div>
+          </div>
+        </div>
+
+        <!-- BOOK MODE -->
+        <sc-if value="{{ bookMode }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 34px 0 0;">
+            <div style="display:flex; align-items:center; gap:26px; justify-content:center;">
+              <button onClick="{{ bookPrev }}" aria-label="{{ t.prevLabel }}" style="width:44px; height:44px; flex:0 0 auto; border-radius:50%; cursor:pointer; border:1px solid {{ c.line }}; background:transparent; color: {{ c.fg }}; font-size:16px;">{{ t.prevA }}</button>
+              <div style="flex:1 1 auto; max-width:1180px; display:grid; grid-template-columns:1fr 1fr; gap:3px; perspective: 2400px;">
+                <div role="img" aria-label="{{ spread.leftAlt }}" style="aspect-ratio:3/2; background: {{ spread.left }}; transform: {{ spread.lt }}; transform-origin: right center; transition: transform 620ms cubic-bezier(0.4,0,0.2,1); box-shadow: inset -30px 0 50px -30px rgba(0,0,0,0.5);"></div>
+                <div role="img" aria-label="{{ spread.rightAlt }}" style="aspect-ratio:3/2; background: {{ spread.right }}; transform: {{ spread.rt }}; transform-origin: left center; transition: transform 620ms cubic-bezier(0.4,0,0.2,1); box-shadow: inset 30px 0 50px -30px rgba(0,0,0,0.5);"></div>
+              </div>
+              <button onClick="{{ bookNext }}" aria-label="{{ t.nextLabel }}" style="width:44px; height:44px; flex:0 0 auto; border-radius:50%; cursor:pointer; border:1px solid {{ c.fg }}; background:transparent; color: {{ c.fg }}; font-size:16px;">{{ t.nextA }}</button>
+            </div>
+            <div aria-live="polite" style="margin-top:18px; text-align:center; font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; color: {{ c.dim }};">{{ spread.label }}</div>
+          </div>
+        </sc-if>
+
+        <!-- PLATE FLOW -->
+        <sc-if value="{{ flowMode }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="display:grid; grid-template-columns: {{ r.twoColA }}; gap: {{ r.gapL }}; padding: 40px 0 52px;">
+              <div>
+                <sc-if value="{{ cur.statement }}" hint-placeholder-val="{{ true }}">
+                  <div style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }}; margin-bottom:14px;">{{ t.statement }}</div>
+                  <div style="font-family: {{ f.read }}; font-size:16px; line-height:1.75; white-space:pre-line;">{{ cur.statement }}</div>
+                </sc-if>
+                <sc-if value="{{ cur.credits }}" hint-placeholder-val="{{ true }}">
+                  <div style="margin-top:26px; padding-top:18px; border-top:1px solid {{ c.line }}; font-family: {{ f.body }}; font-size:12.5px; line-height:1.7; color: {{ c.soft }}; white-space:pre-line;">{{ cur.credits }}</div>
+                </sc-if>
+              </div>
+              <div onClick="{{ openFirst }}" onKeyDown="{{ keyActivate }}" role="button" tabIndex="0" aria-label="{{ cur.coverAlt }}" style="cursor:zoom-in; height: {{ r.hA }}; position:relative; overflow:hidden; background: {{ cur.cover }};">
+                <div style="position:absolute; inset:0; box-shadow: inset 0 0 110px rgba(0,0,0,0.3);"></div>
+                <div style="position:absolute; inset-inline-start:20px; bottom:16px; color:#f2e7cf; font: 400 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; text-transform:uppercase;">{{ cur.plate1 }}</div>
+              </div>
+            </div>
+
+            <sc-if value="{{ cur.hasPair }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid; grid-template-columns: {{ r.twoCol }}; gap:22px; margin-bottom:52px;">
+              <sc-for list="{{ cur.pair }}" as="p" hint-placeholder-count="2">
+                <div onClick="{{ p.open }}" onKeyDown="{{ keyActivate }}" role="button" tabIndex="0" aria-label="{{ p.alt }}" style="cursor:zoom-in; height: {{ r.hB }}; position:relative; overflow:hidden; background: {{ p.bg }};">
+                  <div style="position:absolute; inset:0; box-shadow: inset 0 0 80px rgba(0,0,0,0.26);"></div>
+                  <div style="position:absolute; inset-inline-start:18px; bottom:14px; color:#f2e7cf; font: 400 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; text-transform:uppercase;">{{ p.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ cur.hasWide }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ openWide }}" onKeyDown="{{ keyActivate }}" role="button" tabIndex="0" aria-label="{{ cur.wideAlt }}" style="cursor:zoom-in; height: {{ r.hC }}; position:relative; overflow:hidden; background: {{ cur.wide }}; margin-bottom:56px;">
+              <div style="position:absolute; inset:0; box-shadow: inset 0 0 130px rgba(0,0,0,0.32);"></div>
+              <div style="position:absolute; inset-inline-start:22px; bottom:16px; color:#f2e7cf; font: 400 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; text-transform:uppercase;">{{ cur.plate4 }}</div>
+            </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- CONTACT SHEET -->
+        <div style="padding-top:22px; border-top:1px solid {{ c.line }};">
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:16px;">
+            <div>
+              <h2 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:28px; margin:0 0 5px;">{{ t.contactSheet }}</h2>
+              <div style="font: 400 11.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.05em; color: {{ c.dim }};">{{ cur.sheetMeta }}</div>
+            </div>
+            <sc-if value="{{ cur.multiPage }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; align-items:center; gap:14px; font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; color: {{ c.dim }};">
+              <button onClick="{{ sheetPrev }}" aria-label="{{ t.prevLabel }}" style="padding:7px 13px; cursor:pointer; border:1px solid {{ c.line }}; background:transparent; color: {{ c.fg }}; font: inherit;">{{ t.prevA }}</button>
+              <span>{{ cur.sheetRange }}</span>
+              <button onClick="{{ sheetNext }}" aria-label="{{ t.nextLabel }}" style="padding:7px 13px; cursor:pointer; border:1px solid {{ c.line }}; background:transparent; color: {{ c.fg }}; font: inherit;">{{ t.nextA }}</button>
+            </div>
+            </sc-if>
+          </div>
+          <div style="display:grid; grid-template-columns: {{ r.cols7 }}; gap:7px;">
+            <sc-for list="{{ sheet }}" as="p" hint-placeholder-count="21">
+              <div onClick="{{ p.open }}" onKeyDown="{{ keyActivate }}" role="button" tabIndex="0" aria-label="{{ p.alt }}" title="{{ p.label }}" style="aspect-ratio:3/2; cursor:zoom-in; background: {{ p.bg }};">
+                <div style="width:100%; height:100%; box-shadow: inset 0 0 22px rgba(0,0,0,0.2);"></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ neighbours.show }}" hint-placeholder-val="{{ true }}">
+        <nav aria-label="{{ t.seriesNav }}" style="margin-top:30px; padding-top:20px; border-top:1px solid {{ c.line }}; display:flex; justify-content:space-between; font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.07em; text-transform:uppercase;">
+          <a href="{{ neighbours.prevHref }}" style="cursor:pointer;">{{ t.prevA }} {{ neighbours.prev }}</a>
+          <a href="{{ neighbours.nextHref }}" style="cursor:pointer;">{{ neighbours.next }} {{ t.nextA }}</a>
+        </nav>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ---------- PUBLICATIONS ---------- -->
+    <sc-if value="{{ isPub }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 12px {{ r.pad }} 72px; max-width:1520px; margin:0 auto;">
+        <div style="display:flex; align-items:baseline; gap:18px; flex-wrap:wrap; padding-bottom:22px; border-bottom:1px solid {{ c.line }};">
+          <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.h1 }}; line-height:1; margin:0;">{{ t.publications }}</h1>
+          <span style="font: 400 12px/1 'IBM Plex Mono', monospace; color: {{ c.dim }};">{{ pubMeta }}</span>
+        </div>
+        <sc-if value="{{ noBooks }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="padding:80px 0; text-align:center; font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-size:26px; color: {{ c.dim }};">{{ t.emptySection }}</div>
+        </sc-if>
+        <div style="display:grid; grid-template-columns: {{ r.cols3 }}; gap: 48px 34px; padding-top:38px;">
+          <sc-for list="{{ books }}" as="b" hint-placeholder-count="5">
+            <div>
+              <div role="img" aria-label="{{ b.coverAlt }}" style="width:100%; aspect-ratio:3/4; position:relative; overflow:hidden; background: {{ b.cover }}; box-shadow: 6px 12px 34px rgba(0,0,0,0.16);">
+                <sc-if value="{{ b.noCover }}" hint-placeholder-val="{{ true }}">
+                <div style="position:absolute; inset:0; box-shadow: inset 0 0 60px rgba(0,0,0,0.22);"></div>
+                <div aria-hidden="true" style="position:absolute; inset-inline: 22px; bottom:26px; color:#f2e7cf;">
+                  <div style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:23px; line-height:1.08;">{{ b.title }}</div>
+                  <div style="font: 400 10px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; margin-top:7px; opacity:0.85;">{{ initials }}</div>
+                </div>
+                </sc-if>
+              </div>
+              <div style="margin-top:16px;">
+                <h2 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:23px; margin:0 0 5px;">{{ b.title }}</h2>
+                <div style="font: 400 11.5px/1.5 'IBM Plex Mono', monospace; letter-spacing:0.04em; color: {{ c.dim }}; margin-bottom:10px;">{{ b.imprint }}</div>
+                <div style="font-family: {{ f.body }}; font-size:13px; line-height:1.55; color: {{ c.soft }}; margin-bottom:14px;">{{ b.note }}</div>
+                <div style="display:flex; align-items:baseline; gap:14px;">
+                  <span style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:20px;">{{ b.price }}</span>
+                  <span style="font: 400 11px/1 'IBM Plex Mono', monospace; color: {{ b.stockCol }};">{{ b.stock }}</span>
+                  <button onClick="{{ b.order }}" style="margin-inline-start:auto; padding:9px 15px; cursor:pointer; border:1px solid {{ c.fg }}; background: {{ b.btnBg }}; color: {{ b.btnFg }}; font-family: {{ f.body }}; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;">{{ b.cta }}</button>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ---------- PRINTS ---------- -->
+    <sc-if value="{{ isPrints }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 12px {{ r.pad }} 72px; max-width:1520px; margin:0 auto;">
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:32px; flex-wrap:wrap; padding-bottom:22px; border-bottom:1px solid {{ c.line }};">
+          <div>
+            <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.h1 }}; line-height:1; margin:0 0 8px;">{{ t.prints }}</h1>
+            <div style="font: 400 12px/1.55 'IBM Plex Mono', monospace; letter-spacing:0.05em; color: {{ c.dim }}; max-width:540px; white-space:pre-line;">{{ tx.prints_intro }}</div>
+          </div>
+          <div role="group" aria-label="{{ t.filter }}" style="display:flex; gap:7px; flex-wrap:wrap;">
+            <sc-for list="{{ printFilters }}" as="pf" hint-placeholder-count="4">
+              <button onClick="{{ pf.go }}" aria-pressed="{{ pf.active }}" style="padding:7px 13px; cursor:pointer; border:1px solid {{ pf.border }}; background: {{ pf.bg }}; color: {{ pf.fg }}; font-family: {{ f.body }}; font-size:11px; letter-spacing:0.05em;">{{ pf.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ noPrints }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="padding:80px 0; text-align:center; font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-size:26px; color: {{ c.dim }};">{{ t.emptySection }}</div>
+        </sc-if>
+
+        <div style="display:grid; grid-template-columns: {{ r.cols4 }}; gap: 34px 26px; padding: 36px 0 48px;">
+          <sc-for list="{{ prints }}" as="p" hint-placeholder-count="8">
+            <div onClick="{{ p.select }}" onKeyDown="{{ keyActivate }}" role="button" tabIndex="0" aria-pressed="{{ p.selected }}" aria-label="{{ p.title }}" style="cursor:pointer;">
+              <div style="width:100%; aspect-ratio:5/4; position:relative; overflow:hidden; background: {{ p.bg }}; outline: {{ p.ring }}; outline-offset:3px;">
+                <div style="position:absolute; inset:0; box-shadow: inset 0 0 60px rgba(0,0,0,0.24);"></div>
+                <div style="position:absolute; top:10px; inset-inline-end:10px; font: 500 9.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; color:#f2e7cf; background:rgba(0,0,0,0.42); padding:5px 7px;">{{ p.ed }}</div>
+              </div>
+              <div style="margin-top:12px;">
+                <div style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:18px; margin-bottom:3px;">{{ p.title }}</div>
+                <div style="font: 400 10.5px/1.45 'IBM Plex Mono', monospace; letter-spacing:0.05em; color: {{ c.dim }}; margin-bottom:8px;">{{ p.spec }}</div>
+                <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">
+                  <span style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:19px;">{{ p.from }}</span>
+                  <span style="font-family: {{ f.body }}; font-size:10.5px; letter-spacing:0.05em; color: {{ p.noteCol }};">{{ p.note }}</span>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- inline purchase panel -->
+        <sc-if value="{{ hasPrints }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid; grid-template-columns: {{ r.twoCol }}; gap: {{ r.gapM }}; padding: {{ r.panelPad }}; background: {{ c.panel }}; border:1px solid {{ c.line }};">
+          <div>
+            <div style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }}; margin-bottom:12px;">{{ t.printDetail }}</div>
+            <h2 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:34px; line-height:1.02; margin:0 0 6px;">{{ sel.title }}</h2>
+            <div style="font: 400 12px/1.5 'IBM Plex Mono', monospace; color: {{ c.soft }}; margin-bottom:18px;">{{ sel.spec }}</div>
+            <div style="font-family: {{ f.body }}; font-size:13.5px; line-height:1.65; margin-bottom:20px; max-width:470px;">{{ sel.caption }}</div>
+            <div style="font: 400 11.5px/1.85 'IBM Plex Mono', monospace; letter-spacing:0.03em; color: {{ c.soft }}; white-space:pre-line;">{{ tx.prints_assurances }}</div>
+          </div>
+          <div>
+            <div id="size-label" style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.1em; text-transform:uppercase; color: {{ c.dim }}; margin-bottom:11px;">{{ t.sizeEdition }}</div>
+            <div role="radiogroup" aria-labelledby="size-label" style="display:flex; flex-direction:column; gap:9px; margin-bottom:22px;">
+              <sc-for list="{{ sizes }}" as="z" hint-placeholder-count="2">
+                <div onClick="{{ z.pick }}" onKeyDown="{{ keyActivate }}" role="radio" tabIndex="0" aria-checked="{{ z.on }}" style="display:flex; justify-content:space-between; align-items:center; gap:16px; padding:13px 15px; cursor:pointer; background: {{ c.bg }}; border: {{ z.border }};">
+                  <div>
+                    <div style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:17px;">{{ z.dim }}</div>
+                    <div style="font: 400 10.5px/1 'IBM Plex Mono', monospace; color: {{ c.dim }}; margin-top:4px;">{{ z.avail }}</div>
+                  </div>
+                  <div style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:19px;">{{ z.price }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ hasFrames }}" hint-placeholder-val="{{ true }}">
+            <div id="frame-label" style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.1em; text-transform:uppercase; color: {{ c.dim }}; margin-bottom:9px;">{{ t.framing }}</div>
+            <div role="radiogroup" aria-labelledby="frame-label" style="display:flex; gap:9px; margin-bottom:22px;">
+              <sc-for list="{{ frames }}" as="fr" hint-placeholder-count="3">
+                <div onClick="{{ fr.pick }}" onKeyDown="{{ keyActivate }}" role="radio" tabIndex="0" aria-checked="{{ fr.on }}" style="flex:1; padding:10px 8px; text-align:center; cursor:pointer; background: {{ c.bg }}; border: {{ fr.border }};">
+                  <div style="font-family: {{ f.body }}; font-size:11.5px; line-height:1.35;">{{ fr.label }}</div>
+                  <div style="font: 400 10px/1 'IBM Plex Mono', monospace; color: {{ c.dim }}; margin-top:4px;">{{ fr.add }}</div>
+                </div>
+              </sc-for>
+            </div>
+            </sc-if>
+            <button onClick="{{ reserve }}" disabled="{{ sel.soldOut }}" style="width:100%; padding:15px; cursor:pointer; border:none; background: {{ c.fg }}; color: {{ c.bg }}; font-family: {{ f.body }}; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:10px; opacity: {{ sel.btnOpacity }};">{{ reserveLabel }}</button>
+            <div style="font: 400 11px/1.5 'IBM Plex Mono', monospace; color: {{ c.dim }}; text-align:center;">{{ tx.prints_footer }}</div>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ---------- WRITINGS ---------- -->
+    <sc-if value="{{ isWritings }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 12px {{ r.pad }} 72px; max-width:1000px; margin:0 auto;">
+        <div style="padding-bottom:20px; border-bottom:1px solid {{ c.line }};">
+          <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.h1 }}; line-height:1; margin:0 0 8px;">{{ t.writings }}</h1>
+          <div style="font: 400 12px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; color: {{ c.dim }};">{{ t.writingsMeta }}</div>
+        </div>
+        <div role="group" aria-label="{{ t.filter }}" style="display:flex; gap:4px; padding:20px 0; border-bottom:1px solid {{ c.line }}; flex-wrap:wrap;">
+          <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="3">
+            <button onClick="{{ tb.go }}" aria-pressed="{{ tb.active }}" style="padding:7px 14px; cursor:pointer; border:none; background: {{ tb.bg }}; color: {{ tb.fg }}; font-family: {{ f.body }}; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;">{{ tb.label }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ noArticles }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="padding:60px 0; text-align:center; font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-size:24px; color: {{ c.dim }};">{{ t.emptySection }}</div>
+        </sc-if>
+        <div>
+          <sc-for list="{{ articles }}" as="a" hint-placeholder-count="4">
+            <a href="{{ a.href }}" target="{{ a.target }}" rel="{{ a.rel }}" style="display:block; padding:22px 0; border-bottom:1px solid {{ c.line }}; cursor:pointer;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; gap:20px; margin-bottom:7px;">
+                <h2 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:24px; line-height:1.15; margin:0;">{{ a.title }}</h2>
+                <div style="font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; color: {{ c.dim }}; white-space:nowrap;">{{ a.source }}</div>
+              </div>
+              <div style="font-family: {{ f.body }}; font-size:13.5px; line-height:1.55; color: {{ c.soft }};">{{ a.excerpt }}</div>
+              <div style="margin-top:11px; font: 400 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; text-transform:uppercase; color: {{ a.linkCol }};">{{ a.link }}</div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ---------- READING MODE ---------- -->
+    <sc-if value="{{ isReading }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 12px {{ r.pad }} 80px;">
+        <div style="max-width:1000px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding-bottom:16px; border-bottom:1px solid {{ c.line }};">
+          <a href="#/writings" style="font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.07em; text-transform:uppercase; cursor:pointer;">{{ t.prevA }} {{ t.allWritings }}</a>
+          <div style="display:flex; align-items:center; gap:14px; font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; color: {{ c.dim }};">
+            <button onClick="{{ smaller }}" aria-label="{{ t.smaller }}" style="padding:5px 9px; cursor:pointer; border:1px solid {{ c.line }}; background:transparent; color: {{ c.fg }}; font:inherit;">A−</button>
+            <span style="min-width:34px; text-align:center;">{{ readSize }}</span>
+            <button onClick="{{ bigger }}" aria-label="{{ t.bigger }}" style="padding:5px 9px; cursor:pointer; border:1px solid {{ c.line }}; background:transparent; color: {{ c.fg }}; font:inherit;">A+</button>
+            <span aria-hidden="true" style="color: {{ c.line }};">|</span>
+            <button onClick="{{ toggleReadFont }}" style="padding:5px 11px; cursor:pointer; border:1px solid {{ c.line }}; background:transparent; color: {{ c.fg }}; font:inherit;">{{ readFontLabel }}</button>
+            <button onClick="{{ toggleDark }}" aria-label="{{ t.themeHint }}" aria-pressed="{{ ui.isDark }}" style="padding:5px 11px; cursor:pointer; border:1px solid {{ c.line }}; background:transparent; color: {{ c.fg }}; font:inherit;">{{ ui.themeGlyph }}</button>
+          </div>
+        </div>
+        <article style="max-width:660px; margin:36px auto 0;">
+          <div style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }}; margin-bottom:16px;">{{ article.kicker }}</div>
+          <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:46px; line-height:1.04; letter-spacing:-0.01em; margin:0 0 12px;">{{ article.title }}</h1>
+          <div style="font-family: {{ f.body }}; font-size:14px; line-height:1.5; color: {{ c.soft }}; margin-bottom:34px;">{{ article.byline }}</div>
+          <sc-if value="{{ article.status }}" hint-placeholder-val="{{ false }}">
+            <div role="status" style="font-family: {{ f.body }}; font-size:14px; color: {{ c.dim }}; margin-bottom:20px;">{{ article.status }}</div>
+          </sc-if>
+          <div style="font-family: {{ readFam }}; font-size: {{ readPx }}; line-height:1.78; white-space:pre-line;">{{ article.body }}</div>
+          <sc-if value="{{ article.url }}" hint-placeholder-val="{{ false }}">
+            <p style="margin-top:34px; font: 400 11px/1.5 'IBM Plex Mono', monospace; letter-spacing:0.06em;"><a href="{{ article.url }}" target="_blank" rel="noopener" style="color: {{ c.accent }};">↗ {{ t.readOriginal }}</a></p>
+          </sc-if>
+        </article>
+      </div>
+    </sc-if>
+
+    <!-- ---------- NEWS ---------- -->
+    <sc-if value="{{ isNews }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 12px {{ r.pad }} 72px; max-width:1000px; margin:0 auto;">
+        <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.h1 }}; line-height:1; margin:0 0 24px;">{{ t.news }}</h1>
+        <sc-if value="{{ hasUpcoming }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:22px 24px; background: {{ c.panel }}; border-top:1px solid {{ c.accent }}; margin-bottom:34px;">
+          <div style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }}; margin-bottom:9px;">{{ upcoming.label }}</div>
+          <h2 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:26px; line-height:1.15; margin:0 0 7px;">{{ upcoming.title }}</h2>
+          <div style="font-family: {{ f.body }}; font-size:13px; line-height:1.6; color: {{ c.soft }}; white-space:pre-line;">{{ upcoming.body }}</div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ noNews }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="padding:60px 0; text-align:center; font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-size:24px; color: {{ c.dim }};">{{ t.emptySection }}</div>
+        </sc-if>
+        <sc-for list="{{ news }}" as="y" hint-placeholder-count="4">
+          <div style="display:grid; grid-template-columns: {{ r.newsCols }}; gap:26px; padding: 14px 0 24px; border-bottom:1px solid {{ c.line }};">
+            <h2 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:30px; padding-top:4px; margin:0; color: {{ y.col }};">{{ y.year }}</h2>
+            <div style="display:flex; flex-direction:column; gap:13px; font-family: {{ f.body }}; font-size:13.5px; line-height:1.5;">
+              <sc-for list="{{ y.items }}" as="it" hint-placeholder-count="2">
+                <div><span style="font: 400 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; color: {{ c.dim }};">{{ it.when }}</span> · {{ it.what }}</div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- ---------- BIOGRAPHY ---------- -->
+    <sc-if value="{{ isBio }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 12px {{ r.pad }} 72px; max-width:1400px; margin:0 auto;">
+        <div style="display:grid; grid-template-columns: {{ r.bioCols }}; gap: {{ r.gapL }}; padding-bottom:44px; border-bottom:1px solid {{ c.line }};">
+          <figure style="margin:0;">
+            <div role="img" aria-label="{{ portraitAlt }}" style="width:100%; max-width:400px; aspect-ratio:40/51; position:relative; overflow:hidden; background: {{ portraitBg }};">
+              <sc-if value="{{ noPortrait }}" hint-placeholder-val="{{ true }}"><div style="position:absolute; left:26%; top:22%; width:48%; height:56%; background: radial-gradient(ellipse at 50% 40%, rgba(240,220,180,0.35), transparent 70%);"></div></sc-if>
+            </div>
+            <sc-if value="{{ portraitCaption }}" hint-placeholder-val="{{ false }}">
+              <figcaption style="margin-top:10px; font: 400 10px/1.4 'IBM Plex Mono', monospace; letter-spacing:0.08em; color: {{ c.dim }};">{{ portraitCaption }}</figcaption>
+            </sc-if>
+          </figure>
+          <div>
+            <div style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }}; margin-bottom:16px;">{{ t.biography }}</div>
+            <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.h1Bio }}; line-height:1.03; letter-spacing:-0.012em; margin:0 0 26px; max-width:660px;">{{ bioHead }}</h1>
+            <div style="font-family: {{ f.read }}; font-size:16px; line-height:1.75; max-width:640px; white-space:pre-line; margin-bottom:26px;">{{ bioBody }}</div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <sc-for list="{{ bioDownloads }}" as="bd" hint-placeholder-count="2">
+                <a href="{{ bd.url }}" style="padding:10px 17px; cursor:pointer; border:1px solid {{ c.fg }}; background:transparent; color: {{ c.fg }}; font-family: {{ f.body }}; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;">↓ {{ bd.label }}</a>
+              </sc-for>
+              <a href="#/contact" style="padding:10px 17px; cursor:pointer; border:1px solid {{ c.fg }}; background: {{ c.fg }}; color: {{ c.bg }}; font-family: {{ f.body }}; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;">{{ t.inquiries }}</a>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: {{ r.bioGrid }}; gap:48px; padding-top:34px;">
+          <sc-for list="{{ bioCols }}" as="col" hint-placeholder-count="3">
+            <section>
+              <h2 style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }}; margin:0 0 15px;">{{ col.head }}</h2>
+              <div style="display:flex; flex-direction:column;">
+                <sc-for list="{{ col.rows }}" as="r" hint-placeholder-count="4">
+                  <div style="padding-bottom:9px; margin-bottom:9px; border-bottom:1px dotted {{ c.line }}; font-family: {{ f.body }}; font-size:13px; line-height:1.55;"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color: {{ c.dim }};">{{ r.k }}</span> {{ r.v }}</div>
+                </sc-for>
+              </div>
+            </section>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ---------- CONTACT ---------- -->
+    <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 12px {{ r.pad }} 72px; max-width:1100px; margin:0 auto;">
+        <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.h1 }}; line-height:1; margin:0 0 30px;">{{ t.contact }}</h1>
+        <div style="display:grid; grid-template-columns: {{ r.twoCol }}; gap: {{ r.gapM }};">
+          <div>
+            <sc-for list="{{ contactBlocks }}" as="cb" hint-placeholder-count="2">
+              <section style="margin-bottom:28px;">
+                <h2 style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }}; margin:0 0 11px;">{{ cb.head }}</h2>
+                <div style="font-family: {{ f.body }}; font-size:14px; line-height:1.7;">
+                  <sc-for list="{{ cb.lines }}" as="ln" hint-placeholder-count="3">
+                    <div style="min-height:1.7em;">
+                      <sc-if value="{{ ln.href }}" hint-placeholder-val="{{ false }}"><a href="{{ ln.href }}" target="{{ ln.target }}" rel="noopener" dir="auto" style="border-bottom:1px solid {{ c.line }};">{{ ln.text }}</a></sc-if>
+                      <sc-if value="{{ ln.plain }}" hint-placeholder-val="{{ true }}">{{ ln.text }}</sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </section>
+            </sc-for>
+            <sc-if value="{{ hasDownloads }}" hint-placeholder-val="{{ true }}">
+            <h2 style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }}; margin:0 0 12px;">{{ t.pressMedia }}</h2>
+            <div style="display:flex; flex-direction:column; gap:9px;">
+              <sc-for list="{{ downloads }}" as="d" hint-placeholder-count="3">
+                <button onClick="{{ d.go }}" style="display:flex; justify-content:space-between; align-items:center; gap:14px; padding:12px 15px; cursor:pointer; text-align:start; background: {{ c.panel }}; border:1px solid {{ c.line }}; color: {{ c.fg }};">
+                  <span style="font-family: {{ f.body }}; font-size:12.5px;">{{ d.label }}</span>
+                  <span style="font: 400 10px/1 'IBM Plex Mono', monospace; color: {{ c.dim }};">{{ d.meta }}</span>
+                </button>
+              </sc-for>
+            </div>
+            </sc-if>
+          </div>
+          <div>
+            <h2 style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }}; margin:0 0 16px;">{{ t.sendMessage }}</h2>
+            <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="padding:34px 26px; background: {{ c.panel }}; border:1px solid {{ c.line }};">
+                <div style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:26px; margin-bottom:8px;">{{ t.sentTitle }}</div>
+                <div style="font-family: {{ f.body }}; font-size:13.5px; line-height:1.6; color: {{ c.soft }};">{{ t.sentBody }}</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+              <form onSubmit="{{ send }}" style="display:flex; flex-direction:column; gap:16px;">
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                  <div style="flex:1; min-width:160px;">
+                    <label for="cf-name" style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; text-transform:uppercase; color: {{ c.dim }};">{{ t.fName }}</label>
+                    <input id="cf-name" name="name" autoComplete="name" required="{{ true }}" maxLength="120" value="{{ form.name }}" onChange="{{ onName }}" style="width:100%; margin-top:7px; padding:8px 0; border:none; border-bottom:1px solid {{ c.fg }}; background:transparent; color: {{ c.fg }}; font-family: {{ f.body }}; font-size:14px;">
+                  </div>
+                  <div style="flex:1; min-width:160px;">
+                    <label for="cf-email" style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; text-transform:uppercase; color: {{ c.dim }};">{{ t.fEmail }}</label>
+                    <input id="cf-email" name="email" type="email" autoComplete="email" dir="ltr" required="{{ true }}" maxLength="190" value="{{ form.email }}" onChange="{{ onEmail }}" style="width:100%; margin-top:7px; padding:8px 0; border:none; border-bottom:1px solid {{ c.fg }}; background:transparent; color: {{ c.fg }}; font-family: {{ f.body }}; font-size:14px;">
+                  </div>
+                </div>
+                <!-- Honeypot: hidden from people and screen readers; bots that fill it are ignored by the API. -->
+                <div aria-hidden="true" style="position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;">
+                  <label for="cf-website">Website</label>
+                  <input id="cf-website" name="website" tabIndex="-1" autoComplete="off" value="{{ form.website }}" onChange="{{ onWebsite }}">
+                </div>
+                <div role="radiogroup" aria-labelledby="cf-subject">
+                  <div id="cf-subject" style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; text-transform:uppercase; color: {{ c.dim }};">{{ t.fSubject }}</div>
+                  <div style="display:flex; gap:7px; margin-top:9px; flex-wrap:wrap;">
+                    <sc-for list="{{ subjects }}" as="sj" hint-placeholder-count="4">
+                      <button type="button" role="radio" aria-checked="{{ sj.on }}" onClick="{{ sj.pick }}" style="padding:6px 12px; cursor:pointer; border:1px solid {{ sj.border }}; background: {{ sj.bg }}; color: {{ sj.fg }}; font-family: {{ f.body }}; font-size:10.5px; letter-spacing:0.05em;">{{ sj.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div>
+                  <label for="cf-message" style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; text-transform:uppercase; color: {{ c.dim }};">{{ t.fMessage }}</label>
+                  <textarea id="cf-message" name="message" required="{{ true }}" maxLength="5000" value="{{ form.msg }}" onChange="{{ onMsg }}" rows="5" style="width:100%; margin-top:7px; padding:11px 13px; border:1px solid {{ c.fg }}; background:transparent; resize:vertical; color: {{ c.fg }}; font-family: {{ f.body }}; font-size:13.5px; line-height:1.55;"></textarea>
+                </div>
+                <button type="submit" disabled="{{ sending }}" style="padding:14px; cursor:pointer; border:none; background: {{ c.fg }}; color: {{ c.bg }}; font-family: {{ f.body }}; font-size:11.5px; letter-spacing:0.14em; text-transform:uppercase; opacity: {{ sendOpacity }};">{{ sendLabel }}</button>
+                <div style="font: 400 10.5px/1.5 'IBM Plex Mono', monospace; color: {{ c.dim }};">{{ tx.reply_note }}</div>
+                <div style="font: 400 10.5px/1.5 'IBM Plex Mono', monospace; color: {{ c.dim }}; white-space:pre-line;">{{ tx.privacy_note }}</div>
+              </form>
+            </sc-if>
+
+            <sc-if value="{{ insta.url }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:40px; padding-top:24px; border-top:1px solid {{ c.line }}; display:flex; align-items:baseline; justify-content:space-between;">
+              <div style="font: 500 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.14em; text-transform:uppercase; color: {{ c.accent }};">Instagram</div>
+              <a href="{{ insta.url }}" target="_blank" rel="noopener" dir="ltr" style="font: 400 11px/1 'IBM Plex Mono', monospace; color: {{ c.fg }}; border-bottom:1px solid {{ c.line }};">{{ insta.handle }} ↗</a>
+            </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ---------- NOT FOUND ---------- -->
+    <sc-if value="{{ isNotFound }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 80px {{ r.pad }}; text-align:center;">
+        <h1 style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size: {{ r.h1 }}; margin:0 0 18px;">{{ t.notFound }}</h1>
+        <a href="#/" style="font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.07em; text-transform:uppercase; border-bottom:1px solid {{ c.line }};">{{ t.prevA }} {{ t.home }}</a>
+      </div>
+    </sc-if>
+
+  </main>
+
+  <!-- ===== HOME FOOTER BAR ===== -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <footer style="flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; gap:24px; padding: 10px {{ r.pad }} 26px;">
+      <div style="display: {{ r.dsk }}; font: 400 10px/1 'IBM Plex Mono', monospace; letter-spacing:0.1em; text-transform:uppercase; color: {{ c.dim }};">{{ copyright }}</div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <sc-for list="{{ ticks }}" as="tk" hint-placeholder-count="7">
+          <button onClick="{{ tk.go }}" aria-label="{{ tk.label }}" aria-current="{{ tk.current }}" style="width: {{ r.tickW }}; height:24px; padding:0; border:none; background:transparent; cursor:pointer; display:flex; align-items:center;">
+            <span style="width: {{ r.tickW }}; height:1.5px; background: {{ tk.bg }}; transition: background 400ms ease;"></span>
+          </button>
+        </sc-for>
+        <span style="margin-inline-start:14px; font: 400 10px/1 'IBM Plex Mono', monospace; color: {{ c.dim }};">{{ slideCounter }}</span>
+      </div>
+      <div style="display:flex; gap:20px; align-items:center;">
+        <sc-if value="{{ insta.url }}" hint-placeholder-val="{{ false }}"><a href="{{ insta.url }}" target="_blank" rel="noopener" style="display: {{ r.dsk }}; font: 400 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; cursor:pointer;">↳ Instagram</a></sc-if>
+        <button onClick="{{ togglePlay }}" aria-pressed="{{ ui.paused }}" style="border:none; background:transparent; cursor:pointer; color: {{ c.fg }}; font: 400 10.5px/1 'IBM Plex Mono', monospace; letter-spacing:0.06em; padding:0;">{{ playLabel }}</button>
+      </div>
+    </footer>
+  </sc-if>
+
+  <!-- ===== TOAST ===== -->
+  <div role="status" aria-live="polite" style="position:fixed; bottom:28px; left:50%; transform:translateX(-50%); max-width: calc(100% - 40px); text-align:center; z-index:120;">
+    <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:13px 22px; background: {{ c.fg }}; color: {{ c.bg }}; font-family: {{ f.body }}; font-size:12.5px; letter-spacing:0.02em; box-shadow: 0 8px 30px rgba(0,0,0,0.24);">{{ toast }}</div>
+    </sc-if>
+  </div>
+</div>
+
+<!-- ===== LIGHTBOX ===== -->
+<sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+  <div role="dialog" aria-modal="true" aria-label="{{ lb.title }}" onKeyDown="{{ lbTrap }}" style="position:fixed; inset:0; z-index:200; background:#050403; direction: {{ dir }};">
+    <div style="position:absolute; top:24px; inset-inline: {{ r.lbHead }}; display:flex; align-items:baseline; justify-content:space-between; gap:22px; z-index:3;">
+      <div style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:18px; color:#e5dcc4;">{{ lb.title }}</div>
+      <div style="display:flex; gap:22px; align-items:baseline; font: 400 11px/1 'IBM Plex Mono', monospace; letter-spacing:0.08em; text-transform:uppercase; color:#a39a88;">
+        <span aria-live="polite">{{ lb.counter }}</span>
+        <span>{{ lb.place }}</span>
+        <button ref="{{ lbCloseRef }}" onClick="{{ closeLb }}" aria-label="{{ t.close }}" style="border:none; background:transparent; cursor:pointer; color:#e5dcc4; font:inherit; padding:0;">esc ✕</button>
+      </div>
+    </div>
+
+    <div onClick="{{ lbNext }}" onTouchStart="{{ lbTouchStart }}" onTouchEnd="{{ lbTouchEnd }}" role="img" aria-label="{{ lb.alt }}" style="position:absolute; top:82px; bottom:96px; inset-inline: {{ r.lbInset }}; cursor:pointer;">
+      <sc-for list="{{ lbStack }}" as="ph" hint-placeholder-count="3">
+        <div style="position:absolute; inset:0; background: {{ ph.bg }}; opacity: {{ ph.op }}; transition: opacity 420ms ease;">
+          <div style="position:absolute; inset:0; box-shadow: inset 0 0 200px rgba(0,0,0,0.42);"></div>
+        </div>
+      </sc-for>
+    </div>
+
+    <button onClick="{{ lbPrev }}" aria-label="{{ t.prevLabel }}" style="position:absolute; top:50%; inset-inline-start: {{ r.lbBtn }}; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; cursor:pointer; border:1px solid #6a6252; background:rgba(5,4,3,0.55); color:#c5b89e; font-size:16px; z-index:4;">{{ t.prevA }}</button>
+    <button onClick="{{ lbNext }}" aria-label="{{ t.nextLabel }}" style="position:absolute; top:50%; inset-inline-end: {{ r.lbBtn }}; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; cursor:pointer; border:1px solid #e5dcc4; background:rgba(5,4,3,0.55); color:#e5dcc4; font-size:16px; z-index:4;">{{ t.nextA }}</button>
+
+    <div style="position:absolute; bottom:20px; inset-inline: {{ r.lbHead }}; z-index:3;">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:26px; margin-bottom:12px;">
+        <div style="font-family: {{ f.disp }}; font-style: {{ f.dispStyle }}; font-weight: {{ f.dispWeight }}; font-size:15px; color:#e5dcc4;">{{ lb.caption }}</div>
+        <div style="font: 400 10.5px/1.4 'IBM Plex Mono', monospace; letter-spacing:0.05em; color:#a39a88; text-align:end; display: {{ r.dsk }};">{{ t.lbKeys }}</div>
+      </div>
+      <div style="display:flex; gap:4px; height:38px; overflow:hidden;">
+        <sc-for list="{{ lbStrip }}" as="th" hint-placeholder-count="16">
+          <button onClick="{{ th.go }}" aria-label="{{ th.label }}" aria-current="{{ th.current }}" style="height:38px; aspect-ratio:3/2; flex:0 0 auto; cursor:pointer; padding:0; border:none; background: {{ th.bg }}; opacity: {{ th.op }}; box-shadow: {{ th.ring }}; transition: opacity 250ms ease;"></button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a04425&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#a04425&quot;,&quot;#3f5c4a&quot;,&quot;#1f3550&quot;,&quot;#6b4a7a&quot;],&quot;section&quot;:&quot;Identity&quot;},&quot;startLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;en&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;fa&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Identity&quot;},&quot;startDark&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Identity&quot;},&quot;slideSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:6,&quot;min&quot;:3,&quot;max&quot;:12,&quot;step&quot;:1,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Home slideshow&quot;}}">
+class Component extends DCLogic {
+  state = {
+    route: 'home', sid: null, articleId: null, lang: null, dark: null,
+    slide: 0, playing: true,
+    lbOpen: false, lbIdx: 0, lbSid: null,
+    query: '', view: 'list', tab: 'press',
+    sheetPage: 0, bookMode: false, bookSpread: 0, turning: 0,
+    printIdx: 0, sizeIdx: 0, frameIdx: 0, printFilter: 'all',
+    readSize: 18, readSerif: true,
+    subject: 'other', form: { name: '', email: '', msg: '', website: '' }, sent: false,
+    toast: '', menu: false, w: (typeof window !== 'undefined' ? window.innerWidth : 1400),
+    data: null, loading: true, slow: false, loadError: false, sending: false,
+    bodies: {}, bodyState: {}
+  };
+  mainRef = (el) => { this._main = el; };
+  lbCloseRef = (el) => { this._lbClose = el; };
+
+  // Placeholder gradients for photo slots that have no uploaded image yet (design only, no content).
+  PAL = {
+    warm: ['linear-gradient(158deg,#e5d1a8 0%,#b39168 45%,#6a4a2c 80%,#2e1d0f 100%)','linear-gradient(180deg,#dbc9a5,#937a5c 55%,#4a3a2a)','linear-gradient(140deg,#c9ab7d,#755839 60%,#2e1e10)','radial-gradient(ellipse at 40% 45%,#f4dfb6 0%,#806043 65%,#241608 100%)','linear-gradient(180deg,#edd8ac,#b0956e 60%,#62492e)','linear-gradient(160deg,#d5c0a0,#957550 55%,#3a2818)','linear-gradient(180deg,#e6d3b0,#a08260 60%,#4a3220)','linear-gradient(140deg,#dcc6a0,#967555 55%,#40281a)'],
+    night: ['linear-gradient(160deg,#1c2436 0%,#14263e 40%,#0f1a2c 75%,#050912 100%)','linear-gradient(180deg,#243044,#111d30 55%,#040810)','radial-gradient(ellipse at 35% 55%,#3a4a64 0%,#101b2c 60%,#03060c 100%)','linear-gradient(140deg,#2a3448,#16223a 55%,#060b16)','linear-gradient(200deg,#1e2a3e,#0d1728 60%,#030710)','radial-gradient(ellipse at 65% 40%,#46587a 0%,#141f34 62%,#040911 100%)'],
+    desert: ['linear-gradient(180deg,#e5d8b8,#9b8a68 55%,#4e402a)','linear-gradient(160deg,#efe2c0,#a89571 58%,#5a4a30)','linear-gradient(200deg,#ddd0ae,#8f7f5f 55%,#453820)','radial-gradient(ellipse at 50% 62%,#f2e6c4 0%,#9c8a66 60%,#453824 100%)','linear-gradient(180deg,#e8dcbc,#a49067 60%,#4a3c26)','linear-gradient(140deg,#d8caa6,#8a7854 55%,#3e321e)'],
+    sepia: ['radial-gradient(ellipse at 45% 55%,#d5b090 0%,#7c5335 65%,#241408 100%)','linear-gradient(160deg,#cfa987,#6f4a2e 58%,#1e1006)','linear-gradient(200deg,#c9a482,#684528 60%,#1a0e05)','radial-gradient(ellipse at 55% 45%,#dcb994 0%,#835838 62%,#281608 100%)','linear-gradient(180deg,#c8a180,#63412a 55%,#180c04)'],
+    sage: ['linear-gradient(180deg,#d5d8c8,#9a9e88 60%,#4a4d3e)','linear-gradient(160deg,#dde0d0,#a4a890 58%,#52563f)','linear-gradient(200deg,#cbcfbc,#8e9278 58%,#3f4331)','radial-gradient(ellipse at 45% 50%,#e2e5d5 0%,#9ba088 60%,#454936 100%)','linear-gradient(140deg,#d0d4c2,#94997e 55%,#42462f)']
+  };
+
+  componentDidMount() {
+    this._key = (e) => this.onKey(e);
+    document.addEventListener('keydown', this._key);
+    this._rs = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this._rs);
+    this._hash = () => this.applyHash();
+    window.addEventListener('hashchange', this._hash);
+    this._tick = setInterval(() => {
+      if (this.state.playing && this.state.route === 'home' && !this.state.lbOpen && this.state.data) {
+        this.setState(s => ({ slide: (s.slide + 1) % this.nSlides() }));
+      }
+    }, Math.round((this.props.slideSeconds ?? 6) * 1000));
+    this._alive = true;
+    this.applyHash();
+    this.loadData();
+  }
+  componentWillUnmount() {
+    this._alive = false;
+    document.removeEventListener('keydown', this._key);
+    window.removeEventListener('resize', this._rs);
+    window.removeEventListener('hashchange', this._hash);
+    clearInterval(this._tick);
+    clearTimeout(this._toastT);
+    clearTimeout(this._slowT);
+  }
+
+  // ------------------------------------------------------------------ routing (URL hash: #/works/slug …)
+  // Every page has its own address, so Back/Forward, refresh and shared links work.
+
+  parseHash() {
+    let parts = [];
+    try { parts = (window.location.hash || '').replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent); } catch (e) { parts = []; }
+    const [a, b] = parts;
+    if (!a) return { route: 'home' };
+    if (a === 'works') return b ? { route: 'series', sid: b } : { route: 'works' };
+    if (a === 'writings') return b ? { route: 'reading', articleId: Number(b) || null } : { route: 'writings' };
+    if (['publications', 'prints', 'news', 'bio', 'contact'].includes(a)) return { route: a };
+    return { route: 'notfound' };
+  }
+  applyHash() {
+    const next = this.parseHash();
+    const s = this.state;
+    const extra = { menu: false, lbOpen: false };
+    if (next.route === 'series' && next.sid !== s.sid) Object.assign(extra, { sheetPage: 0, bookMode: false, bookSpread: 0 });
+    if (next.route === 'contact' && s.route !== 'contact') extra.sent = false;
+    // Reopening an article whose text failed to load tries again.
+    if (next.route === 'reading' && s.bodyState[next.articleId] === 'error') {
+      extra.bodyState = Object.assign({}, s.bodyState, { [next.articleId]: undefined });
+    }
+    this.setState(Object.assign({ sid: s.sid, articleId: s.articleId }, next, extra));
+  }
+  href(route, arg) {
+    if (route === 'home') return '#/';
+    if (route === 'series') return '#/works/' + encodeURIComponent(arg);
+    if (route === 'reading') return '#/writings/' + encodeURIComponent(arg);
+    return '#/' + route;
+  }
+  go(route, arg) {
+    const h = this.href(route, arg);
+    if (window.location.hash === h) this.applyHash(); else window.location.hash = h;
+  }
+
+  // ------------------------------------------------------------------ backend data
+  // All content comes from the backend (window.BAHAR_API_BASE, see config.js).
+  // There is deliberately NO built-in sample content: if the API cannot be reached the visitor sees
+  // an error with a retry button, never invented text, and the contact form never pretends to send.
+
+  apiBase() { return String(window.BAHAR_API_BASE || '').replace(/\/+$/, ''); }
+
+  api(path) {
+    return fetch(this.apiBase() + path, { headers: { Accept: 'application/json' } }).then(r => {
+      if (!r.ok) throw new Error(path + ' → ' + r.status);
+      return r.json();
+    });
+  }
+
+  async loadData() {
+    const base = this.apiBase();
+    if (!base) {
+      console.error('[bahar] window.BAHAR_API_BASE is empty — set it in config.js');
+      this.setState({ loading: false, loadError: true });
+      return;
+    }
+    const localApi = /^(https?:)?\/\/(127\.0\.0\.1|localhost)([:/]|$)/i.test(base);
+    const localPage = /^(127\.0\.0\.1|localhost)$/i.test(window.location.hostname);
+    if (localApi && !localPage) console.error('[bahar] config.js points to a local API (' + base + ') on a public website — set the real address.');
+    this.setState({ loading: true, loadError: false, slow: false });
+    clearTimeout(this._slowT);
+    this._slowT = setTimeout(() => { if (this._alive && this.state.loading) this.setState({ slow: true }); }, 6000);
+    const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const abortT = ctrl ? setTimeout(() => ctrl.abort(), 30000) : null;
+    try {
+      const r = await fetch(base + '/bootstrap', { headers: { Accept: 'application/json' }, signal: ctrl ? ctrl.signal : undefined });
+      if (!r.ok) throw new Error('/bootstrap → ' + r.status);
+      const data = await r.json();
+      if (!data || !Array.isArray(data.series)) throw new Error('/bootstrap: unexpected response');
+      if (!this._alive) return;
+      this._cache = {};
+      this.setState({ data, loading: false, loadError: false });
+    } catch (e) {
+      console.error('[bahar] could not load content from the API:', e);
+      if (this._alive) this.setState({ loading: false, loadError: true });
+    }
+    clearTimeout(abortT);
+    clearTimeout(this._slowT);
+  }
+
+  /** Full text of an article, fetched when the reader opens it. */
+  ensureBody(id) {
+    const d = this.state.data;
+    if (!id || !d || !d.articles.some(a => a.id === id && a.readable)) return;
+    if (this.state.bodyState[id]) return;   // loading, loaded or failed: never refetch in a loop (retry = reopen the page)
+    this.setState(x => ({ bodyState: Object.assign({}, x.bodyState, { [id]: 'loading' }) }));
+    this.api('/articles/' + encodeURIComponent(id)).then(a => {
+      if (!this._alive) return;
+      this.setState(x => ({ bodies: Object.assign({}, x.bodies, { [id]: a }), bodyState: Object.assign({}, x.bodyState, { [id]: 'ok' }) }));
+    }).catch(() => {
+      if (this._alive) this.setState(x => ({ bodyState: Object.assign({}, x.bodyState, { [id]: 'error' }) }));
+    });
+  }
+
+  /** Text for the current language from an API field ({en, fa} or a plain string). Falls back to the other language. */
+  pick(v) {
+    if (v == null) return '';
+    if (typeof v === 'string') return v;
+    return v[this.lang()] || v.en || v.fa || '';
+  }
+
+  img(url, fit) { return 'url("' + String(url).replace(/["\\\n]/g, '') + '") center / ' + fit + ' no-repeat'; }
+
+  seriesList() { return (this.state.data && this.state.data.series) || []; }
+  seriesBySlug(slug) { return this.seriesList().find(x => x.slug === slug) || null; }
+
+  /** Photos of a series in the shape the renderer uses. */
+  photos(sid) {
+    this._cache = this._cache || {};
+    const key = sid + '|' + this.lang();
+    if (this._cache[key]) return this._cache[key];
+    const s = this.seriesBySlug(sid);
+    if (!s) return [];
+    const pal = this.PAL[s.palette] || this.PAL.warm;
+    const title = this.pick(s.title);
+    const out = (s.photos || []).map((p, i) => {
+      const grad = pal[(p.placeholder ? p.placeholder.index : i) % pal.length];
+      const has = !!p.image_url;
+      const label = this.pick(p.plate);
+      const caption = this.pick(p.caption);
+      return {
+        i, label, caption,
+        bg: has ? this.img(p.thumb_url || p.image_url, 'cover') : grad,
+        big: has ? this.img(p.image_url, 'cover') : grad,
+        lb: has ? this.img(p.image_url, 'contain') : grad,
+        place: this.pick(p.place),
+        alt: (caption || title) + (label ? ' — ' + label : '')
+      };
+    });
+    this._cache[key] = out;
+    return out;
+  }
+
+  /** Slides for the home page: [{ bg, sid, year, alt }] */
+  heroSlides() {
+    const d = this.state.data;
+    if (!d) return [];
+    const src = (d.home && d.home.length)
+      ? d.home.map(sl => ({ sid: sl.series_slug, idx: sl.photo ? sl.photo.index : 0 }))
+      : this.seriesList().map(s => ({ sid: s.slug, idx: 0 }));
+    return src.map(sl => {
+      const s = this.seriesBySlug(sl.sid);
+      const ph = this.photos(sl.sid);
+      if (!s || !ph.length) return null;
+      const p = ph[sl.idx] || ph[0];
+      return { sid: sl.sid, year: s.year, bg: p.big, alt: p.alt, title: this.pick(s.title) };
+    }).filter(Boolean);
+  }
+
+  nSlides() { return Math.max(1, this.heroSlides().length); }
+
+  /** No online checkout yet: open the contact form with a ready-to-send request. */
+  askAbout(subjectKey, msgEn, msgFa) {
+    const fa = this.lang() === 'fa';
+    this.setState(x => ({ subject: subjectKey, sent: false, form: Object.assign({}, x.form, { msg: fa ? msgFa : msgEn }) }));
+    this.go('contact');
+    this.toast(fa ? 'پیام آماده است؛ نام و ایمیل را بنویسید و ارسال کنید' : 'Message drafted — add your name and email, then send');
+  }
+
+  async sendMessage(t) {
+    const s = this.state, fm = s.form, fa = this.lang() === 'fa';
+    if (s.sending) return;
+    if (!fm.name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fm.email.trim()) || !fm.msg.trim()) { this.toast(t.formErr); return; }
+    if (!s.data) { this.toast(fa ? 'اتصال برقرار نشد؛ دوباره تلاش کنید' : 'Connection problem — please try again'); return; }
+    const keys = (s.data.contact.subjects || []).map(x => x.key);
+    this.setState({ sending: true });
+    try {
+      const res = await fetch(this.apiBase() + '/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: fm.name.trim(), email: fm.email.trim(), subject: keys.includes(s.subject) ? s.subject : 'other', message: fm.msg.trim(), lang: this.lang(), website: fm.website })
+      });
+      if (res.status === 201) {
+        this.setState({ sent: true, sending: false, form: { name: '', email: '', msg: '', website: '' } });
+        return;
+      }
+      this.setState({ sending: false });
+      this.toast(res.status === 429
+        ? (fa ? 'پیام‌های زیادی فرستاده شده؛ کمی بعد دوباره تلاش کنید' : 'Too many messages — please try again later')
+        : res.status === 422
+          ? (fa ? 'ارسال نشد؛ ورودی‌ها را بررسی کنید' : 'Could not send — please check your entries')
+          : (fa ? 'ارسال نشد؛ لطفاً کمی بعد دوباره تلاش کنید' : 'Could not send — please try again later'));
+    } catch (e) {
+      this.setState({ sending: false });
+      this.toast(fa ? 'اتصال برقرار نشد؛ دوباره تلاش کنید' : 'Connection problem — please try again');
+    }
+  }
+
+  componentDidUpdate() {
+    const s = this.state;
+    // Scroll back to the top when the page or series changes (the host does not pass prevState, so track it here).
+    const key = s.route + '|' + s.sid + '|' + s.articleId;
+    if (this._lastKey !== undefined && this._lastKey !== key && this._main) this._main.scrollTop = 0;
+    this._lastKey = key;
+    if (s.route === 'reading') this.ensureBody(s.articleId);
+
+    // Document language/direction, title and description follow the current page.
+    const lang = this.lang(), root = document.documentElement;
+    if (root.lang !== lang) root.lang = lang;
+    const dir = lang === 'fa' ? 'rtl' : 'ltr';
+    if (root.dir !== dir) root.dir = dir;
+    if (this._title && document.title !== this._title) document.title = this._title;
+    if (this._desc !== undefined) {
+      const m = document.querySelector('meta[name="description"]');
+      if (m && m.getAttribute('content') !== this._desc) m.setAttribute('content', this._desc);
+    }
+
+    // Lightbox: move focus into the dialog when it opens, back to where it was when it closes.
+    if (s.lbOpen && !this._lbWasOpen) { this._lbReturn = document.activeElement; if (this._lbClose) this._lbClose.focus(); }
+    if (!s.lbOpen && this._lbWasOpen && this._lbReturn && this._lbReturn.focus) this._lbReturn.focus();
+    this._lbWasOpen = s.lbOpen;
+  }
+
+  onKey(e) {
+    const s = this.state;
+    const tag = (e.target && e.target.tagName) || '';
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable)) return;
+    let key = e.key;
+    if (this.lang() === 'fa') { if (key === 'ArrowRight') key = 'ArrowLeft'; else if (key === 'ArrowLeft') key = 'ArrowRight'; }
+    if (s.lbOpen) {
+      if (e.key === 'Escape') { e.preventDefault(); this.setState({ lbOpen: false }); }
+      else if (key === 'ArrowRight') { e.preventDefault(); this.step(1); }
+      else if (key === 'ArrowLeft') { e.preventDefault(); this.step(-1); }
+      else if (e.key === 'g' || e.key === 'G') { e.preventDefault(); this.setState({ lbOpen: false }); }
+      return;
+    }
+    if (s.route === 'home') {
+      if (key === 'ArrowRight') { e.preventDefault(); this.setState(x => ({ slide: (x.slide + 1) % this.nSlides(), playing: false })); }
+      else if (key === 'ArrowLeft') { e.preventDefault(); this.setState(x => ({ slide: (x.slide + this.nSlides() - 1) % this.nSlides(), playing: false })); }
+    }
+    if (s.route === 'series' && s.bookMode) {
+      if (key === 'ArrowRight') { e.preventDefault(); this.turn(1); }
+      else if (key === 'ArrowLeft') { e.preventDefault(); this.turn(-1); }
+    }
+  }
+
+  storedLang() { try { const v = window.localStorage.getItem('bahar.lang'); return v === 'en' || v === 'fa' ? v : null; } catch (e) { return null; } }
+  setLang(l) { try { window.localStorage.setItem('bahar.lang', l); } catch (e) { /* private mode */ } this._cache = {}; this.setState({ lang: l }); }
+  lang() {
+    const d = this.state.data;
+    return this.state.lang || this.storedLang() || (d && d.site && d.site.default_lang) || this.props.startLang || 'en';
+  }
+  isDark() { return this.state.dark ?? (this.props.startDark ?? false); }
+
+  fmt(n) {
+    if (typeof n === 'number' && !Number.isInteger(n)) n = n.toFixed(2);   // prices like 99.5 → 99.50
+    return this.lang() === 'fa' ? String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]) : String(n);
+  }
+
+  toast(msg) {
+    clearTimeout(this._toastT);
+    this.setState({ toast: msg });
+    this._toastT = setTimeout(() => this.setState({ toast: '' }), 3200);
+  }
+  openLb(sid, idx) { if (this.photos(sid).length) this.setState({ lbOpen: true, lbSid: sid, lbIdx: idx }); }
+  step(d) {
+    const n = this.photos(this.state.lbSid).length;
+    if (!n) return;
+    this.setState(s => ({ lbIdx: (s.lbIdx + d + n) % n }));
+  }
+  turn(d) {
+    const n = this.photos(this.state.sid).length;
+    const max = Math.max(0, Math.ceil(n / 2) - 1);
+    this.setState(s => ({ turning: d, bookSpread: Math.max(0, Math.min(max, s.bookSpread + d)) }));
+    setTimeout(() => this.setState({ turning: 0 }), 60);
+  }
+
+  /** Lines of a free-text block; e-mail addresses and web addresses become links. */
+  linkLines(text) {
+    return String(text || '').split('\n').map(line => {
+      const tline = line.trim();
+      const email = tline.match(/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/);
+      if (email) return { text: line, href: 'mailto:' + tline, target: '_self', plain: false };
+      const m = line.match(/^(.*?)((?:https?:\/\/)?(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}(?:\/[^\s]*)?)\s*$/i);
+      if (m && /[a-z]/i.test(m[2]) && !/@/.test(m[2])) {
+        const url = /^https?:\/\//i.test(m[2]) ? m[2] : 'https://' + m[2];
+        return { text: line, href: url, target: '_blank', plain: false };
+      }
+      return { text: line || ' ', href: '', target: '', plain: true };
+    });
+  }
+
+  /** User-interface labels only. All content (names, biography, prices, policies…) comes from the admin panel. */
+  T() {
+    const fa = this.lang() === 'fa';
+    return fa ? {
+      works: 'مجموعه‌ها', publications: 'کتاب‌ها', prints: 'پرینت‌ها', writings: 'نوشته‌ها', news: 'رویدادها', biography: 'درباره', contact: 'تماس', home: 'صفحهٔ اصلی',
+      mainNav: 'منوی اصلی', breadcrumb: 'مسیر صفحه', seriesNav: 'مجموعهٔ قبلی و بعدی', filter: 'فیلتر',
+      searchPh: 'جستجو در عنوان، سال، کلیدواژه', noResults: 'چیزی پیدا نشد', noSeries: 'هنوز مجموعه‌ای منتشر نشده است.', seriesMissing: 'این مجموعه پیدا نشد.',
+      emptySection: 'در این بخش هنوز موردی منتشر نشده است.', notFound: 'این صفحه پیدا نشد.',
+      arrow: '←', prevA: '→', nextA: '←', prevLabel: 'قبلی', nextLabel: 'بعدی', list: 'فهرست', grid: 'شبکه', menu: 'منو', close: 'بستن',
+      formErr: 'لطفاً نام، ایمیل معتبر و پیام را وارد کنید', themeHint: 'حالت شب',
+      readBook: 'خواندن مثل کتاب', openLb: 'نمای تمام‌صفحه', keyHint: '← → جابه‌جایی · esc بستن',
+      statement: 'یادداشت', contactSheet: 'کنتاکت شیت',
+      printDetail: 'مشخصات پرینت', sizeEdition: 'اندازه و ادیشن', framing: 'قاب (اختیاری)',
+      writingsMeta: 'مطبوعات · مقالات · گفت‌وگوها', allWritings: 'همهٔ نوشته‌ها', readOriginal: 'متن در منبع اصلی',
+      bodyLoading: 'در حال بارگذاری متن…', bodyError: 'متن بارگذاری نشد. صفحه را دوباره باز کنید.', smaller: 'کوچک‌تر', bigger: 'بزرگ‌تر',
+      upcoming: 'رویداد پیش‌رو', portrait: 'پرتره', cv: 'رزومه', presskit: 'پرس‌کیت', inquiries: 'تماس برای همکاری',
+      pressMedia: 'مطبوعات و رسانه', sendMessage: 'ارسال پیام', fName: 'نام', fEmail: 'ایمیل', fSubject: 'موضوع', fMessage: 'پیام', send: 'ارسال',
+      sentTitle: 'پیام ارسال شد', sentBody: 'ممنون. پیام شما رسید و به‌زودی پاسخ داده می‌شود.',
+      lbKeys: '← → جابه‌جایی · G کنتاکت شیت · esc بستن',
+      loading: 'در حال بارگذاری…', slow: 'اتصال کند است؛ هنوز در حال بارگذاری…',
+      errTitle: 'سایت بارگذاری نشد', errBody: 'ارتباط با سرور برقرار نشد. لطفاً اتصال اینترنت را بررسی کنید و دوباره تلاش کنید.', retry: 'تلاش دوباره'
+    } : {
+      works: 'Works', publications: 'Publications', prints: 'Prints', writings: 'Writings', news: 'News', biography: 'Biography', contact: 'Contact', home: 'Home',
+      mainNav: 'Main menu', breadcrumb: 'Breadcrumb', seriesNav: 'Previous and next series', filter: 'Filter',
+      searchPh: 'Search titles, years, keywords', noResults: 'Nothing found', noSeries: 'No series published yet.', seriesMissing: 'This series could not be found.',
+      emptySection: 'Nothing published here yet.', notFound: 'Page not found.',
+      arrow: '→', prevA: '←', nextA: '→', prevLabel: 'Previous', nextLabel: 'Next', list: 'LIST', grid: 'GRID', menu: 'Menu', close: 'Close',
+      formErr: 'Please add your name, a valid email and a message', themeHint: 'Dark mode',
+      readBook: 'Read as book', openLb: 'Open lightbox', keyHint: '← → to navigate · esc to close',
+      statement: 'Statement', contactSheet: 'Contact sheet',
+      printDetail: 'Print detail', sizeEdition: 'Size & edition', framing: 'Framing (optional)',
+      writingsMeta: 'Press · Essays · Interviews', allWritings: 'All writings', readOriginal: 'Read at the original source',
+      bodyLoading: 'Loading the text…', bodyError: 'The text could not be loaded. Please reopen the page.', smaller: 'Smaller text', bigger: 'Larger text',
+      upcoming: 'Upcoming', portrait: 'Portrait', cv: 'CV', presskit: 'Press kit', inquiries: 'Contact for inquiries',
+      pressMedia: 'Press & media', sendMessage: 'Send a message', fName: 'Name', fEmail: 'Email', fSubject: 'Subject', fMessage: 'Message', send: 'Send',
+      sentTitle: 'Message sent', sentBody: 'Thank you. Your message has arrived and will be answered soon.',
+      lbKeys: '← → navigate · G contact sheet · esc close',
+      loading: 'Loading…', slow: 'Slow connection — still loading…',
+      errTitle: 'The site could not be loaded', errBody: 'We could not reach the server. Please check your internet connection and try again.', retry: 'Try again'
+    };
+  }
+
+  renderVals() {
+    const s = this.state, fa = this.lang() === 'fa', dark = this.isDark(), t = this.T();
+    const d = s.data;
+    const site = (d && d.site) || {};
+    const tx0 = site.texts || {};
+    const tx = {};
+    ['portrait_caption', 'reply_note', 'privacy_note', 'prints_intro', 'prints_assurances', 'prints_footer', 'print_paper'].forEach(k => { tx[k] = this.pick(tx0[k]); });
+    t.name = this.pick(site.name);
+    const seriesAll = this.seriesList();
+
+    const accent = this.props.accent ?? (dark ? '#c96a3f' : '#a04425');
+    const c = dark
+      ? { bg: '#141210', fg: '#ede6d4', dim: '#9a9282', soft: '#b3aa97', line: '#2c2822', panel: '#1c1a17', accent: accent, void: '#0a0908' }
+      : { bg: '#ffffff', fg: '#191410', dim: '#6f6553', soft: '#4a3d30', line: '#e9e2d2', panel: '#f6f1e5', accent: accent, void: '#f2efe8' };
+    const f = fa
+      ? { body: "'Vazirmatn', sans-serif", disp: "'Vazirmatn', sans-serif", dispStyle: 'normal', dispWeight: '600', read: "'Vazirmatn', sans-serif", nav: "'Vazirmatn', sans-serif", navSize: '13px', navTrack: '0', navCase: 'none', navGap: '26px' }
+      : { body: "'IBM Plex Sans', sans-serif", disp: "'Instrument Serif', serif", dispStyle: 'italic', dispWeight: '400', read: "'EB Garamond', serif", nav: "'IBM Plex Sans', sans-serif", navSize: '11px', navTrack: '0.16em', navCase: 'uppercase', navGap: '28px' };
+
+    // ---- navigation: sections without published content are hidden instead of showing invented items
+    const has = {
+      works: true,
+      publications: !!(d && d.books.length),
+      prints: !!(d && d.prints.length),
+      writings: !!(d && d.articles.length),
+      news: !!(d && (d.news.years.length || d.news.upcoming)),
+      bio: true, contact: true
+    };
+    const routes = [['works', t.works], ['publications', t.publications], ['prints', t.prints], ['writings', t.writings], ['news', t.news], ['bio', t.biography], ['contact', t.contact]].filter(([r]) => has[r]);
+    const activeFor = r => (r === 'works' && (s.route === 'works' || s.route === 'series')) || (r === 'writings' && (s.route === 'writings' || s.route === 'reading')) || s.route === r;
+    const nav = routes.map(([r, label]) => ({
+      label, href: this.href(r), current: activeFor(r) ? 'page' : undefined,
+      col: c.fg, mcol: activeFor(r) ? c.accent : c.fg,
+      rule: activeFor(r) ? '1px solid ' + c.fg : '1px solid transparent'
+    }));
+
+    // ---- home slideshow (only the visible slide and the next one get their image, the rest load later)
+    const slides = this.heroSlides();
+    const nSl = Math.max(1, slides.length);
+    const cur0 = Math.min(s.slide, nSl - 1);
+    const heroes = slides.map((sl, i) => {
+      const near = i === cur0 || i === (cur0 + 1) % nSl;
+      return {
+        bg: near ? sl.bg : 'transparent', op: i === cur0 ? 1 : 0, capOp: i === cur0 ? 1 : 0, hidden: i === cur0 ? undefined : 'true',
+        alt: sl.alt,
+        caption: (fa ? 'از مجموعهٔ ' : 'from ') + sl.title + (fa ? '، ' : ', ') + this.fmt(sl.year),
+        click: () => this.setState(x => ({ slide: (x.slide + 1) % nSl, playing: false }))
+      };
+    });
+    const ticks = slides.map((sl, i) => ({
+      bg: i === cur0 ? c.fg : c.line, current: i === cur0 ? 'true' : undefined,
+      label: (fa ? 'اسلاید ' : 'Slide ') + this.fmt(i + 1),
+      go: () => this.setState({ slide: i, playing: false })
+    }));
+
+    // ---- works
+    const q = s.query.trim().toLowerCase();
+    const all = seriesAll.map((sr, i) => {
+      const title = this.pick(sr.title), blurb = this.pick(sr.blurb), tags = this.pick(sr.tags);
+      const ph = this.photos(sr.slug);
+      return {
+        num: this.fmt(String(i + 1).padStart(2, '0')),
+        title, blurb, tags, year: this.fmt(sr.year),
+        cover: ph.length ? ph[0].bg : (this.PAL[sr.palette] || this.PAL.warm)[0], coverAlt: ph.length ? ph[0].alt : title,
+        _hay: (title + ' ' + blurb + ' ' + tags + ' ' + sr.year + ' ' + sr.slug).toLowerCase(),
+        href: this.href('series', sr.slug)
+      };
+    });
+    const filtered = q ? all.filter(x => x._hay.indexOf(q) >= 0) : all;
+    const worksEmptyMsg = d && !all.length ? t.noSeries : (q && !filtered.length ? t.noResults : '');
+    let worksMeta = '';
+    if (seriesAll.length) {
+      const years = seriesAll.map(x => Number(x.year)), lo = Math.min(...years), hi = Math.max(...years);
+      // Series years are Gregorian; shown with Persian digits in Persian (no approximate Jalali conversion).
+      worksMeta = fa ? this.fmt(seriesAll.length) + ' مجموعه · ' + this.fmt(lo) + (hi !== lo ? ' تا ' + this.fmt(hi) : '')
+                     : seriesAll.length + ' series' + ' · ' + lo + (hi !== lo ? ' → ' + hi : '');
+    }
+
+    // ---- series detail
+    const rc = s.route === 'series' ? this.seriesBySlug(s.sid) : null;
+    const isNotFound = s.route === 'notfound' || (s.route === 'series' && !!d && !rc) || (s.route === 'reading' && !!d && !d.articles.some(a => a.id === s.articleId));
+    const sid = rc ? rc.slug : null;
+    const ph = rc ? this.photos(sid) : [];
+    const perPage = 21, pages = Math.max(1, Math.ceil(ph.length / perPage));
+    const page = Math.min(s.sheetPage, pages - 1);
+    const sheet = ph.slice(page * perPage, page * perPage + perPage).map(p => ({
+      bg: p.bg, label: p.label, alt: p.alt, open: () => this.openLb(sid, p.i)
+    }));
+    const at = (i) => ph.length ? ph[i % ph.length] : { big: 'transparent', label: '', place: '', alt: '' };
+    const plateLine = (p) => [p.label, p.place].filter(Boolean).join(' · ');
+    const idxSeries = rc ? seriesAll.findIndex(x => x.slug === sid) : -1;
+    const cur = {
+      title: rc ? this.pick(rc.title) : '',
+      meta: rc ? (fa ? this.fmt(ph.length) + ' عکس · ' + this.fmt(rc.year) : ph.length + (ph.length === 1 ? ' photograph · ' : ' photographs · ') + rc.year) : '',
+      statement: rc ? this.pick(rc.statement) : '', credits: rc ? this.pick(rc.credits) : '',
+      cover: at(0).big, coverAlt: at(0).alt, plate1: plateLine(at(0)),
+      hasPair: ph.length >= 3, pair: ph.length >= 3 ? [1, 2].map(i => ({ bg: ph[i].big, label: ph[i].label, alt: ph[i].alt, open: () => this.openLb(sid, i) })) : [],
+      hasWide: ph.length >= 4, wide: at(3).big, wideAlt: at(3).alt, plate4: plateLine(at(3)),
+      canBook: ph.length >= 2, multiPage: pages > 1,
+      sheetMeta: fa ? 'همهٔ ' + this.fmt(ph.length) + ' عکس · برای دیدن روی هر تصویر کلیک کنید' : 'All ' + ph.length + ' photographs · click any thumbnail to enter the viewer',
+      sheetRange: ph.length ? this.fmt(page * perPage + 1) + '–' + this.fmt(Math.min(ph.length, (page + 1) * perPage)) + ' / ' + this.fmt(ph.length) : ''
+    };
+    const spreadMax = Math.max(0, Math.ceil(ph.length / 2) - 1);
+    const sp = Math.min(s.bookSpread, spreadMax);
+    const left = at(sp * 2), right = ph.length > sp * 2 + 1 ? ph[sp * 2 + 1] : { big: 'transparent', alt: '' };
+    const spread = {
+      left: left.big, right: right.big, leftAlt: left.alt, rightAlt: right.alt,
+      lt: s.turning === -1 ? 'rotateY(28deg)' : 'rotateY(0deg)',
+      rt: s.turning === 1 ? 'rotateY(-28deg)' : 'rotateY(0deg)',
+      label: (fa ? 'صفحهٔ ' : 'Spread ') + this.fmt(sp + 1) + ' / ' + this.fmt(spreadMax + 1)
+    };
+    const prevS = idxSeries >= 0 ? seriesAll[(idxSeries - 1 + seriesAll.length) % seriesAll.length] : null;
+    const nextS = idxSeries >= 0 ? seriesAll[(idxSeries + 1) % seriesAll.length] : null;
+    const neighbours = {
+      show: seriesAll.length > 1 && !!rc,
+      prev: prevS ? this.pick(prevS.title) : '', next: nextS ? this.pick(nextS.title) : '',
+      prevHref: prevS ? this.href('series', prevS.slug) : '#/works', nextHref: nextS ? this.href('series', nextS.slug) : '#/works'
+    };
+
+    // ---- books
+    const nameInitials = t.name.split(/\s+/).filter(Boolean).map(w => w[0]).join(' · ');
+    const money = n => '$' + this.fmt(n);
+    const bookList = d ? d.books : [];
+    const books = bookList.map(b => {
+      const title = this.pick(b.title);
+      const stock = [];
+      if (b.availability === 'last_copies') stock.push(fa ? 'آخرین نسخه‌ها' : 'last copies');
+      if (b.signed_extra_usd != null) stock.push(fa ? 'امضا +' + this.fmt(b.signed_extra_usd) + ' دلار' : 'signed +' + money(b.signed_extra_usd));
+      const inStock = b.cta === 'order';
+      const price = b.price_usd != null ? (fa ? this.fmt(b.price_usd) + ' دلار' : money(b.price_usd)) : (inStock ? '' : (fa ? 'ناموجود' : 'Out of print'));
+      return {
+        title, imprint: this.pick(b.imprint), note: this.pick(b.note), price, stock: stock.join(' · '),
+        cta: inStock ? (fa ? 'سفارش' : 'Order') : (fa ? 'لیست انتظار' : 'Waitlist'),
+        cover: b.cover_url ? this.img(b.cover_url, 'cover') : (this.PAL[b.palette] || this.PAL.warm)[0],
+        noCover: !b.cover_url, coverAlt: (fa ? 'جلد کتاب ' : 'Cover of ') + title,
+        stockCol: b.availability === 'last_copies' ? c.accent : c.dim,
+        btnBg: inStock ? c.fg : 'transparent', btnFg: inStock ? c.bg : c.fg,
+        order: () => this.askAbout('book',
+          inStock ? 'Hello, I would like to order the book "' + title + '"' + (price ? ' (' + price + ')' : '') + '.' : 'Hello, please add me to the waitlist for "' + title + '".',
+          inStock ? 'سلام، مایلم کتاب «' + title + '»' + (price ? ' (' + price + ')' : '') + ' را سفارش بدهم.' : 'سلام، لطفاً مرا در لیست انتظار «' + title + '» ثبت کنید.')
+      };
+    });
+    const anySigned = bookList.some(b => b.signed_extra_usd != null);
+    const pubMeta = bookList.length
+      ? (fa ? this.fmt(bookList.length) + ' کتاب' + (anySigned ? ' · نسخهٔ امضاشده موجود است' : '') : bookList.length + (bookList.length === 1 ? ' book' : ' books') + (anySigned ? ' · signed copies available' : ''))
+      : '';
+
+    // ---- prints
+    const printList = (d ? d.prints : []).map(p => ({
+      sid: p.series_slug, idx: p.photo.index, next: p.edition.next, size: p.edition.size, available: p.edition.available, sold: p.edition.sold_out,
+      title: this.pick(p.title), seriesTitle: this.pick(p.series_title),
+      sizes: p.sizes.map(z => ({ label: z.label, price: z.price_usd })), caption: this.pick(p.caption)
+    }));
+    const hasPrints = printList.length > 0;
+    const filterIds = ['all'].concat(seriesAll.filter(r => printList.some(p => p.sid === r.slug)).map(r => r.slug));
+    const pfActive = filterIds.includes(s.printFilter) ? s.printFilter : 'all';
+    const printFilters = filterIds.length > 2 ? filterIds.map(id => {
+      const active = pfActive === id;
+      const sr = id === 'all' ? null : this.seriesBySlug(id);
+      return { label: sr ? this.pick(sr.title) : (fa ? 'همه' : 'All'), active, bg: active ? c.fg : 'transparent', fg: active ? c.bg : c.fg, border: c.line, go: () => this.setState({ printFilter: id }) };
+    }) : [];
+    const printPhoto = p => { const list = this.photos(p.sid); return list[p.idx] || list[0] || { bg: 'transparent', place: '', label: '' }; };
+    const selIdx = Math.min(s.printIdx, Math.max(0, printList.length - 1));
+    const visiblePrints = printList.filter(p => pfActive === 'all' || p.sid === pfActive);
+    const sizeTxt = p => p.sizes.map(z => z.label).join(' / ');
+    const prints = visiblePrints.map(p => {
+      const real = printList.indexOf(p);
+      const pp = printPhoto(p);
+      const low = p.available > 0 && p.available <= 2;
+      return {
+        bg: pp.bg, title: p.title,
+        spec: [pp.place, sizeTxt(p)].filter(Boolean).join(' · '),
+        ed: 'ED. ' + this.fmt(p.next) + '/' + this.fmt(p.size),
+        from: (p.sizes.length > 1 ? (fa ? 'از ' : 'from ') : '') + money(Math.min(...p.sizes.map(z => z.price))),
+        note: p.sold ? (fa ? 'فروخته شد' : 'Sold out') : low ? (fa ? 'آخرین نسخه' : 'Last in edition') : (fa ? 'سفارش ←' : 'Order →'),
+        noteCol: p.sold || low ? c.accent : c.fg,
+        selected: real === selIdx, ring: real === selIdx ? '2px solid ' + c.fg : 'none',
+        select: () => this.setState({ printIdx: real, sizeIdx: 0 })
+      };
+    });
+    const selRaw = printList[selIdx] || { sid: null, idx: 0, next: 1, size: 0, available: 0, sold: true, sizes: [{ label: '', price: 0 }], caption: '', title: '' };
+    const selPh = printPhoto(selRaw);
+    const sizeIdx = Math.min(s.sizeIdx, selRaw.sizes.length - 1);
+    const sizes = selRaw.sizes.map((z, i) => ({
+      dim: z.label, price: money(z.price), on: i === sizeIdx,
+      avail: fa ? 'ادیشن ' + this.fmt(selRaw.size) + ' تایی · ' + this.fmt(selRaw.available) + ' موجود' : 'Ed. of ' + selRaw.size + ' · ' + selRaw.available + ' available',
+      border: i === sizeIdx ? '2px solid ' + c.fg : '1px solid ' + c.line,
+      pick: () => this.setState({ sizeIdx: i })
+    }));
+    const frameDefs = (d ? d.frames : []).map(fr => [this.pick(fr.label), fr.price_usd, fr.price_usd > 0 ? '+ ' + (fa ? this.fmt(fr.price_usd) + ' دلار' : money(fr.price_usd)) : (fa ? 'بدون هزینه' : 'no extra cost')]);
+    const hasFrames = frameDefs.length > 0;
+    const frameIdx = Math.min(s.frameIdx, Math.max(0, frameDefs.length - 1));
+    const frames = frameDefs.map((fr, i) => ({
+      label: fr[0], add: fr[2], on: i === frameIdx,
+      border: i === frameIdx ? '2px solid ' + c.fg : '1px solid ' + c.line,
+      pick: () => this.setState({ frameIdx: i })
+    }));
+    const total = (selRaw.sizes[sizeIdx] ? selRaw.sizes[sizeIdx].price : 0) + (hasFrames ? frameDefs[frameIdx][1] : 0);
+    const sel = {
+      title: selRaw.title,
+      spec: [tx.print_paper, selPh.place, selRaw.size ? (fa ? 'ادیشن ' + this.fmt(selRaw.size) + ' تایی' : 'Edition of ' + selRaw.size) : ''].filter(Boolean).join(' · '),
+      caption: selRaw.caption, soldOut: !!selRaw.sold, btnOpacity: selRaw.sold ? 0.45 : 1
+    };
+
+    // ---- writings
+    const tabDefs = fa ? [['press', 'مطبوعات'], ['essays', 'مقالات'], ['interviews', 'گفت‌وگوها']] : [['press', 'Press about'], ['essays', 'Essays by'], ['interviews', 'Interviews']];
+    const tabOf = { press: 'press', essay: 'essays', interview: 'interviews' };
+    const artList = d ? d.articles : [];
+    const tabsWithItems = tabDefs.filter(([k]) => artList.some(a => tabOf[a.kind] === k));
+    const tabNow = tabsWithItems.some(([k]) => k === s.tab) ? s.tab : (tabsWithItems[0] ? tabsWithItems[0][0] : s.tab);
+    const tabs = tabsWithItems.map(([k, label]) => ({
+      label, active: tabNow === k, bg: tabNow === k ? c.fg : 'transparent', fg: tabNow === k ? c.bg : c.soft,
+      go: () => this.setState({ tab: k })
+    }));
+    const articles = artList.filter(a => tabOf[a.kind] === tabNow).map(a => {
+      const host = a.external_url ? a.external_url.replace(/^https?:\/\/(www\.)?/i, '').split('/')[0] : '';
+      const mins = a.read_minutes ? (fa ? ' · ' + this.fmt(a.read_minutes) + ' دقیقه' : ' · ' + a.read_minutes + ' min') : '';
+      const link = a.readable ? (fa ? '↳ خواندن در سایت' : '↳ Read on site') + mins : a.external_url ? (fa ? '↳ بیرونی' : '↳ External') + (host ? ' · ' + host : '') : '';
+      return {
+        title: this.pick(a.title), source: this.pick(a.source), excerpt: this.pick(a.excerpt), link,
+        linkCol: a.readable ? c.accent : c.dim,
+        href: a.readable ? this.href('reading', a.id) : (a.external_url || undefined),
+        target: !a.readable && a.external_url ? '_blank' : undefined,
+        rel: !a.readable && a.external_url ? 'noopener' : undefined
+      };
+    });
+    const ad = artList.find(a => a.id === s.articleId) || null;
+    const bodyState = ad ? s.bodyState[ad.id] : null;
+    const article = {
+      kicker: ad ? this.pick(ad.source) : '', title: ad ? this.pick(ad.title) : '', byline: ad ? this.pick(ad.excerpt) : '',
+      body: ad && s.bodies[ad.id] ? this.pick(s.bodies[ad.id].body) : '',
+      status: !ad || !ad.readable ? '' : bodyState === 'error' ? t.bodyError : (bodyState !== 'ok' ? t.bodyLoading : ''),
+      url: ad && ad.external_url ? ad.external_url : ''
+    };
+
+    // ---- news
+    const newsYears = d ? d.news.years : [];
+    const news = newsYears.map((y, i) => ({
+      year: this.pick(y.label), col: i === newsYears.length - 1 && newsYears.length > 1 ? c.dim : c.fg,
+      items: y.items.map(it => ({ when: this.pick(it.when), what: this.pick(it.what) }))
+    }));
+    const up = d && d.news.upcoming;
+    const upcoming = up ? { label: this.pick(up.label) || t.upcoming, title: this.pick(up.title), body: this.pick(up.body) } : { label: '', title: '', body: '' };
+
+    // ---- bio
+    const bio = (d && d.bio) || {};
+    const bioCols = (bio.columns || []).filter(col => col.rows.length).map(col => ({ head: this.pick(col.head), rows: col.rows.map(row => ({ k: this.pick(row.k), v: this.pick(row.v) })) }));
+    const dls = (d && d.contact.downloads) || [];
+    const bioDownloads = dls.filter(x => x.available && x.url && (x.slug === 'cv' || x.slug === 'press-kit'))
+      .map(x => ({ label: x.slug === 'cv' ? t.cv : t.presskit, url: x.url }));
+
+    // ---- contact
+    const contactBlocks = d ? d.contact.blocks.filter(b => this.pick(b.body)).map(b => ({ head: this.pick(b.head), lines: this.linkLines(this.pick(b.body)) })) : [];
+    const downloads = dls.filter(x => x.available && x.url).map(dl => ({
+      label: '↓ ' + this.pick(dl.label), meta: this.pick(dl.meta),
+      go: () => { window.location.href = dl.url; }
+    })).concat(d ? [{
+      label: fa ? '↗ درخواست عکس با کیفیت' : '↗ Request hi-res images', meta: fa ? 'از طریق پیام' : 'by message',
+      go: () => this.askAbout('press', 'Hello, I would like to request high-resolution images.', 'سلام، مایلم عکس‌هایی با کیفیت بالا درخواست کنم.')
+    }] : []);
+    const subjects = (d ? d.contact.subjects : []).map(sj => ({
+      label: this.pick(sj.label), on: sj.key === s.subject,
+      bg: sj.key === s.subject ? c.fg : 'transparent', fg: sj.key === s.subject ? c.bg : c.soft, border: c.line,
+      pick: () => this.setState({ subject: sj.key })
+    }));
+    const insta = { url: site.instagram_url || '', handle: site.instagram || '' };
+
+    // ---- lightbox
+    const lbPh = s.lbOpen ? this.photos(s.lbSid) : [];
+    const lbSeries = s.lbOpen ? this.seriesBySlug(s.lbSid) : null;
+    const lbI = Math.min(s.lbIdx, Math.max(0, lbPh.length - 1));
+    const curPh = lbPh[lbI] || { label: '', place: '', caption: '', alt: '' };
+    const lb = {
+      title: (lbSeries ? this.pick(lbSeries.title) : '') + (curPh.label ? ' / ' + curPh.label : ''),
+      counter: lbPh.length ? this.fmt(String(lbI + 1).padStart(2, '0')) + ' / ' + this.fmt(lbPh.length) : '',
+      place: curPh.place, caption: curPh.caption, alt: curPh.alt
+    };
+    const lbStack = lbPh.length ? [(lbI - 1 + lbPh.length) % lbPh.length, lbI, (lbI + 1) % lbPh.length]
+      .map(i => ({ bg: lbPh[i].lb, op: i === lbI ? 1 : 0 })) : [];
+    const stripStart = Math.max(0, Math.min(lbPh.length - 16, lbI - 7));
+    const lbStrip = lbPh.slice(stripStart, stripStart + 16).map(p => ({
+      bg: p.bg, op: p.i === lbI ? 1 : 0.45, label: p.alt, current: p.i === lbI ? 'true' : undefined,
+      ring: p.i === lbI ? '0 0 0 1.5px #e5dcc4' : 'none',
+      go: () => this.setState({ lbIdx: p.i })
+    }));
+
+    // ---- document title & description (applied in componentDidUpdate)
+    const pageTitle = {
+      works: t.works, series: cur.title, publications: t.publications, prints: t.prints, writings: t.writings,
+      reading: article.title, news: t.news, bio: t.biography, contact: t.contact, notfound: t.notFound
+    }[s.route];
+    this._title = [pageTitle, t.name].filter(Boolean).join(' — ') || document.title;
+    this._desc = (s.route === 'series' && rc && this.pick(rc.blurb)) || this.pick(site.description) || undefined;
+
+    const w = s.w, mob = w < 720, tab = w < 1080, menuMode = w < 960;
+    const r = {
+      pad: mob ? '20px' : '40px', headPad: mob ? '18px 20px 12px' : '26px 40px 18px', nameSize: mob ? '18px' : '21px', langPad: mob ? '12px' : '20px',
+      h1: mob ? '38px' : '52px', h1Series: mob ? '46px' : tab ? '64px' : '82px', h1Bio: mob ? '34px' : tab ? '44px' : '56px', searchW: mob ? '130px' : '190px',
+      listCols: mob ? '1fr' : tab ? '36px 180px minmax(0,1fr) 72px' : '52px 240px minmax(0,1fr) 120px 26px', listGap: mob ? '14px' : tab ? '22px' : '30px',
+      listYear: mob ? '20px' : '34px', listYearAlign: mob ? 'start' : 'end', numD: mob ? 'none' : 'block', arrowD: tab ? 'none' : 'block', dsk: mob ? 'none' : 'block',
+      cols3: mob ? '1fr' : tab ? 'repeat(2, minmax(0,1fr))' : 'repeat(3, minmax(0,1fr))',
+      cols4: mob ? 'repeat(2, minmax(0,1fr))' : tab ? 'repeat(3, minmax(0,1fr))' : 'repeat(4, minmax(0,1fr))',
+      cols7: mob ? 'repeat(4, 1fr)' : tab ? 'repeat(5, 1fr)' : 'repeat(7, 1fr)',
+      seriesHead: tab ? '1fr' : '1.5fr auto', headAlign: tab ? 'flex-start' : 'flex-end', gapM: mob ? '28px' : '44px', gapL: mob ? '28px' : '56px',
+      twoColA: tab ? '1fr' : '1fr 1.45fr', twoCol: mob ? '1fr' : '1fr 1fr',
+      hA: mob ? '300px' : '560px', hB: mob ? '260px' : '420px', hC: mob ? '240px' : '520px', panelPad: mob ? '22px 18px' : '32px 36px',
+      newsCols: mob ? '60px 1fr' : '96px 1fr', bioCols: mob ? '1fr' : tab ? '300px 1fr' : '400px 1fr', bioGrid: mob ? '1fr' : tab ? '1fr 1fr' : '1fr 1fr 1.25fr',
+      tickW: mob ? '14px' : '24px', lbInset: mob ? '0px' : tab ? '80px' : '120px', lbHead: mob ? '16px' : '34px', lbBtn: mob ? '8px' : '40px'
+    };
+    // Page content is only mounted once real data has arrived (never behind the loading / error screens).
+    const isRoute = (x) => !!d && !isNotFound && s.route === x;
+    return {
+      r, showNav: !menuMode, showMenuBtn: menuMode, menuOpen: menuMode && s.menu, menuLabel: s.menu ? t.close : t.menu,
+      toggleMenu: () => this.setState(x => ({ menu: !x.menu })), mainRef: this.mainRef, lbCloseRef: this.lbCloseRef,
+      c, f, t, tx, dir: fa ? 'rtl' : 'ltr', nav,
+      ui: {
+        enCol: fa ? c.dim : c.fg, faCol: fa ? c.fg : c.dim, isEn: !fa, isFa: fa, isDark: dark, paused: !s.playing,
+        dotBg: dark ? c.fg : 'transparent', themeGlyph: dark ? '☀' : '☾',
+        scroll: s.route === 'home' ? 'hidden' : 'auto',
+        listBg: s.view === 'list' ? c.fg : 'transparent', listFg: s.view === 'list' ? c.bg : c.soft,
+        gridBg: s.view === 'grid' ? c.fg : 'transparent', gridFg: s.view === 'grid' ? c.bg : c.soft,
+        bookBg: s.bookMode ? c.fg : 'transparent', bookFg: s.bookMode ? c.bg : c.fg
+      },
+      isHome: isRoute('home'), isWorks: isRoute('works'), isSeries: isRoute('series') && !!rc,
+      isPub: isRoute('publications'), isPrints: isRoute('prints'), isWritings: isRoute('writings'),
+      isReading: isRoute('reading') && !!ad, isNews: isRoute('news'), isBio: isRoute('bio'), isContact: isRoute('contact'),
+      isNotFound: isNotFound && !!d,
+      loading: s.loading, loadingLabel: s.slow ? t.slow : t.loading, loadError: s.loadError && !s.loading,
+      retry: () => this.loadData(),
+      keyActivate: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (e.currentTarget && e.currentTarget.click) e.currentTarget.click(); } },
+      hasUpcoming: !!up, upcoming, hasPrints, noPrints: !!d && !hasPrints, hasFrames,
+      noBooks: !!d && !books.length, noArticles: !!d && !articles.length, noNews: !!d && !news.length && !up,
+      worksMeta, pubMeta, initials: nameInitials, copyright: this.pick(site.copyright),
+      portraitBg: bio.portrait_url ? this.img(bio.portrait_url, 'cover') : 'linear-gradient(160deg,#d5b090 0%,#7c5335 55%,#2a1408 100%)',
+      noPortrait: !bio.portrait_url, portraitAlt: t.portrait + (t.name ? ' — ' + t.name : ''),
+      portraitCaption: bio.portrait_url ? tx.portrait_caption : '',
+      bioHead: this.pick(bio.headline), bioBody: this.pick(bio.body), bioDownloads,
+      sendLabel: s.sending ? '…' : t.send, sendOpacity: s.sending ? 0.5 : 1, sending: s.sending,
+      heroes, ticks, slideCounter: slides.length ? this.fmt(String(cur0 + 1).padStart(2, '0')) + ' / ' + this.fmt(String(nSl).padStart(2, '0')) : '',
+      playLabel: s.playing ? (fa ? '⏸ توقف' : '⏸ pause') : (fa ? '▶ پخش' : '▶ play'),
+      togglePlay: () => this.setState(x => ({ playing: !x.playing })),
+      setEn: () => this.setLang('en'),
+      setFa: () => this.setLang('fa'),
+      toggleDark: () => this.setState({ dark: !dark }),
+      query: s.query, onQuery: (e) => this.setState({ query: e.target.value }),
+      viewList: () => this.setState({ view: 'list' }), viewGrid: () => this.setState({ view: 'grid' }),
+      isList: s.view === 'list', isGrid: s.view === 'grid', worksEmptyMsg,
+      filtered, cur, sheet, spread, neighbours,
+      bookMode: s.bookMode && cur.canBook, flowMode: !(s.bookMode && cur.canBook),
+      toggleBook: () => this.setState(x => ({ bookMode: !x.bookMode })),
+      bookPrev: () => this.turn(-1), bookNext: () => this.turn(1),
+      openFirst: () => this.openLb(sid, 0), openWide: () => this.openLb(sid, 3 % Math.max(1, ph.length)),
+      sheetPrev: () => this.setState(x => ({ sheetPage: Math.max(0, x.sheetPage - 1) })),
+      sheetNext: () => this.setState(x => ({ sheetPage: Math.min(pages - 1, x.sheetPage + 1) })),
+      books, prints, printFilters, sel, sizes, frames,
+      reserveLabel: sel.soldOut ? (fa ? 'فروخته شد' : 'Sold out') : (fa ? 'رزرو · ' : 'Reserve · ') + money(total),
+      reserve: () => {
+        if (sel.soldOut || !hasPrints) return;
+        // No online checkout yet: open the contact form with the reservation request already written.
+        const z = selRaw.sizes[sizeIdx] || { label: '' };
+        const frame = hasFrames ? frameDefs[frameIdx][0] : '';
+        const detail = [z.label, frame, money(total)].filter(Boolean);
+        this.askAbout('print',
+          'Hello, I would like to reserve the print "' + sel.title + '" (' + detail.join(', ') + ').',
+          'سلام، مایلم پرینت «' + sel.title + '» (' + detail.join('، ') + ') را رزرو کنم.');
+      },
+      tabs, articles, article, readSize: 'A ' + this.fmt(s.readSize),
+      readFam: s.readSerif ? f.read : (fa ? "'Noto Naskh Arabic', serif" : f.body), readPx: s.readSize + 'px',
+      readFontLabel: fa ? (s.readSerif ? 'وزیرمتن' : 'نسخ') : (s.readSerif ? 'Serif' : 'Sans'),
+      smaller: () => this.setState(x => ({ readSize: Math.max(15, x.readSize - 1) })),
+      bigger: () => this.setState(x => ({ readSize: Math.min(24, x.readSize + 1) })),
+      toggleReadFont: () => this.setState(x => ({ readSerif: !x.readSerif })),
+      news, bioCols, contactBlocks, downloads, hasDownloads: downloads.length > 0, subjects, insta,
+      form: s.form, sent: s.sent, notSent: !s.sent,
+      onName: (e) => { const v = e.target.value; this.setState(x => ({ form: Object.assign({}, x.form, { name: v }) })); },
+      onEmail: (e) => { const v = e.target.value; this.setState(x => ({ form: Object.assign({}, x.form, { email: v }) })); },
+      onMsg: (e) => { const v = e.target.value; this.setState(x => ({ form: Object.assign({}, x.form, { msg: v }) })); },
+      onWebsite: (e) => { const v = e.target.value; this.setState(x => ({ form: Object.assign({}, x.form, { website: v }) })); },
+      send: (e) => { if (e && e.preventDefault) e.preventDefault(); this.sendMessage(t); },
+      lbOpen: s.lbOpen && lbPh.length > 0, lb, lbStack, lbStrip,
+      closeLb: () => this.setState({ lbOpen: false }),
+      lbPrev: (e) => { if (e) e.stopPropagation(); this.step(-1); },
+      lbNext: (e) => { if (e) e.stopPropagation(); this.step(1); },
+      lbTouchStart: (e) => { const p = e.touches && e.touches[0]; this._tx = p ? p.clientX : null; },
+      lbTouchEnd: (e) => {
+        const p = e.changedTouches && e.changedTouches[0];
+        if (this._tx == null || !p) return;
+        const dx = p.clientX - this._tx; this._tx = null;
+        if (Math.abs(dx) < 40) return;
+        if (e.preventDefault) e.preventDefault();   // a swipe is not a tap
+        this.step((dx < 0) !== fa ? 1 : -1);
+      },
+      lbTrap: (e) => {
+        // Keep keyboard focus inside the open viewer.
+        if (e.key !== 'Tab') return;
+        const box = e.currentTarget, items = box ? box.querySelectorAll('button') : [];
+        if (!items.length) return;
+        const first = items[0], last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      },
+      toast: s.toast, hasToast: !!s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

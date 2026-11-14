@@ -1,0 +1,37 @@
+# Netlify config for the Bahar Aflatoonian front end (static, no build step).
+# In Netlify set "Base directory" to: bahar-site
+# (this file is read from that folder; the rest of the repository is not published).
+
+[build]
+  publish = "."
+  command = ""
+
+# The PHP backend (admin panel, database, contact form, photos) does NOT run on Netlify.
+# Once it is installed on your PHP host, either:
+#   a) put its full https address in config.js  (window.BAHAR_API_BASE = 'https://api.example.com/api/v1';)
+#      and add this Netlify site's address to cors_origins in the backend's config.php, or
+#   b) keep config.js as it is ('/backend/api/v1') and uncomment the proxy below,
+#      replacing api.example.com with the backend's address (no CORS setup needed then).
+#
+# [[redirects]]
+#   from = "/backend/*"
+#   to = "https://api.example.com/:splat"
+#   status = 200
+#   force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
