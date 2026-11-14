@@ -1,0 +1,814 @@
+{
+ "site": {
+  "name": {
+   "en": "Bahar Aflatoonian",
+   "fa": "بهار افلاطونیان"
+  },
+  "copyright": {
+   "en": "© {year} Bahar Aflatoonian",
+   "fa": "© {year} بهار افلاطونیان"
+  },
+  "instagram": null,
+  "instagram_url": null,
+  "description": {
+   "en": "Bahar Aflatoonian — visual artist and photographer. Shared Border: photography, perception, and the spaces we inhabit.",
+   "fa": "بهار افلاطونیان، هنرمند تجسمی و عکاس. مرز مشترک: عکاسی، ادراک و فضاهایی که در آن‌ها زیست می‌کنیم."
+  },
+  "default_lang": "fa",
+  "languages": [
+   "en",
+   "fa"
+  ],
+  "texts": {
+   "portrait_caption": {
+    "en": null,
+    "fa": null
+   },
+   "reply_note": {
+    "en": null,
+    "fa": null
+   },
+   "privacy_note": {
+    "en": "Your name and email are used only to reply to your message.",
+    "fa": "نام و ایمیل شما فقط برای پاسخ به پیامتان استفاده می‌شود."
+   },
+   "prints_intro": {
+    "en": null,
+    "fa": null
+   },
+   "prints_assurances": {
+    "en": null,
+    "fa": null
+   },
+   "prints_footer": {
+    "en": null,
+    "fa": null
+   },
+   "print_paper": {
+    "en": null,
+    "fa": null
+   }
+  }
+ },
+ "series": [
+  {
+   "id": 1,
+   "slug": "shared-border",
+   "year": 2024,
+   "palette": "warm",
+   "title": {
+    "en": "Shared Border",
+    "fa": "مرز مشترک"
+   },
+   "blurb": {
+    "en": "Photography, perception, and the spaces we inhabit. An ongoing project.",
+    "fa": "عکاسی، ادراک و فضاهایی که در آن‌ها زیست می‌کنیم. پروژه‌ای در جریان."
+   },
+   "tags": {
+    "en": "Ongoing project",
+    "fa": "پروژه‌ی در جریان"
+   },
+   "photo_count": 16,
+   "cover": {
+    "id": 1,
+    "index": 0,
+    "image_url": "images/shared-border-01.jpg",
+    "thumb_url": "images/shared-border-01-thumb.jpg",
+    "width": 2400,
+    "height": 1698,
+    "placeholder": null,
+    "plate_no": 1,
+    "plate": {
+     "en": "Plate 01",
+     "fa": "قاب ۰۱"
+    },
+    "place": {
+     "en": null,
+     "fa": null
+    },
+    "caption": {
+     "en": null,
+     "fa": null
+    }
+   },
+   "statement": {
+    "en": "No space has meaning in itself; it is our experience of a space that turns it into something more than a mere location. What matters to me is not the place itself, but the quality of the experience that arises in encountering it. Before it is simply a position in the world, every space can open the possibility for a certain condition to emerge: a condition in which the border between what lies outside us and what passes within us is not easily told apart.\n\nFrom the interplay of space, perception and experience, a condition takes shape in which what passes within us can sometimes surface only through our encounter with our surroundings, and in doing so reveals a way of being.\n\nThe home is one of the spaces that make this possible: not because of its function or any predetermined meaning, but because the experience of living in it places a person in the most immediate encounter with themselves. For me, then, the home is not the main subject, but the ground that makes it possible to observe this inner condition and let it surface.",
+    "fa": "هیچ فضایی به‌خودیِ خود معنا ندارد؛ این تجربه‌ی ما از فضاست که آن را به چیزی فراتر از یک موقعیت صرف بدل می‌کند. آنچه برای من اهمیت دارد، خودِ مکان نیست، بلکه کیفیت تجربه‌ای است که در مواجهه با آن پدید می‌آید. هر فضا، پیش از آنکه صرفاً موقعیتی در جهان باشد، می‌تواند امکانی برای ظهور یک وضعیت فراهم کند؛ وضعیتی که در آن، مرز میان آنچه بیرون از ماست و آنچه درون ما می‌گذرد، به‌سادگی قابل تشخیص نیست.\n\nاز تقابل میان فضا، ادراک و تجربه، وضعیتی شکل می‌گیرد که در آن، آنچه درون ما می‌گذرد، گاه تنها از خلال مواجهه با محیط امکان ظهور پیدا می‌کند و از همین‌رو، شیوه‌ای از بودنِ ما را آشکار می‌سازد.\n\nخانه از جمله آن فضاهایی است که این امکان را فراهم می‌کند؛ نه به‌خاطر کارکرد یا معنای از پیش‌تعیین‌شده‌اش، بلکه به این دلیل که تجربه‌ی زیستن در آن، انسان را در بی‌واسطه‌ترین مواجهه با خود قرار می‌دهد. از این رو، خانه برای من نه موضوع اصلی، بلکه بستری است که امکان مشاهده و آشکار شدن این وضعیت درونی را فراهم می‌کند."
+   },
+   "credits": {
+    "en": null,
+    "fa": null
+   },
+   "photos": [
+    {
+     "id": 1,
+     "index": 0,
+     "image_url": "images/shared-border-01.jpg",
+     "thumb_url": "images/shared-border-01-thumb.jpg",
+     "width": 2400,
+     "height": 1698,
+     "placeholder": null,
+     "plate_no": 1,
+     "plate": {
+      "en": "Plate 01",
+      "fa": "قاب ۰۱"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 2,
+     "index": 1,
+     "image_url": "images/shared-border-02.jpg",
+     "thumb_url": "images/shared-border-02-thumb.jpg",
+     "width": 2400,
+     "height": 1696,
+     "placeholder": null,
+     "plate_no": 2,
+     "plate": {
+      "en": "Plate 02",
+      "fa": "قاب ۰۲"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 3,
+     "index": 2,
+     "image_url": "images/shared-border-03.jpg",
+     "thumb_url": "images/shared-border-03-thumb.jpg",
+     "width": 2400,
+     "height": 1699,
+     "placeholder": null,
+     "plate_no": 3,
+     "plate": {
+      "en": "Plate 03",
+      "fa": "قاب ۰۳"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 4,
+     "index": 3,
+     "image_url": "images/shared-border-04.jpg",
+     "thumb_url": "images/shared-border-04-thumb.jpg",
+     "width": 2400,
+     "height": 1699,
+     "placeholder": null,
+     "plate_no": 4,
+     "plate": {
+      "en": "Plate 04",
+      "fa": "قاب ۰۴"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 5,
+     "index": 4,
+     "image_url": "images/shared-border-05.jpg",
+     "thumb_url": "images/shared-border-05-thumb.jpg",
+     "width": 2400,
+     "height": 1700,
+     "placeholder": null,
+     "plate_no": 5,
+     "plate": {
+      "en": "Plate 05",
+      "fa": "قاب ۰۵"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 6,
+     "index": 5,
+     "image_url": "images/shared-border-06.jpg",
+     "thumb_url": "images/shared-border-06-thumb.jpg",
+     "width": 2400,
+     "height": 1722,
+     "placeholder": null,
+     "plate_no": 6,
+     "plate": {
+      "en": "Plate 06",
+      "fa": "قاب ۰۶"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 7,
+     "index": 6,
+     "image_url": "images/shared-border-07.jpg",
+     "thumb_url": "images/shared-border-07-thumb.jpg",
+     "width": 2400,
+     "height": 1699,
+     "placeholder": null,
+     "plate_no": 7,
+     "plate": {
+      "en": "Plate 07",
+      "fa": "قاب ۰۷"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 8,
+     "index": 7,
+     "image_url": "images/shared-border-08.jpg",
+     "thumb_url": "images/shared-border-08-thumb.jpg",
+     "width": 2400,
+     "height": 1696,
+     "placeholder": null,
+     "plate_no": 8,
+     "plate": {
+      "en": "Plate 08",
+      "fa": "قاب ۰۸"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 9,
+     "index": 8,
+     "image_url": "images/shared-border-09.jpg",
+     "thumb_url": "images/shared-border-09-thumb.jpg",
+     "width": 2400,
+     "height": 1699,
+     "placeholder": null,
+     "plate_no": 9,
+     "plate": {
+      "en": "Plate 09",
+      "fa": "قاب ۰۹"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 10,
+     "index": 9,
+     "image_url": "images/shared-border-10.jpg",
+     "thumb_url": "images/shared-border-10-thumb.jpg",
+     "width": 2400,
+     "height": 1696,
+     "placeholder": null,
+     "plate_no": 10,
+     "plate": {
+      "en": "Plate 10",
+      "fa": "قاب ۱۰"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 11,
+     "index": 10,
+     "image_url": "images/shared-border-11.jpg",
+     "thumb_url": "images/shared-border-11-thumb.jpg",
+     "width": 2400,
+     "height": 1699,
+     "placeholder": null,
+     "plate_no": 11,
+     "plate": {
+      "en": "Plate 11",
+      "fa": "قاب ۱۱"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 12,
+     "index": 11,
+     "image_url": "images/shared-border-12.jpg",
+     "thumb_url": "images/shared-border-12-thumb.jpg",
+     "width": 2400,
+     "height": 1696,
+     "placeholder": null,
+     "plate_no": 12,
+     "plate": {
+      "en": "Plate 12",
+      "fa": "قاب ۱۲"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 13,
+     "index": 12,
+     "image_url": "images/shared-border-13.jpg",
+     "thumb_url": "images/shared-border-13-thumb.jpg",
+     "width": 2400,
+     "height": 1699,
+     "placeholder": null,
+     "plate_no": 13,
+     "plate": {
+      "en": "Plate 13",
+      "fa": "قاب ۱۳"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": null,
+      "fa": null
+     }
+    },
+    {
+     "id": 14,
+     "index": 13,
+     "image_url": "images/shared-border-14.jpg",
+     "thumb_url": "images/shared-border-14-thumb.jpg",
+     "width": 2126,
+     "height": 1535,
+     "placeholder": null,
+     "plate_no": 14,
+     "plate": {
+      "en": "Plate 14",
+      "fa": "قاب ۱۴"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": "Digital study, double exposure",
+      "fa": "اتود دیجیتال، دابل اکسپوز"
+     }
+    },
+    {
+     "id": 15,
+     "index": 14,
+     "image_url": "images/shared-border-15.jpg",
+     "thumb_url": "images/shared-border-15-thumb.jpg",
+     "width": 2126,
+     "height": 1535,
+     "placeholder": null,
+     "plate_no": 15,
+     "plate": {
+      "en": "Plate 15",
+      "fa": "قاب ۱۵"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": "Digital study, double exposure",
+      "fa": "اتود دیجیتال، دابل اکسپوز"
+     }
+    },
+    {
+     "id": 16,
+     "index": 15,
+     "image_url": "images/shared-border-16.jpg",
+     "thumb_url": "images/shared-border-16-thumb.jpg",
+     "width": 2127,
+     "height": 1544,
+     "placeholder": null,
+     "plate_no": 16,
+     "plate": {
+      "en": "Plate 16",
+      "fa": "قاب ۱۶"
+     },
+     "place": {
+      "en": null,
+      "fa": null
+     },
+     "caption": {
+      "en": "Hand-made study, thinner transfer print on Plexiglas",
+      "fa": "اتود دستی، چاپ تینر روی متریال پلکسی"
+     }
+    }
+   ],
+   "prev": {
+    "slug": "shared-border",
+    "title": {
+     "en": "Shared Border",
+     "fa": "مرز مشترک"
+    }
+   },
+   "next": {
+    "slug": "shared-border",
+    "title": {
+     "en": "Shared Border",
+     "fa": "مرز مشترک"
+    }
+   }
+  }
+ ],
+ "home": [
+  {
+   "series_slug": "shared-border",
+   "series_title": {
+    "en": "Shared Border",
+    "fa": "مرز مشترک"
+   },
+   "year": 2024,
+   "photo": {
+    "id": 1,
+    "index": 0,
+    "image_url": "images/shared-border-01.jpg",
+    "thumb_url": "images/shared-border-01-thumb.jpg",
+    "width": 2400,
+    "height": 1698,
+    "placeholder": null,
+    "plate_no": 1,
+    "plate": {
+     "en": "Plate 01",
+     "fa": "قاب ۰۱"
+    },
+    "place": {
+     "en": null,
+     "fa": null
+    },
+    "caption": {
+     "en": null,
+     "fa": null
+    }
+   }
+  },
+  {
+   "series_slug": "shared-border",
+   "series_title": {
+    "en": "Shared Border",
+    "fa": "مرز مشترک"
+   },
+   "year": 2024,
+   "photo": {
+    "id": 5,
+    "index": 4,
+    "image_url": "images/shared-border-05.jpg",
+    "thumb_url": "images/shared-border-05-thumb.jpg",
+    "width": 2400,
+    "height": 1700,
+    "placeholder": null,
+    "plate_no": 5,
+    "plate": {
+     "en": "Plate 05",
+     "fa": "قاب ۰۵"
+    },
+    "place": {
+     "en": null,
+     "fa": null
+    },
+    "caption": {
+     "en": null,
+     "fa": null
+    }
+   }
+  },
+  {
+   "series_slug": "shared-border",
+   "series_title": {
+    "en": "Shared Border",
+    "fa": "مرز مشترک"
+   },
+   "year": 2024,
+   "photo": {
+    "id": 9,
+    "index": 8,
+    "image_url": "images/shared-border-09.jpg",
+    "thumb_url": "images/shared-border-09-thumb.jpg",
+    "width": 2400,
+    "height": 1699,
+    "placeholder": null,
+    "plate_no": 9,
+    "plate": {
+     "en": "Plate 09",
+     "fa": "قاب ۰۹"
+    },
+    "place": {
+     "en": null,
+     "fa": null
+    },
+    "caption": {
+     "en": null,
+     "fa": null
+    }
+   }
+  },
+  {
+   "series_slug": "shared-border",
+   "series_title": {
+    "en": "Shared Border",
+    "fa": "مرز مشترک"
+   },
+   "year": 2024,
+   "photo": {
+    "id": 12,
+    "index": 11,
+    "image_url": "images/shared-border-12.jpg",
+    "thumb_url": "images/shared-border-12-thumb.jpg",
+    "width": 2400,
+    "height": 1696,
+    "placeholder": null,
+    "plate_no": 12,
+    "plate": {
+     "en": "Plate 12",
+     "fa": "قاب ۱۲"
+    },
+    "place": {
+     "en": null,
+     "fa": null
+    },
+    "caption": {
+     "en": null,
+     "fa": null
+    }
+   }
+  },
+  {
+   "series_slug": "shared-border",
+   "series_title": {
+    "en": "Shared Border",
+    "fa": "مرز مشترک"
+   },
+   "year": 2024,
+   "photo": {
+    "id": 3,
+    "index": 2,
+    "image_url": "images/shared-border-03.jpg",
+    "thumb_url": "images/shared-border-03-thumb.jpg",
+    "width": 2400,
+    "height": 1699,
+    "placeholder": null,
+    "plate_no": 3,
+    "plate": {
+     "en": "Plate 03",
+     "fa": "قاب ۰۳"
+    },
+    "place": {
+     "en": null,
+     "fa": null
+    },
+    "caption": {
+     "en": null,
+     "fa": null
+    }
+   }
+  },
+  {
+   "series_slug": "shared-border",
+   "series_title": {
+    "en": "Shared Border",
+    "fa": "مرز مشترک"
+   },
+   "year": 2024,
+   "photo": {
+    "id": 8,
+    "index": 7,
+    "image_url": "images/shared-border-08.jpg",
+    "thumb_url": "images/shared-border-08-thumb.jpg",
+    "width": 2400,
+    "height": 1696,
+    "placeholder": null,
+    "plate_no": 8,
+    "plate": {
+     "en": "Plate 08",
+     "fa": "قاب ۰۸"
+    },
+    "place": {
+     "en": null,
+     "fa": null
+    },
+    "caption": {
+     "en": null,
+     "fa": null
+    }
+   }
+  }
+ ],
+ "books": [],
+ "prints": [],
+ "frames": [],
+ "articles": [
+  {
+   "id": 1,
+   "kind": "essay",
+   "title": {
+    "en": "Artist statement",
+    "fa": "آرتیست استیتمنت"
+   },
+   "source": {
+    "en": "Bahar Aflatoonian",
+    "fa": "بهار افلاطونیان"
+   },
+   "excerpt": {
+    "en": "For me, photography is less a tool for recording the world than a way of coming closer to what usually goes unseen.",
+    "fa": "برای من، عکاسی بیش از آنکه ابزاری برای ثبت جهان باشد، راهی برای نزدیک شدن به آن چیزی است که معمولاً دیده نمی‌شود."
+   },
+   "readable": true,
+   "external_url": null,
+   "read_minutes": 2
+  }
+ ],
+ "news": {
+  "upcoming": null,
+  "years": []
+ },
+ "bio": {
+  "name": {
+   "en": "Bahar Aflatoonian",
+   "fa": "بهار افلاطونیان"
+  },
+  "headline": {
+   "en": "Photographer and senior photo editor",
+   "fa": "عکاس و ادیتور ارشد"
+  },
+  "body": {
+   "en": "Bahar Aflatoonian (b. 2001, Yazd) is a visual artist and photographer. After studying graphic design, Aflatoonian received a BA in Photography from Pars University of Art and Architecture.\n\nAlongside the artistic practice, Aflatoonian works as an editor of architectural photographs and as a collaborator on architectural photography projects. Working with architecture and space gradually led the practice towards long-term, research-based projects: projects that begin with personal experience and arrive at questions reaching beyond an individual story.\n\nPhotography is the main medium, and the work focuses on the relationship between lived space, perception and memory. It seeks to show how everyday spaces can become a ground in which inner states, lived experience and the forming of human identity come to light.",
+   "fa": "بهار افلاطونیان (متولد ۱۳۸۰، یزد) هنرمند تجسمی و عکاس است. او پس از تحصیل در رشته‌ی گرافیک، مدرک کارشناسی عکاسی خود را از دانشگاه هنر و معماری پارس دریافت کرد.\n\nاو در کنار فعالیت هنری خود، به‌عنوان ادیتور عکس‌های معماری و همکار پروژه‌های عکاسی معماری فعالیت می‌کند. تجربه‌ی کار با معماری و فضا، به‌تدریج مسیر فعالیت هنری او را به سوی پروژه‌های بلندمدت و پژوهش‌محور سوق داد؛ پروژه‌هایی که از تجربه‌های شخصی آغاز می‌شوند و به پرسش‌هایی فراتر از روایت فردی می‌رسند.\n\nرسانه‌ی اصلی او عکاسی است و آثارش بر رابطه‌ی میان فضای زیسته، ادراک و حافظه تمرکز دارند. او می‌کوشد نشان دهد چگونه فضاهای روزمره می‌توانند بستری برای آشکار شدن وضعیت‌های درونی، تجربه‌ی زیسته و شکل‌گیری هویت انسان باشند."
+  },
+  "portrait_url": "images/portrait.jpg",
+  "portrait_caption": {
+   "en": null,
+   "fa": null
+  },
+  "columns": [
+   {
+    "section": "awards",
+    "head": {
+     "en": "Selected awards",
+     "fa": "جوایز منتخب"
+    },
+    "rows": []
+   },
+   {
+    "section": "education",
+    "head": {
+     "en": "Education & teaching",
+     "fa": "تحصیلات و تدریس"
+    },
+    "rows": [
+     {
+      "k": {
+       "en": null,
+       "fa": null
+      },
+      "v": {
+       "en": "BA in Photography, Pars University of Art and Architecture",
+       "fa": "کارشناسی عکاسی، دانشگاه هنر و معماری پارس"
+      }
+     },
+     {
+      "k": {
+       "en": null,
+       "fa": null
+      },
+      "v": {
+       "en": "Studies in graphic design",
+       "fa": "تحصیل در رشته‌ی گرافیک"
+      }
+     }
+    ]
+   },
+   {
+    "section": "collections",
+    "head": {
+     "en": "Public collections",
+     "fa": "مجموعه‌های عمومی"
+    },
+    "rows": []
+   }
+  ],
+  "downloads": []
+ },
+ "contact": {
+  "blocks": [
+   {
+    "key": "studio",
+    "head": {
+     "en": "Studio",
+     "fa": "استودیو"
+    },
+    "body": {
+     "en": "bahar.aflatounian@gmail.com",
+     "fa": "bahar.aflatounian@gmail.com"
+    }
+   },
+   {
+    "key": "representation",
+    "head": {
+     "en": "Gallery representation",
+     "fa": "نمایندگی گالری"
+    },
+    "body": {
+     "en": null,
+     "fa": null
+    }
+   }
+  ],
+  "instagram": null,
+  "subjects": [
+   {
+    "key": "print",
+    "label": {
+     "en": "Print inquiry",
+     "fa": "سفارش پرینت"
+    }
+   },
+   {
+    "key": "book",
+    "label": {
+     "en": "Book order",
+     "fa": "سفارش کتاب"
+    }
+   },
+   {
+    "key": "exhibition",
+    "label": {
+     "en": "Exhibition",
+     "fa": "نمایشگاه"
+    }
+   },
+   {
+    "key": "press",
+    "label": {
+     "en": "Press",
+     "fa": "مطبوعات"
+    }
+   },
+   {
+    "key": "other",
+    "label": {
+     "en": "Other",
+     "fa": "سایر"
+    }
+   }
+  ],
+  "downloads": []
+ }
+}

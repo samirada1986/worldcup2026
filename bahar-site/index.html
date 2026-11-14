@@ -671,6 +671,13 @@
 </sc-if>
 
 </x-dc>
+<!-- Netlify Forms: declares the "contact" form so Netlify detects it at deploy time.
+     The visible form is rendered by the script; it posts these same fields. -->
+<form name="contact" method="POST" data-netlify="true" netlify-honeypot="website" hidden>
+  <input type="hidden" name="form-name" value="contact">
+  <input name="name"><input name="email" type="email"><input name="subject"><input name="lang"><input name="website">
+  <textarea name="message"></textarea>
+</form>
 <script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a04425&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#a04425&quot;,&quot;#3f5c4a&quot;,&quot;#1f3550&quot;,&quot;#6b4a7a&quot;],&quot;section&quot;:&quot;Identity&quot;},&quot;startLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;en&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;fa&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Identity&quot;},&quot;startDark&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Identity&quot;},&quot;slideSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:6,&quot;min&quot;:3,&quot;max&quot;:12,&quot;step&quot;:1,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Home slideshow&quot;}}">
 class Component extends DCLogic {
   state = {
@@ -760,15 +767,19 @@ class Component extends DCLogic {
     if (window.location.hash === h) this.applyHash(); else window.location.hash = h;
   }
 
-  // ------------------------------------------------------------------ backend data
-  // All content comes from the backend (window.BAHAR_API_BASE, see config.js).
-  // There is deliberately NO built-in sample content: if the API cannot be reached the visitor sees
+  // ------------------------------------------------------------------ data
+  // All content comes from window.BAHAR_API_BASE (see config.js): either the static JSON files in data/
+  // (window.BAHAR_STATIC = true, e.g. on Netlify) or the PHP backend's API.
+  // There is deliberately NO built-in sample content: if the data cannot be loaded the visitor sees
   // an error with a retry button, never invented text, and the contact form never pretends to send.
 
   apiBase() { return String(window.BAHAR_API_BASE || '').replace(/\/+$/, ''); }
+  isStatic() { return !!window.BAHAR_STATIC; }
+  /** '/bootstrap' → '<base>/bootstrap' (API) or '<base>/bootstrap.json' (static files). */
+  apiUrl(path) { return this.apiBase() + path + (this.isStatic() ? '.json' : ''); }
 
   api(path) {
-    return fetch(this.apiBase() + path, { headers: { Accept: 'application/json' } }).then(r => {
+    return fetch(this.apiUrl(path), { headers: { Accept: 'application/json' } }).then(r => {
       if (!r.ok) throw new Error(path + ' → ' + r.status);
       return r.json();
     });
@@ -790,7 +801,7 @@ class Component extends DCLogic {
     const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
     const abortT = ctrl ? setTimeout(() => ctrl.abort(), 30000) : null;
     try {
-      const r = await fetch(base + '/bootstrap', { headers: { Accept: 'application/json' }, signal: ctrl ? ctrl.signal : undefined });
+      const r = await fetch(this.apiUrl('/bootstrap'), { headers: { Accept: 'application/json' }, signal: ctrl ? ctrl.signal : undefined });
       if (!r.ok) throw new Error('/bootstrap → ' + r.status);
       const data = await r.json();
       if (!data || !Array.isArray(data.series)) throw new Error('/bootstrap: unexpected response');
@@ -890,14 +901,23 @@ class Component extends DCLogic {
     if (!fm.name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fm.email.trim()) || !fm.msg.trim()) { this.toast(t.formErr); return; }
     if (!s.data) { this.toast(fa ? 'اتصال برقرار نشد؛ دوباره تلاش کنید' : 'Connection problem — please try again'); return; }
     const keys = (s.data.contact.subjects || []).map(x => x.key);
+    const subject = keys.includes(s.subject) ? s.subject : 'other';
     this.setState({ sending: true });
     try {
-      const res = await fetch(this.apiBase() + '/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: fm.name.trim(), email: fm.email.trim(), subject: keys.includes(s.subject) ? s.subject : 'other', message: fm.msg.trim(), lang: this.lang(), website: fm.website })
-      });
-      if (res.status === 201) {
+      // Static site (Netlify): the message goes to Netlify Forms (form "contact" declared in index.html).
+      // With the PHP backend: to its /contact endpoint.
+      const res = this.isStatic()
+        ? await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ 'form-name': 'contact', name: fm.name.trim(), email: fm.email.trim(), subject: subject, message: fm.msg.trim(), lang: this.lang(), website: fm.website }).toString()
+          })
+        : await fetch(this.apiBase() + '/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: fm.name.trim(), email: fm.email.trim(), subject: subject, message: fm.msg.trim(), lang: this.lang(), website: fm.website })
+          });
+      if (this.isStatic() ? res.ok : res.status === 201) {
         this.setState({ sent: true, sending: false, form: { name: '', email: '', msg: '', website: '' } });
         return;
       }
@@ -906,7 +926,7 @@ class Component extends DCLogic {
         ? (fa ? 'پیام‌های زیادی فرستاده شده؛ کمی بعد دوباره تلاش کنید' : 'Too many messages — please try again later')
         : res.status === 422
           ? (fa ? 'ارسال نشد؛ ورودی‌ها را بررسی کنید' : 'Could not send — please check your entries')
-          : (fa ? 'ارسال نشد؛ لطفاً کمی بعد دوباره تلاش کنید' : 'Could not send — please try again later'));
+          : (fa ? 'ارسال نشد؛ لطفاً کمی بعد دوباره تلاش کنید یا مستقیم ایمیل بزنید' : 'Could not send — please try again later or write an email directly'));
     } catch (e) {
       this.setState({ sending: false });
       this.toast(fa ? 'اتصال برقرار نشد؛ دوباره تلاش کنید' : 'Connection problem — please try again');
@@ -972,6 +992,16 @@ class Component extends DCLogic {
   fmt(n) {
     if (typeof n === 'number' && !Number.isInteger(n)) n = n.toFixed(2);   // prices like 99.5 → 99.50
     return this.lang() === 'fa' ? String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]) : String(n);
+  }
+
+  /** "{year}" → current year: Gregorian in English, Jalali with Persian digits in Persian. */
+  withYear(text) {
+    if (!text || text.indexOf('{year}') < 0) return text;
+    let y = String(new Date().getFullYear());
+    if (this.lang() === 'fa') {
+      try { y = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric' }).format(new Date()).replace(/[^۰-۹0-9]/g, ''); } catch (e) { /* keep Gregorian */ }
+    }
+    return text.split('{year}').join(this.fmt(y));
   }
 
   toast(msg) {
@@ -1289,7 +1319,9 @@ class Component extends DCLogic {
       year: this.pick(y.label), col: i === newsYears.length - 1 && newsYears.length > 1 ? c.dim : c.fg,
       items: y.items.map(it => ({ when: this.pick(it.when), what: this.pick(it.what) }))
     }));
-    const up = d && d.news.upcoming;
+    // Static data has no server to hide an event that is over: honour its optional "until" date here.
+    const up0 = d && d.news.upcoming;
+    const up = up0 && !(up0.until && /^\d{4}-\d{2}-\d{2}$/.test(up0.until) && up0.until < new Date().toISOString().slice(0, 10)) ? up0 : null;
     const upcoming = up ? { label: this.pick(up.label) || t.upcoming, title: this.pick(up.title), body: this.pick(up.body) } : { label: '', title: '', body: '' };
 
     // ---- bio
@@ -1380,7 +1412,7 @@ class Component extends DCLogic {
       keyActivate: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (e.currentTarget && e.currentTarget.click) e.currentTarget.click(); } },
       hasUpcoming: !!up, upcoming, hasPrints, noPrints: !!d && !hasPrints, hasFrames,
       noBooks: !!d && !books.length, noArticles: !!d && !articles.length, noNews: !!d && !news.length && !up,
-      worksMeta, pubMeta, initials: nameInitials, copyright: this.pick(site.copyright),
+      worksMeta, pubMeta, initials: nameInitials, copyright: this.withYear(this.pick(site.copyright)),
       portraitBg: bio.portrait_url ? this.img(bio.portrait_url, 'cover') : 'linear-gradient(160deg,#d5b090 0%,#7c5335 55%,#2a1408 100%)',
       noPortrait: !bio.portrait_url, portraitAlt: t.portrait + (t.name ? ' — ' + t.name : ''),
       portraitCaption: bio.portrait_url ? tx.portrait_caption : '',
