@@ -673,6 +673,25 @@
    "readable": true,
    "external_url": null,
    "read_minutes": 2
+  },
+  {
+   "id": 2,
+   "kind": "essay",
+   "title": {
+    "en": "The archive as practice",
+    "fa": "آرشیو به‌مثابه کار"
+   },
+   "source": {
+    "en": "Bahar Aflatoonian",
+    "fa": "بهار افلاطونیان"
+   },
+   "excerpt": {
+    "en": "Before it is a place, an archive is a decision about what deserves to remain and what may be forgotten.",
+    "fa": "آرشیو پیش از آنکه محل نگهداری باشد، تصمیمی است دربارهٔ اینکه چه چیزی ارزش ماندن دارد و چه چیزی باید فراموش شود."
+   },
+   "external_url": null,
+   "read_minutes": 3,
+   "readable": true
   }
  ],
  "news": {
