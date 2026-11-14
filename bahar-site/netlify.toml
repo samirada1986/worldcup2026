@@ -1,0 +1,39 @@
+# Netlify config for the Bahar Aflatoonian front end (static, no build step).
+# In Netlify set "Base directory" to: bahar-site
+# (this file is read from that folder; the rest of the repository is not published).
+
+[build]
+  publish = "."
+  command = ""
+
+# Fully static site: content is in data/*.json, photos in images/, no PHP and no database.
+# The contact form uses Netlify Forms (form "contact" declared in index.html).
+# In Netlify: Forms -> enable form detection, then redeploy once; set an email notification
+# under Forms -> Form notifications to receive messages by email.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
