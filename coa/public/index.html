@@ -623,12 +623,6 @@ details.acc[open] summary::after{transform:rotate(180deg)}
 .catc .ph img{transition:transform 900ms var(--e-out)}
 .catc .nm{font-size:var(--t-h4);font-weight:500;line-height:var(--lh-head)}
 @media (hover:hover){.catc:hover .ph img{transform:scale(1.04)}.catc:hover .nm{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}}
-.looks2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s12) var(--gap)}
-.lk{display:flex;flex-direction:column;gap:var(--s3)}
-.lk-im{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-bottom:var(--s2)}
-.lk-im .ph{display:block;background:var(--surface)}
-.lk-l{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2)}
-.lk-l li{display:flex;justify-content:space-between;gap:var(--s4);align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:var(--s2)}
 .story.ab .tx .cap{color:var(--fg)}
 .nav{gap:var(--s6);align-items:center}
 .dd{position:relative}
@@ -677,7 +671,6 @@ details.acc[open] summary::after{transform:rotate(180deg)}
   .cats{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:calc(var(--pad)*-1);padding-inline:var(--pad);scrollbar-width:none}
   .cats::-webkit-scrollbar{display:none}
   .cats li{flex:0 0 44%;scroll-snap-align:start}
-  .looks2{grid-template-columns:1fr;gap:var(--s12)}
   .hero .fan.f3 a{flex-basis:62%}
 }
 @media (prefers-reduced-motion:reduce){.dd-p,.ov-filters .ov-p{animation:none}.catc .ph img{transition:none}}
@@ -855,8 +848,6 @@ function storeShell(v,seg){var n=cartCount(),wn=S.wishlist.length,cm=seg[0]==='s
 /* ---------- storefront views ---------- */
 var HERO=[['street','p6','قهوه‌ای'],['mblue','p1','آبی آسمانی'],['pgreen','p4','سبز']];
 var CATIMG={skirt:'garden',top:'satin',polar:'poster',cardigan:'polar',trench:'tsage'};
-/* outfits come only from COA's own texts: journal post j2 and the silk-top description */
-var LOOKS=[{t:'ترنچ‌کت بسته با کمربند، روی دامن ساتن',post:'j2',it:[['p6','قهوه‌ای'],['p1','کرم']]},{t:'تاپ سیلک با دامن ساتن',it:[['p3','کاکائویی'],['p2','سرمه‌ای']]}];
 function vHome(){var C=S.content,act=S.products.filter(function(p){return p.active});
   function byTs(a,b){return b.ts-a.ts}
   var seen={},nw=act.filter(function(p){return p.isNew}).sort(byTs).filter(function(p){if(seen[p.cat])return false;seen[p.cat]=1;return true}).slice(0,4);
@@ -864,18 +855,15 @@ function vHome(){var C=S.content,act=S.products.filter(function(p){return p.acti
   var ft=act.filter(function(p){return nid.indexOf(p.id)<0}).sort(function(a,b){var x=fo.indexOf(a.id),y=fo.indexOf(b.id);x=x<0?99:x;y=y<0?99:y;return x-y||byTs(a,b)}).slice(0,4);
   var hero=HERO.filter(function(h){var p=P(h[1]);return p&&p.active});
   var cats=CATS.map(function(c){var l=act.filter(function(p){return p.cat===c.id});return{c:c,n:l.length,src:IMG[CATIMG[c.id]]||(l[0]&&img(l[0]))}}).filter(function(x){return x.n});
-  var looks=LOOKS.map(function(l){return{t:l.t,post:l.post,it:l.it.map(function(x){return{p:P(x[0]),c:x[1]}}).filter(function(x){return x.p&&x.p.active})}}).filter(function(l){return l.it.length>1});
   function grid(L){return '<div class="grid v'+(L.length>3?4:3)+'">'+L.map(card).join('')+'</div>'}
-  var post=function(id){return (C.posts||[]).filter(function(x){return x.id===id})[0]};
   return{t:'COA — پوشاک زنانه',b:
   '<section class="wrap"><div class="g hero"><div class="tx">'+fol('01','COA is COA')+'<h1 class="display" data-rv="lines">'+lines(C.heroTitle)+'</h1><p class="lg muted" data-rv="up" style="--i:6">'+esc(C.heroSub)+'</p><div class="cta" data-rv="up" style="--i:8"><a class="btn" href="#/shop">مشاهده محصولات'+ic('arrow','arr')+'</a></div></div>'+
    '<div class="fan f3">'+hero.map(function(h,i){var p=P(h[1]);return '<a class="ph r34" data-rv="img" style="--i:'+(i*2)+'" data-pick="'+p.id+'" data-v="'+esc(h[2])+'" href="#/product/'+p.id+'" aria-label="'+esc(p.name)+'، '+esc(h[2])+'"><img src="'+IMG[h[0]]+'" alt="" width="600" height="800"'+(i?' loading="lazy"':' fetchpriority="high"')+'></a>'}).join('')+'</div></div></section>'+
   (cats.length?'<section class="wrap sec">'+fol('02','دسته‌ها')+'<div class="sec-h" data-rv="up"><h2>خرید بر اساس دسته</h2><a class="lnk sup" href="#/shop">همه محصولات</a></div><ul class="cats" role="list">'+cats.map(function(x,i){return '<li data-rv="up" style="--i:'+i+'"><a class="catc" href="#/shop?cat='+x.c.id+'"><span class="ph r34"><img src="'+x.src+'" alt="" loading="lazy" width="600" height="800"></span><span class="nm">'+esc(x.c.name)+'</span><span class="cap muted">'+fa(x.n)+' محصول</span></a></li>'}).join('')+'</ul></section>':'')+
   (nw.length?'<section class="wrap sec">'+fol('03','تازه‌ها')+'<div class="sec-h" data-rv="up"><h2>تازه رسیده</h2><a class="lnk sup" href="#/shop?new=1">همه تازه‌ها</a></div>'+grid(nw)+'</section>':'')+
   (ft.length?'<section class="wrap sec">'+fol('04','منتخب')+'<div class="sec-h" data-rv="up"><div><h2>انتخاب‌های COA</h2><p class="muted" style="margin-top:8px">از دسته‌های مختلف، برای کنار هم پوشیدن.</p></div><a class="lnk sup" href="#/shop">فروشگاه</a></div>'+grid(ft)+'</section>':'')+
-  (looks.length?'<section class="wrap sec">'+fol('05','ست‌ها')+'<div class="sec-h" data-rv="up"><div><h2>ست‌های پیشنهادی</h2><p class="muted" style="margin-top:8px">ترکیب‌هایی که خود COA پیشنهاد کرده است.</p></div></div><div class="looks2">'+looks.map(function(l,i){var po=l.post&&post(l.post);return '<article class="lk" data-rv="up" style="--i:'+i+'"><div class="lk-im">'+l.it.map(function(x){return '<a class="ph r34" href="#/product/'+x.p.id+'" data-pick="'+x.p.id+'" data-v="'+esc(x.c)+'" tabindex="-1" aria-hidden="true"><img src="'+pim(x.p,x.c)+'" alt="" loading="lazy" width="600" height="800"></a>'}).join('')+'</div><h3 class="h4">'+esc(l.t)+'</h3><ul class="lk-l">'+l.it.map(function(x){return '<li><a class="lnk" href="#/product/'+x.p.id+'" data-pick="'+x.p.id+'" data-v="'+esc(x.c)+'">'+esc(x.p.name)+'، '+esc(x.c)+'</a><span class="sup muted">'+toman(x.p.price)+'</span></li>'}).join('')+'</ul>'+(po?'<a class="lnk sup" href="#/journal/'+po.id+'">در ژورنال: '+esc(po.title)+'</a>':'')+'</article>'}).join('')+'</div></section>':'')+
   '<section class="story ab"><div class="wrap"><div class="g"><div class="tx"><span class="cap" data-rv="up">درباره COA</span><h2 data-rv="up" style="--i:1">'+esc(C.stmt)+'</h2><a class="btn" href="#/about" style="margin-top:16px;--i:3" data-rv="up">بیشتر دربارهٔ COA'+ic('arrow','arr')+'</a></div><div class="ph r45" data-rv="img"><img src="'+IMG.wind+'" alt="مدل با پیراهن چهارخانه در دشت" loading="lazy" width="1100" height="1261" style="object-position:50% 30%"></div></div></div></section>'+
-  ((C.posts||[]).length?'<section class="wrap sec">'+fol('06','ژورنال')+'<div class="sec-h" data-rv="up"><h2>از ژورنال</h2><a class="lnk sup" href="#/journal">همه نوشته‌ها</a></div><div class="g jr">'+C.posts.slice(0,2).map(postCard).join('')+'</div></section>':'')+
+  ((C.posts||[]).length?'<section class="wrap sec">'+fol('05','ژورنال')+'<div class="sec-h" data-rv="up"><h2>از ژورنال</h2><a class="lnk sup" href="#/journal">همه نوشته‌ها</a></div><div class="g jr">'+C.posts.slice(0,2).map(postCard).join('')+'</div></section>':'')+
   '<section class="wrap sec"><div class="g nl" data-rv="up"><div><h2 class="h3">خبرنامه</h2><p class="muted" style="margin-top:8px">تازه‌ها و نوشته‌های ژورنال، بدون شلوغی. '+DEMO+'</p></div>'+(ui.nl?'<p class="note ok" role="status">ثبت شد. در این نسخه نمایشی ایمیلی فرستاده نمی‌شود.</p>':'<form data-form="nl" class="inline-f"><label class="f"><span>ایمیل</span><input class="in" id="nle" name="email" type="email" required dir="ltr" style="text-align:left" autocomplete="email"></label><button class="btn">عضویت</button></form>')+'</div></section>'}}
 function postCard(p,i,lv){lv=lv||3;return '<article data-rv="up" style="--i:'+((+i||0)%2)+'"><a href="#/journal/'+p.id+'"><div class="ph r32"><img src="'+IMG[p.img]+'" alt="" loading="lazy" width="900" height="600"></div><span class="cap muted">'+fdate(p.ts)+'</span><h'+lv+' class="h4">'+esc(p.title)+'</h'+lv+'></a></article>'}
 function vShop(q){var f=ui.f;if(navd){f.cat=q.cat||'';f.size='';f.color='';f.stock=false}
