@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>COA — دامن ساتن و پوشاک زنانه</title>
+<title>COA — پوشاک زنانه</title>
 <meta name="description" content="COA، برند مستقل پوشاک زنانه: دامن ساتن در ۹ رنگ، تاپ سیلک، پلار و ترنچ‌کت. مشخصات، سایز و نگهداری هر محصول در صفحهٔ خودش آمده است.">
 <meta name="theme-color" content="#F6F3EE">
 <meta property="og:type" content="website">
@@ -614,6 +614,73 @@ details.acc[open] summary::after{transform:rotate(180deg)}
   .pal-band{padding-block:var(--s12)}
 }
 @media (prefers-reduced-motion:reduce){.pal-band{transition:none}.look .ph img{transition:none}}
+
+/* v6 — brand-led home, navigation, filters sheet */
+.fan.f3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cats{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--gap)}
+.catc{display:flex;flex-direction:column;gap:4px}
+.catc .ph{display:block;margin-bottom:var(--s3)}
+.catc .ph img{transition:transform 900ms var(--e-out)}
+.catc .nm{font-size:var(--t-h4);font-weight:500;line-height:var(--lh-head)}
+@media (hover:hover){.catc:hover .ph img{transform:scale(1.04)}.catc:hover .nm{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}}
+.looks2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s12) var(--gap)}
+.lk{display:flex;flex-direction:column;gap:var(--s3)}
+.lk-im{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-bottom:var(--s2)}
+.lk-im .ph{display:block;background:var(--surface)}
+.lk-l{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2)}
+.lk-l li{display:flex;justify-content:space-between;gap:var(--s4);align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:var(--s2)}
+.story.ab .tx .cap{color:var(--fg)}
+.nav{gap:var(--s6);align-items:center}
+.dd{position:relative}
+.dd-b{display:inline-flex;align-items:center;gap:4px;background:none;border:0;padding:var(--s2) 0;font:inherit;color:inherit;cursor:pointer;min-height:44px}
+.dd-b svg{width:16px;height:16px;transition:transform var(--m-hover) var(--e-io)}
+.dd-b[aria-expanded=true] svg{transform:rotate(180deg)}
+.dd-b.on{box-shadow:inset 0 -1px 0 var(--ink)}
+.dd-p{position:absolute;top:calc(100% + 18px);inset-inline-start:-16px;min-width:260px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:var(--s3) var(--s4) var(--s4);z-index:30;box-shadow:0 12px 32px rgba(35,44,56,.08);animation:o-up 260ms var(--e-out) backwards}
+.dd-p ul{list-style:none;margin:0 0 var(--s3);padding:0}
+.dd-p li a{display:flex;justify-content:space-between;align-items:center;gap:var(--s4);min-height:44px;border-bottom:1px solid var(--line);font-weight:400}
+.dd-p li a::after{display:none}
+.dd-p li a[aria-current=page]{font-weight:600}
+.dd-p .lnk::after{display:none}
+.nav a[aria-current=page]{font-weight:600}
+.nav a,.dd-b{white-space:nowrap}
+@media (max-width:1199px){.nav{gap:16px}}
+.ft .cols>div:first-child{grid-column:span 4}
+.ov-menu .ov-h .mark{font-size:var(--t-h4)}
+.ov-menu .big[aria-current=page]{font-weight:600}
+.big-d summary{cursor:pointer;list-style:none}
+.big-d summary::-webkit-details-marker{display:none}
+.big-d summary::after{content:"";margin-inline-start:auto;align-self:center;width:24px;height:24px;background:currentColor;-webkit-mask:var(--ic-plus) center/24px no-repeat;mask:var(--ic-plus) center/24px no-repeat}
+.big-d[open] summary::after{-webkit-mask-image:var(--ic-minus);mask-image:var(--ic-minus)}
+.big-d ul{list-style:none;margin:0;padding:var(--s2) 0 var(--s3);border-bottom:1px solid var(--line)}
+.big-d li a{display:flex;justify-content:space-between;align-items:center;min-height:48px;padding-inline-start:calc(2.2em + var(--s4));font-size:var(--t-h4)}
+.ct{display:grid;gap:0;margin:0}
+.ct>div{display:flex;justify-content:space-between;align-items:center;gap:var(--s4);min-height:64px;border-bottom:1px solid var(--line)}
+.ct>div:first-child{border-top:1px solid var(--line)}
+.ct dt{font-weight:500}.ct dd{margin:0}
+.ct-l{list-style:none;margin:0;padding:0;display:grid;gap:var(--s3)}
+.ab-l{display:flex;flex-wrap:wrap;gap:var(--s3);margin-top:var(--s8)}
+.ft .soc{display:flex;flex-direction:column;gap:var(--s2);align-items:flex-start}
+.f-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding-block:var(--s3);border-block:1px solid var(--line);margin-bottom:var(--s6)}
+.f-bar .btn{flex:1;gap:8px}
+.ov-filters .ov-p{inset-inline:0;bottom:0;max-height:88vh;max-height:88dvh;border-radius:16px 16px 0 0;padding:0 var(--pad) calc(var(--s4) + env(safe-area-inset-bottom));display:flex;flex-direction:column;animation:o-sheet 420ms var(--e-out) backwards}
+.ov-filters .ov-b{flex:1;overflow-y:auto;display:grid;gap:var(--s6);padding-block:var(--s2) var(--s6)}
+.ov-filters .fg{flex-wrap:wrap;overflow:visible;margin:0;padding:0;max-width:none}
+.ov-filters .fg .lab{flex-basis:100%;font-size:var(--t-sm);color:var(--fg);font-weight:500;margin-bottom:var(--s1)}
+.ov-filters .fg .vw{display:none}
+.ov-filters .in.sm{flex:1}
+.ov-filters .ov-f{display:grid;grid-template-columns:auto 1fr;gap:var(--s3);border-top:1px solid var(--line);padding-top:var(--s4)}
+.ov-filters.out .ov-p{transform:translateY(100%);transition:transform 260ms var(--e-io)}
+@keyframes o-sheet{from{transform:translateY(100%)}to{transform:none}}
+@media (max-width:1023px){.cats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:639px){
+  .cats{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:calc(var(--pad)*-1);padding-inline:var(--pad);scrollbar-width:none}
+  .cats::-webkit-scrollbar{display:none}
+  .cats li{flex:0 0 44%;scroll-snap-align:start}
+  .looks2{grid-template-columns:1fr;gap:var(--s12)}
+  .hero .fan.f3 a{flex-basis:62%}
+}
+@media (prefers-reduced-motion:reduce){.dd-p,.ov-filters .ov-p{animation:none}.catc .ph img{transition:none}}
 </style>
 </head>
 <body>
@@ -633,7 +700,7 @@ function fdate(ts,time){try{return new Intl.DateTimeFormat('fa-IR',time?{dateSty
 var DAY=864e5;
 function ltr(s){return '<bdi class="ltr">'+esc(s)+'</bdi>'}
 var DEMO='<span class="demo">نمایشی</span>';
-var IC={zoom:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6"/><path d="M8 11h6"/>',search:'<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>',user:'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',heart:'<path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>',bag:'<path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>',menu:'<path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/>',x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',minus:'<path d="M5 12h14"/>',check:'<path d="M20 6 9 17l-5-5"/>',arrow:'<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>'};
+var IC={chev:'<path d="m6 9 6 6 6-6"/>',filter:'<path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/>',zoom:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6"/><path d="M8 11h6"/>',search:'<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>',user:'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',heart:'<path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>',bag:'<path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>',menu:'<path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/>',x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',minus:'<path d="M5 12h14"/>',check:'<path d="M20 6 9 17l-5-5"/>',arrow:'<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>'};
 function lines(t){return String(t||'').split('\n').filter(Boolean).map(function(x,i){return '<span class="ln" style="--l:'+i+'"><span>'+esc(x)+'</span></span>'}).join('')}
 function fol(n,t){return '<div class="folio" data-rv><span class="lat">N° '+n+'</span> '+t+'</div>'}
 function ic(n,c){return '<svg class="i '+(c||'')+'" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+IC[n]+'</svg>'}
@@ -693,10 +760,12 @@ function seed(){
    content:{topbar:NEWC.topbar,heroTitle:NEWC.heroTitle,heroSub:NEWC.heroSub,stmt:NEWC.stmt,storyTitle:'مجموعه فصل',storyBody:'ساتن، ابریشم و پلار کنار هم؛ برای روزهایی که هوا تصمیمش را نگرفته است.',featured:['p3','p2'],
      posts:[{id:'j1',title:'نگهداری از ساتن',img:'autumn',ts:now-7*DAY,body:'ساتن را با دست و آب خنک بشویید و هرگز نچلانید. برای خشک کردن، آن را روی سطح صاف پهن کنید.\nاتو را روی کمترین حرارت بگذارید و از پشت پارچه اتو بزنید.'},{id:'j2',title:'سه راه پوشیدن ترنچ‌کت',img:'sparkle',ts:now-15*DAY,body:'بسته با کمربند، روی دامن ساتن.\nباز، روی پلار و شلوار جین.\nکمربند گره‌زده از پشت، برای خطی صاف‌تر از جلو.'}],
      faq:[{q:'آیا دوخت سفارشی یا تغییر اندازه انجام می‌دهید؟',a:'خیر. همه محصولات در سایزها و رنگ‌های فهرست‌شده عرضه می‌شوند.'},{q:'سایز مناسب را چطور انتخاب کنم؟',a:'دامن‌ها دو سایز دارند: سایز ۱ با دور کمر ۷۰ و سایز ۲ با دور کمر ۷۵. پلار، کاردیگن و ترنچ‌کت فری‌سایز هستند.'},{q:'پرداخت چگونه است؟',a:'این نسخه نمایشی است و به هیچ درگاه پرداختی وصل نیست.'}],
-     pages:{shipping:'هزینه و زمان ارسال در مرحله تسویه حساب نمایش داده می‌شود. مقادیر این نسخه نمایشی‌اند.',returns:'شرایط مرجوعی هنوز از طرف برند اعلام نشده است. این متن جای‌نگهدار است.',about:'COA is COA. برند مستقل پوشاک.'}}};
+     pages:{shipping:'هزینه و زمان ارسال در مرحله تسویه حساب نمایش داده می‌شود. مقادیر این نسخه نمایشی‌اند.',returns:'شرایط مرجوعی هنوز از طرف برند اعلام نشده است. این متن جای‌نگهدار است.',about:ABOUT_NEW}}};
 }
 /* ---------- store ---------- */
-var NEWC={topbar:'دامن ساتن فون، حالا در ۹ رنگ',heroTitle:'دامن ساتن،\nهر روز یک رنگ.',heroSub:'دو مدل فون و راسته، از کرم و آبی آسمانی تا لیمویی و سرمه‌ای.',stmt:'کوآ را با رنگ می‌شناسند. فرم را ساده نگه می‌داریم تا رنگ و پارچه دیده شوند.'};
+var NEWC={topbar:'تازه‌ها: دامن ساتن، تاپ سیلک و نیم‌زیپ پلار',heroTitle:'پوشاک زنانه،\nبرای هر روز تو.',heroSub:'دامن ساتن، تاپ سیلک، پلار و ترنچ‌کت؛ در رنگ‌هایی که کنار هم پوشیده می‌شوند.',stmt:'رنگ را دوست داریم و فرم را ساده نگه می‌داریم، تا هر قطعه با بقیه ست شود.'};
+var V5C={topbar:'دامن ساتن فون، حالا در ۹ رنگ',heroTitle:'دامن ساتن،\nهر روز یک رنگ.',heroSub:'دو مدل فون و راسته، از کرم و آبی آسمانی تا لیمویی و سرمه‌ای.',stmt:'کوآ را با رنگ می‌شناسند. فرم را ساده نگه می‌داریم تا رنگ و پارچه دیده شوند.'};
+var ABOUT_OLD='COA is COA. برند مستقل پوشاک.',ABOUT_NEW='COA برند مستقل پوشاک زنانه است. دامن ساتن در ۹ رنگ، تاپ سیلک، نیم‌زیپ و کاردیگان پلار و ترنچ‌کت آستردار، قطعه‌های مجموعهٔ فعلی‌اند.\nرنگ برای COA مهم است. فرم‌ها ساده‌اند تا قطعه‌ها کنار هم پوشیده شوند و با هر کدام چند ترکیب ساخته شود.';
 var OLDC={topbar:'ارسال رایگان برای خریدهای بالای آستانه تعیین‌شده',heroTitle:'دامن ساتن،\nبه رنگ حال‌وهوای تو.',heroSub:'دو مدل راسته و فون، در رنگ‌هایی که کوآ را با آن‌ها می‌شناسند.',stmt:'کوآ برای فرم، پارچه و رنگ طراحی می‌کند، نه برای شلوغی.'};
 var NEWP={p2desc:'همان ساتن پشت‌کرپ دامن فون، با برشی راسته که از کمر تا پایین در یک خط صاف می‌افتد.',p2old:'مدل راسته دامن ساتن با خطی صاف از کمر تا پایین.'};
 /* styling notes come only from COA's own photos and texts (product copy, journal) */
@@ -704,8 +773,9 @@ var STYLE={p1:{style:'در عکس‌های کوآ: با تی‌شرت سفید �
  p2:{style:'با تاپ سیلک، همان ترکیبی که در توضیح تاپ آمده است.',pair:['p3','p6']},
  p3:{style:'با دامن ساتن یا شلوار جین.',pair:['p1','p2']},
  p6:{style:'بسته با کمربند روی دامن ساتن، یا باز روی پلار و شلوار جین.',pair:['p1','p4']}};
-function migrate(S){var C=S.content||{};Object.keys(OLDC).forEach(function(k){if(C[k]===OLDC[k])C[k]=NEWC[k]});
+function migrate(S){var C=S.content||{};Object.keys(OLDC).forEach(function(k){if(C[k]===OLDC[k]||C[k]===V5C[k])C[k]=NEWC[k]});if(C.pages&&C.pages.about===ABOUT_OLD)C.pages.about=ABOUT_NEW;
  (S.products||[]).forEach(function(p){if(p.id==='p2'&&p.desc===NEWP.p2old){p.desc=NEWP.p2desc;if(p.seoD===NEWP.p2old)p.seoD=p.desc}var x=STYLE[p.id];if(x&&p.style===undefined){p.style=x.style;p.pair=x.pair}});return S}
+var PHONE=window.matchMedia?matchMedia('(max-width:639px)'):null;
 var KEY='coa-flagship-v3',storageOK=true,S;
 function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&o.v===1)return o}}catch(e){storageOK=false}return null}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){storageOK=false}}
@@ -754,15 +824,20 @@ function overlay(){var o=ui.ov;if(!o)return '';var inner='';
       '<div class="ov-f"><dl><dt>جمع کالاها</dt><dd>'+toman(sub)+'</dd></dl><p class="cap muted">هزینه ارسال در تسویه حساب محاسبه می‌شود.</p><a class="btn full" href="#/checkout">تسویه حساب</a><a class="btn ghost full" href="#/cart">مشاهده سبد</a></div>'
      :'<div class="ov-b"><p class="muted" style="margin-top:16px">سبد شما خالی است.</p><a class="btn" href="#/shop" style="margin-top:24px">رفتن به فروشگاه</a></div>')+'</div>'}
   if(o==='search'){inner='<div class="ov-p" role="dialog" aria-modal="true" aria-label="جست‌وجو"><div class="wrap"><div class="ov-h"><span class="lat">Search</span><button class="icon" data-act="ovclose" aria-label="بستن جست‌وجو">'+ic('x')+'</button></div><form data-form="search" role="search" class="inline-f"><label class="f"><span>جست‌وجو در فروشگاه</span><input class="in" id="q" name="q" autocomplete="off"></label><button class="btn">جست‌وجو</button></form><div class="sg"><span class="cap muted" style="--i:0">دسته‌ها</span>'+CATS.map(function(c,i){return '<a class="chip" style="--i:'+(i+1)+'" href="#/shop?cat='+c.id+'">'+c.name+'</a>'}).join('')+'</div></div></div>'}
+  if(o==='filters')inner='<div class="ov-p" role="dialog" aria-modal="true" aria-label="فیلتر و مرتب‌سازی"><div class="ov-h"><h2 class="h4">فیلتر و مرتب‌سازی</h2><button class="icon" data-act="ovclose" aria-label="بستن فیلترها">'+ic('x')+'</button></div><div class="ov-b">'+(ui.fxh||'')+'</div><div class="ov-f"><button class="btn ghost" data-act="clearf">پاک کردن</button><button class="btn" data-act="ovclose">نمایش '+fa(ui.fxn||0)+' محصول</button></div></div>';
   if(o==='zoom')inner='<div class="ov-p" role="dialog" aria-modal="true" aria-label="تصویر بزرگ‌تر"><button class="icon zx" data-act="ovclose" aria-label="بستن تصویر">'+ic('x')+'</button><img src="'+esc(ui.zoom||'')+'" alt="'+esc(ui.zoomAlt||'')+'" data-act="ovclose"></div>';
-  if(o==='menu'){var M=[['/shop','فروشگاه'],['/collection',S.content.storyTitle],['/journal','ژورنال'],['/about','درباره']];
-    inner='<div class="ov-p" role="dialog" aria-modal="true" aria-label="منو"><div class="ov-h"><span class="mark">COA</span><button class="icon" data-act="ovclose" aria-label="بستن منو">'+ic('x')+'</button></div><nav aria-label="منوی اصلی">'+M.map(function(m,i){return '<a class="big" style="--i:'+i+'" href="#'+m[0]+'"><span class="lat">0'+(i+1)+'</span>'+esc(m[1])+'</a>'}).join('')+'</nav><div class="sm"><a href="#/account">حساب من</a><a href="#/account/wishlist">علاقه‌مندی‌ها</a><a href="#/size-guide">راهنمای سایز</a><a href="#/faq">پرسش‌های پرتکرار</a></div><div class="end"><span class="lat">COA is COA</span><span class="cap">'+ltr('@coa.is.coa')+'</span></div></div>'}
+  if(o==='menu'){var r0=route.split('?')[0];function big(h,l,i){return '<a class="big" style="--i:'+i+'" href="#'+h+'"'+(r0===h?' aria-current="page"':'')+'><span class="lat">0'+(i+1)+'</span>'+l+'</a>'}
+    inner='<div class="ov-p" role="dialog" aria-modal="true" aria-label="منو"><div class="ov-h"><a href="#/" class="mark" aria-label="COA، صفحه اصلی">COA</a><button class="icon" data-act="ovclose" aria-label="بستن منو">'+ic('x')+'</button></div><nav aria-label="منوی اصلی">'+big('/','صفحه اصلی',0)+big('/shop','فروشگاه',1)+
+    '<details class="big-d" style="--i:2"><summary class="big"><span class="lat">03</span>دسته‌بندی‌ها</summary><ul>'+CATS.map(function(c){var k=S.products.filter(function(p){return p.active&&p.cat===c.id}).length;return k?'<li><a href="#/shop?cat='+c.id+'"><span>'+esc(c.name)+'</span><span class="cap muted">'+fa(k)+' محصول</span></a></li>':''}).join('')+'<li><a href="#/shop"><span>همه محصولات</span></a></li></ul></details>'+
+    big('/about','درباره ما',3)+big('/contact','تماس با ما',4)+'</nav><div class="sm"><a href="#/journal">ژورنال</a><a href="#/account">حساب من</a><a href="#/account/wishlist">علاقه‌مندی‌ها</a><a href="#/size-guide">راهنمای سایز</a><a href="#/faq">پرسش‌های پرتکرار</a></div><div class="end"><span class="lat">COA is COA</span><span class="cap">'+ltr('@coa.is.coa')+'</span></div></div>'}
   return '<div class="ov ov-'+o+(ui.ovNew?'':' still')+'"><button class="ov-bg" data-act="ovclose" aria-label="بستن" tabindex="-1"></button>'+inner+'</div>'}
-function storeShell(v,seg){var n=cartCount(),wn=S.wishlist.length;
+function storeShell(v,seg){var n=cartCount(),wn=S.wishlist.length,cm=seg[0]==='shop'&&/[?&]cat=([^&]+)/.exec(route),catOn=cm?decodeURIComponent(cm[1]):'';
   return '<aside class="top" aria-label="اعلان فروشگاه">'+esc(S.content.topbar)+' '+DEMO+'</aside>'+
   '<header class="hd"><div class="wrap"><div class="row">'+
    '<div><button class="icon menu-b" data-act="menu" aria-haspopup="dialog" aria-label="منو">'+ic('menu')+'</button>'+
-   '<nav class="nav" aria-label="اصلی"><a href="#/shop"'+cur(seg[0],'shop')+'>فروشگاه</a><a href="#/collection"'+cur(seg[0],'collection')+'>مجموعه</a><a href="#/journal"'+cur(seg[0],'journal')+'>ژورنال</a><a href="#/about"'+cur(seg[0],'about')+'>درباره</a></nav></div>'+
+   '<nav class="nav" aria-label="اصلی"><a href="#/"'+cur(seg[0]||'','')+'>صفحه اصلی</a><a href="#/shop"'+(seg[0]==='shop'&&!catOn?' aria-current="page"':'')+'>فروشگاه</a>'+
+   '<div class="dd"><button class="dd-b'+(catOn?' on':'')+'" type="button" aria-expanded="false" aria-controls="dd-cat">دسته‌بندی‌ها'+ic('chev','s')+'</button><div class="dd-p" id="dd-cat" hidden><ul>'+CATS.map(function(c){var k=S.products.filter(function(p){return p.active&&p.cat===c.id}).length;return k?'<li><a href="#/shop?cat='+c.id+'"'+(catOn===c.id?' aria-current="page"':'')+'><span>'+esc(c.name)+'</span><span class="cap muted">'+fa(k)+'</span></a></li>':''}).join('')+'</ul><a class="lnk sup" href="#/shop">همه محصولات</a></div></div>'+
+   '<a href="#/about"'+cur(seg[0],'about')+'>درباره ما</a><a href="#/contact"'+cur(seg[0],'contact')+'>تماس با ما</a></nav></div>'+
    '<a href="#/" class="mark" aria-label="COA، صفحه اصلی">COA</a>'+
    '<div class="tools"><button class="icon" data-act="search" aria-haspopup="dialog" aria-label="جست‌وجو">'+ic('search')+'</button>'+
    '<a class="icon d-only" href="#/account" aria-label="حساب کاربری">'+ic('user')+'</a>'+
@@ -771,32 +846,37 @@ function storeShell(v,seg){var n=cartCount(),wn=S.wishlist.length;
   '</div></div></header>'+
   (storageOK?'':'<div class="wrap"><p class="note warn" role="alert" style="margin-top:16px">ذخیره‌سازی مرورگر در دسترس نیست. تغییرات فقط تا بستن این صفحه می‌مانند.</p></div>')+
   '<main id="main" tabindex="-1">'+v+'</main>'+
-  '<footer class="ft"><div class="wrap"><div class="cols"><div><div class="mark">COA</div><p style="margin-top:16px"><span class="lat">COA is COA</span></p><p class="sup"><a class="lnk" href="https://instagram.com/coa.is.coa" target="_blank" rel="noopener">'+ltr('@coa.is.coa')+'</a></p></div>'+
-  '<div><h2>فروشگاه</h2><ul>'+CATS.map(function(c){return '<li><a href="#/shop?cat='+c.id+'">'+c.name+'</a></li>'}).join('')+'</ul></div>'+
+  '<footer class="ft"><div class="wrap"><div class="cols"><div><div class="mark">COA</div><p style="margin-top:16px;max-width:36ch">پوشاک زنانه؛ دامن ساتن، تاپ سیلک، پلار و ترنچ‌کت.</p><p class="sup soc"><a class="lnk" href="https://instagram.com/coa.is.coa" target="_blank" rel="noopener">اینستاگرام '+ltr('@coa.is.coa')+'</a><a class="lnk" href="https://t.me/coaiscoa" target="_blank" rel="noopener">تلگرام '+ltr('@coaiscoa')+'</a></p></div>'+
+  '<div><h2>فروشگاه</h2><ul><li><a href="#/shop">همه محصولات</a></li>'+CATS.map(function(c){return '<li><a href="#/shop?cat='+c.id+'">'+c.name+'</a></li>'}).join('')+'<li><a href="#/collection">'+esc(S.content.storyTitle)+'</a></li></ul></div>'+
+  '<div><h2>COA</h2><ul><li><a href="#/about">درباره ما</a></li><li><a href="#/journal">ژورنال</a></li><li><a href="#/contact">تماس با ما</a></li></ul></div>'+
   '<div><h2>راهنما</h2><ul><li><a href="#/size-guide">راهنمای سایز</a></li><li><a href="#/shipping">ارسال و مرجوعی</a></li><li><a href="#/faq">پرسش‌های پرتکرار</a></li></ul></div>'+
   '<div><h2>پروتوتایپ</h2><ul><li><a href="#/admin">پنل مدیریت</a></li><li><a href="#/design-system">سیستم طراحی</a></li><li><button class="lnk" data-act="reset">بازنشانی داده نمایشی</button></li></ul></div></div>'+
   '<p class="cap muted" style="margin-top:32px">این یک پروتوتایپ نمایشی است. قیمت‌ها، موجودی، سایزها و سفارش‌ها واقعی نیستند و هیچ درگاه پرداختی متصل نیست.</p></div></footer>'}
 /* ---------- storefront views ---------- */
+var HERO=[['street','p6','قهوه‌ای'],['mblue','p1','آبی آسمانی'],['pgreen','p4','سبز']];
+var CATIMG={skirt:'garden',top:'satin',polar:'poster',cardigan:'polar',trench:'tsage'};
+/* outfits come only from COA's own texts: journal post j2 and the silk-top description */
+var LOOKS=[{t:'ترنچ‌کت بسته با کمربند، روی دامن ساتن',post:'j2',it:[['p6','قهوه‌ای'],['p1','کرم']]},{t:'تاپ سیلک با دامن ساتن',it:[['p3','کاکائویی'],['p2','سرمه‌ای']]}];
 function vHome(){var C=S.content,act=S.products.filter(function(p){return p.active});
-  var ft=(C.featured||[]).map(P).filter(function(p){return p&&p.active}).slice(0,2),fid=ft.map(function(p){return p.id});
-  var rest=act.filter(function(p){return fid.indexOf(p.id)<0}),nw=rest.filter(function(p){return p.isNew}).concat(rest.filter(function(p){return !p.isNew})).slice(0,4);
-  return{t:'COA — فروشگاه',b:
-  '<section class="wrap"><div class="g hero"><div class="tx">'+fol('01','دامن ساتن')+'<h1 class="display" data-rv="lines">'+lines(C.heroTitle)+'</h1><p class="lg muted" data-rv="up" style="--i:6">'+esc(C.heroSub)+'</p><div class="cta" data-rv="up" style="--i:8"><a class="btn" href="#/shop?cat=skirt">دیدن دامن‌های ساتن'+ic('arrow','arr')+'</a></div></div>'+
-   '<div class="fan">'+[['mblue','آبی آسمانی'],['molive','زیتونی'],['mbrown','قهوه‌ای'],['limon','لیمویی']].map(function(x,i){return '<a class="ph r34" data-rv="img" style="--i:'+(i*2)+'" data-pick="p1" data-v="'+x[1]+'" href="#/product/p1" aria-label="دامن ساتن فون، '+x[1]+'"><img src="'+IMG[x[0]]+'" alt="" width="572" height="633"'+(i?'':' fetchpriority="high"')+'></a>'}).join('')+'</div></div></section>'+
-  '<section class="wrap"><div class="g stmt"><span class="lat kick" data-rv="up">COA is COA</span><p class="h2" data-rv="up" style="--i:1">'+esc(C.stmt)+'</p></div></section>'+
-  (function(){var p=P('p1');if(!p||!p.active)return '';return '<section class="sec pal-band" style="--pc:'+esc((p.colors[0]||{}).hex||'#EFE6CF')+'"><div class="wrap">'+fol('02','رنگ‌ها')+'<div class="g pal" style="margin-top:24px"><div class="ph r34 prev" data-rv="img">'+p.colors.map(function(c,i){return '<img'+(i?'':' class="on"')+' src="'+pim(p,c.name)+'" alt="'+(i?'':'دامن ساتن فون، '+esc(c.name))+'" loading="lazy" width="572" height="633">'}).join('')+'</div><div class="tx"><h2 data-rv="up">یک دامن، '+fa(p.colors.length)+' رنگ.</h2><p data-rv="up" style="--i:1">ساتن پشت‌کرپ، در '+fa(p.colors.length)+' رنگ. هر رنگ شما را به همان دامن می‌برد.</p><div class="chips" data-rv="up" style="--i:2">'+p.colors.map(function(c,i){return '<a class="chip" href="#/product/p1" data-prev="'+i+'" data-hex="'+esc(c.hex)+'" data-pick="p1" data-v="'+esc(c.name)+'"><span class="sw" style="background:'+esc(c.hex)+'"></span>'+esc(c.name)+'</a>'}).join('')+'</div><a class="lnk sup" href="#/shop?cat=skirt" data-rv="up" style="--i:3">همه دامن‌های ساتن</a></div></div></div></section>'})()+looks()+
-  '<section class="wrap sec">'+fol('04','فهرست')+'<div class="g toc" style="margin-top:24px"><ol>'+CATS.map(function(c,i){var n=act.filter(function(p){return p.cat===c.id}).length;return '<li data-rv="up" style="--i:'+i+'"><a href="#/shop?cat='+c.id+'" data-prev="'+(i+1)+'"><span>'+c.name+'</span><span>'+fa(n)+' محصول</span></a></li>'}).join('')+'</ol>'+
-   '<div class="ph r45 prev" data-rv="img"><img class="on" src="'+IMG.garden+'" alt="دامن‌های ساتن کوآ در چند رنگ، کنار هم" loading="lazy" width="900" height="1125">'+CATS.map(function(c){var p=act.filter(function(p){return p.cat===c.id})[0];return '<img src="'+(p?img(p):IMG.satin)+'" alt="" loading="lazy" width="900" height="1125">'}).join('')+'</div></div></section>'+
-  '<section class="wrap sec">'+fol('05','تازه‌ها')+'<div class="sec-h" data-rv="up"><h2>تازه رسیده</h2><a class="lnk sup" href="#/shop?new=1">همه تازه‌ها</a></div><div class="grid v4">'+nw.map(card).join('')+'</div></section>'+
-  (ft.length?'<section class="wrap sec">'+fol('06','انتخاب این هفته')+'<div class="g cur8" style="margin-top:24px"><div class="ph r45 big" data-rv="img" data-plx><img src="'+IMG.satin+'" alt="تاپ سیلک کاکائویی، کنار پنجره" loading="lazy" width="900" height="1125" style="object-position:50% 30%"></div><div class="hd3" data-rv="up"><h2>دو قطعه که با هم پوشیده می‌شوند.</h2><p class="muted">تاپ سیلک روی دامن ساتن؛ برای روز با کفش تخت، برای شب با پاشنه.</p></div>'+ft.map(card).join('')+'</div></section>':'')+
-  '<section class="story"><div class="wrap"><div class="g"><div class="tx"><span class="num" data-rv="up">07</span><span class="cap muted" data-rv="up" style="--i:1">'+esc(C.storyTitle)+'</span><h2 data-rv="up" style="--i:2">'+esc(C.storyBody)+'</h2><a class="btn" href="#/collection" style="margin-top:16px;--i:4" data-rv="up">دیدن مجموعه'+ic('arrow','arr')+'</a></div><div class="ph r45" data-rv="img"><img src="'+IMG.wind+'" alt="مدل با پیراهن چهارخانه در دشت" loading="lazy" width="1100" height="1261" style="object-position:50% 30%"></div></div></div></section>'+
-  '<section class="wrap sec">'+fol('08','پارچه')+'<div class="g fab" style="margin-top:24px"><div data-rv="up"><h3>ساتن</h3><p class="muted">سطح براق و افت سنگین. نور را می‌گیرد و با هر قدم موج برمی‌دارد.</p><a class="lnk sup" href="#/shop?cat=skirt">دامن‌های ساتن</a></div><div data-rv="up" style="--i:1"><h3>ابریشم</h3><p class="muted">سبک و خنک روی پوست. برای تاپ‌هایی که قرار است دیده شوند.</p><a class="lnk sup" href="#/shop?cat=top">تاپ‌های ابریشمی</a></div><div data-rv="up" style="--i:2"><h3>پلار</h3><p class="muted">نرم و گرم، با حجمی که فرم خودش را نگه می‌دارد.</p><a class="lnk sup" href="#/shop?cat=polar">پلارها</a></div></div></section>'+
-  '<section class="wrap sec">'+fol('09','ژورنال')+'<div class="sec-h" data-rv="up"><h2>از ژورنال</h2><a class="lnk sup" href="#/journal">همه نوشته‌ها</a></div><div class="g jr">'+C.posts.slice(0,2).map(postCard).join('')+'</div></section>'+
-  '<section class="wrap sec">'+fol('10',ltr('@coa.is.coa'))+'<div class="g ig" style="margin-top:24px">'+['street','matcha','pgreen','sparkle'].map(function(k,i){return '<div class="ph r45" data-rv="img" style="--i:'+i+'"><img src="'+IMG[k]+'" alt="'+IMGN[k]+'" loading="lazy" width="400" height="500"></div>'}).join('')+'</div><p class="sup" style="margin-top:16px"><a class="lnk" href="https://instagram.com/coa.is.coa" target="_blank" rel="noopener">کوآ در اینستاگرام</a></p></section>'+
+  function byTs(a,b){return b.ts-a.ts}
+  var seen={},nw=act.filter(function(p){return p.isNew}).sort(byTs).filter(function(p){if(seen[p.cat])return false;seen[p.cat]=1;return true}).slice(0,4);
+  var nid=nw.map(function(p){return p.id}),fo=C.featured||[];
+  var ft=act.filter(function(p){return nid.indexOf(p.id)<0}).sort(function(a,b){var x=fo.indexOf(a.id),y=fo.indexOf(b.id);x=x<0?99:x;y=y<0?99:y;return x-y||byTs(a,b)}).slice(0,4);
+  var hero=HERO.filter(function(h){var p=P(h[1]);return p&&p.active});
+  var cats=CATS.map(function(c){var l=act.filter(function(p){return p.cat===c.id});return{c:c,n:l.length,src:IMG[CATIMG[c.id]]||(l[0]&&img(l[0]))}}).filter(function(x){return x.n});
+  var looks=LOOKS.map(function(l){return{t:l.t,post:l.post,it:l.it.map(function(x){return{p:P(x[0]),c:x[1]}}).filter(function(x){return x.p&&x.p.active})}}).filter(function(l){return l.it.length>1});
+  function grid(L){return '<div class="grid v'+(L.length>3?4:3)+'">'+L.map(card).join('')+'</div>'}
+  var post=function(id){return (C.posts||[]).filter(function(x){return x.id===id})[0]};
+  return{t:'COA — پوشاک زنانه',b:
+  '<section class="wrap"><div class="g hero"><div class="tx">'+fol('01','COA is COA')+'<h1 class="display" data-rv="lines">'+lines(C.heroTitle)+'</h1><p class="lg muted" data-rv="up" style="--i:6">'+esc(C.heroSub)+'</p><div class="cta" data-rv="up" style="--i:8"><a class="btn" href="#/shop">مشاهده محصولات'+ic('arrow','arr')+'</a></div></div>'+
+   '<div class="fan f3">'+hero.map(function(h,i){var p=P(h[1]);return '<a class="ph r34" data-rv="img" style="--i:'+(i*2)+'" data-pick="'+p.id+'" data-v="'+esc(h[2])+'" href="#/product/'+p.id+'" aria-label="'+esc(p.name)+'، '+esc(h[2])+'"><img src="'+IMG[h[0]]+'" alt="" width="600" height="800"'+(i?' loading="lazy"':' fetchpriority="high"')+'></a>'}).join('')+'</div></div></section>'+
+  (cats.length?'<section class="wrap sec">'+fol('02','دسته‌ها')+'<div class="sec-h" data-rv="up"><h2>خرید بر اساس دسته</h2><a class="lnk sup" href="#/shop">همه محصولات</a></div><ul class="cats" role="list">'+cats.map(function(x,i){return '<li data-rv="up" style="--i:'+i+'"><a class="catc" href="#/shop?cat='+x.c.id+'"><span class="ph r34"><img src="'+x.src+'" alt="" loading="lazy" width="600" height="800"></span><span class="nm">'+esc(x.c.name)+'</span><span class="cap muted">'+fa(x.n)+' محصول</span></a></li>'}).join('')+'</ul></section>':'')+
+  (nw.length?'<section class="wrap sec">'+fol('03','تازه‌ها')+'<div class="sec-h" data-rv="up"><h2>تازه رسیده</h2><a class="lnk sup" href="#/shop?new=1">همه تازه‌ها</a></div>'+grid(nw)+'</section>':'')+
+  (ft.length?'<section class="wrap sec">'+fol('04','منتخب')+'<div class="sec-h" data-rv="up"><div><h2>انتخاب‌های COA</h2><p class="muted" style="margin-top:8px">از دسته‌های مختلف، برای کنار هم پوشیدن.</p></div><a class="lnk sup" href="#/shop">فروشگاه</a></div>'+grid(ft)+'</section>':'')+
+  (looks.length?'<section class="wrap sec">'+fol('05','ست‌ها')+'<div class="sec-h" data-rv="up"><div><h2>ست‌های پیشنهادی</h2><p class="muted" style="margin-top:8px">ترکیب‌هایی که خود COA پیشنهاد کرده است.</p></div></div><div class="looks2">'+looks.map(function(l,i){var po=l.post&&post(l.post);return '<article class="lk" data-rv="up" style="--i:'+i+'"><div class="lk-im">'+l.it.map(function(x){return '<a class="ph r34" href="#/product/'+x.p.id+'" data-pick="'+x.p.id+'" data-v="'+esc(x.c)+'" tabindex="-1" aria-hidden="true"><img src="'+pim(x.p,x.c)+'" alt="" loading="lazy" width="600" height="800"></a>'}).join('')+'</div><h3 class="h4">'+esc(l.t)+'</h3><ul class="lk-l">'+l.it.map(function(x){return '<li><a class="lnk" href="#/product/'+x.p.id+'" data-pick="'+x.p.id+'" data-v="'+esc(x.c)+'">'+esc(x.p.name)+'، '+esc(x.c)+'</a><span class="sup muted">'+toman(x.p.price)+'</span></li>'}).join('')+'</ul>'+(po?'<a class="lnk sup" href="#/journal/'+po.id+'">در ژورنال: '+esc(po.title)+'</a>':'')+'</article>'}).join('')+'</div></section>':'')+
+  '<section class="story ab"><div class="wrap"><div class="g"><div class="tx"><span class="cap" data-rv="up">درباره COA</span><h2 data-rv="up" style="--i:1">'+esc(C.stmt)+'</h2><a class="btn" href="#/about" style="margin-top:16px;--i:3" data-rv="up">بیشتر دربارهٔ COA'+ic('arrow','arr')+'</a></div><div class="ph r45" data-rv="img"><img src="'+IMG.wind+'" alt="مدل با پیراهن چهارخانه در دشت" loading="lazy" width="1100" height="1261" style="object-position:50% 30%"></div></div></div></section>'+
+  ((C.posts||[]).length?'<section class="wrap sec">'+fol('06','ژورنال')+'<div class="sec-h" data-rv="up"><h2>از ژورنال</h2><a class="lnk sup" href="#/journal">همه نوشته‌ها</a></div><div class="g jr">'+C.posts.slice(0,2).map(postCard).join('')+'</div></section>':'')+
   '<section class="wrap sec"><div class="g nl" data-rv="up"><div><h2 class="h3">خبرنامه</h2><p class="muted" style="margin-top:8px">تازه‌ها و نوشته‌های ژورنال، بدون شلوغی. '+DEMO+'</p></div>'+(ui.nl?'<p class="note ok" role="status">ثبت شد. در این نسخه نمایشی ایمیلی فرستاده نمی‌شود.</p>':'<form data-form="nl" class="inline-f"><label class="f"><span>ایمیل</span><input class="in" id="nle" name="email" type="email" required dir="ltr" style="text-align:left" autocomplete="email"></label><button class="btn">عضویت</button></form>')+'</div></section>'}}
-function looks(){var L=[['matcham','p1','ماچا','روزمره','با تی‌شرت سفید و کتانی'],['silver','p1','نقره‌ای','بیرون از خانه','با پیراهن سفید گشاد و کفش تخت'],['limon','p1','لیمویی','تابستان','با تاپ بندی و صندل']].filter(function(l){var p=P(l[1]);return p&&p.active&&p.colors.some(function(c){return c.name===l[2]})});
-  if(!L.length)return '';
-  return '<section class="wrap sec">'+fol('03','استایل')+'<div class="sec-h" data-rv="up"><div><h2>یک دامن، سه جور پوشیدن</h2><p class="muted" style="margin-top:8px">ترکیب‌هایی از عکس‌های خود کوآ.</p></div></div><div class="looks" tabindex="0" role="group" aria-label="ترکیب‌های پیشنهادی">'+L.map(function(l,i){return '<figure class="look" data-rv="up" style="--i:'+i+'"><a class="ph r45" href="#/product/'+l[1]+'" data-pick="'+l[1]+'" data-v="'+l[2]+'"><img src="'+IMG[l[0]]+'" alt="دامن ساتن فون '+l[2]+'، '+l[4]+'" loading="lazy" width="600" height="750"></a><figcaption><span class="cap muted">'+l[3]+'</span><h3 class="h4">'+l[4]+'</h3><a class="lnk sup" href="#/product/'+l[1]+'" data-pick="'+l[1]+'" data-v="'+l[2]+'">دامن ساتن فون، '+l[2]+'</a></figcaption></figure>'}).join('')+'</div></section>'}
 function postCard(p,i,lv){lv=lv||3;return '<article data-rv="up" style="--i:'+((+i||0)%2)+'"><a href="#/journal/'+p.id+'"><div class="ph r32"><img src="'+IMG[p.img]+'" alt="" loading="lazy" width="900" height="600"></div><span class="cap muted">'+fdate(p.ts)+'</span><h'+lv+' class="h4">'+esc(p.title)+'</h'+lv+'></a></article>'}
 function vShop(q){var f=ui.f;if(navd){f.cat=q.cat||'';f.size='';f.color='';f.stock=false}
   var list=S.products.filter(function(p){return p.active}),term=(q.q||'').trim();
@@ -810,14 +890,17 @@ function vShop(q){var f=ui.f;if(navd){f.cat=q.cat||'';f.size='';f.color='';f.sto
   list=list.slice().sort(function(a,b){return f.sort==='asc'?a.price-b.price:f.sort==='desc'?b.price-a.price:b.ts-a.ts});
   var title=term?'نتایج برای «'+term+'»':q['new']?'تازه‌ها':f.cat?catName(f.cat):'همه محصولات';
   function ch(k,v,l,extra){return '<button class="chip" data-act="f" data-k="'+k+'" data-v="'+esc(v)+'" aria-pressed="'+(String(f[k])===String(v))+'">'+(extra||'')+esc(l)+'</button>'}
-  return{t:title+' | COA',b:'<div class="wrap">'+crumb([['خانه','/'],['فروشگاه','/shop'],[title,'']])+
-  '<div class="sec-h" style="margin-top:8px"><h1>'+esc(title)+'</h1><span class="sup muted">'+fa(list.length)+' محصول</span></div>'+
-  '<div class="tools-row"><div class="fg" role="group" aria-label="دسته"><span class="lab">دسته</span>'+ch('cat','','همه')+CATS.map(function(c){return ch('cat',c.id,c.name)}).join('')+'</div>'+
+  var nf=(f.cat?1:0)+(f.size?1:0)+(f.color?1:0)+(f.stock?1:0),mob=PHONE&&PHONE.matches;
+  var fx='<div class="fg" role="group" aria-label="دسته"><span class="lab">دسته</span>'+ch('cat','','همه')+CATS.map(function(c){return ch('cat',c.id,c.name)}).join('')+'</div>'+
   '<div class="fg" role="group" aria-label="سایز"><span class="lab">سایز</span>'+allSizes.map(function(s){return ch('size',s,s)}).join('')+'</div>'+
   '<div class="fg" role="group" aria-label="رنگ"><span class="lab">رنگ</span>'+allColors.map(function(c){return '<button class="chip dotc" data-act="f" data-k="color" data-v="'+esc(c.name)+'" aria-pressed="'+(f.color===c.name)+'" aria-label="'+esc(c.name)+'" title="'+esc(c.name)+'"><span class="sw" style="background:'+esc(c.hex)+'"></span></button>'}).join('')+'</div>'+
   '<div class="fg"><button class="chip" data-act="f" data-k="stock" data-v="1" aria-pressed="'+!!f.stock+'">فقط موجود</button>'+
   '<label class="lab" for="sort" style="margin-inline-start:8px">مرتب‌سازی</label><select id="sort" class="in sm" data-change="sort"><option value="new"'+(f.sort==='new'?' selected':'')+'>تازه‌ترین</option><option value="asc"'+(f.sort==='asc'?' selected':'')+'>ارزان‌ترین</option><option value="desc"'+(f.sort==='desc'?' selected':'')+'>گران‌ترین</option></select>'+
-  '<span class="lab vw" style="margin-inline-start:8px">نما</span>'+[2,3].map(function(n){return '<button class="chip vw" data-act="view" data-v="'+n+'" aria-pressed="'+(f.view===n)+'" aria-label="نمای '+fa(n)+' ستونه">'+fa(n)+'</button>'}).join('')+'</div></div>'+
+  '<span class="lab vw" style="margin-inline-start:8px">نما</span>'+[2,3].map(function(n){return '<button class="chip vw" data-act="view" data-v="'+n+'" aria-pressed="'+(f.view===n)+'" aria-label="نمای '+fa(n)+' ستونه">'+fa(n)+'</button>'}).join('')+'</div>';
+  ui.fxh=fx;ui.fxn=list.length;if(!mob&&ui.ov==='filters')ui.ov='';
+  return{t:title+' | COA',b:'<div class="wrap">'+crumb([['خانه','/'],['فروشگاه','/shop'],[title,'']])+
+  '<div class="sec-h" style="margin-top:8px"><h1>'+esc(title)+'</h1><span class="sup muted" role="status">'+fa(list.length)+' محصول</span></div>'+
+  (mob?'<div class="f-bar"><button class="btn ghost" data-act="filters" aria-haspopup="dialog">'+ic('filter','s')+'فیلتر و مرتب‌سازی'+(nf?' ('+fa(nf)+')':'')+'</button>'+(nf?'<button class="lnk sup" data-act="clearf">پاک کردن</button>':'')+'</div>':'<div class="tools-row">'+fx+'</div>')+
   (list.length?'<div class="grid v'+f.view+'">'+list.map(card).join('')+'</div>':'<div class="empty"><p class="h3">چیزی با این مشخصات پیدا نشد.</p><p class="muted">فیلترها را کم کنید یا همه محصولات را ببینید.</p><button class="btn ghost" data-act="clearf">پاک کردن فیلترها</button> <a class="btn" href="#/shop">همه محصولات</a></div>')+'</div>'}}
 function vProduct(id){var p=P(id);if(!p||!p.active)return v404();
   var s=ui.sel[id]||(ui.sel[id]={color:(p.colors.filter(function(c){return colorStock(p,c.name)>0})[0]||p.colors[0]||{}).name,size:''});
@@ -889,7 +972,10 @@ function vTrack(id){var o=S.orders.filter(function(x){return x.id===id})[0];if(!
 function vStatic(k){var C=S.content,map={about:['درباره COA',C.pages.about],shipping:['ارسال و مرجوعی',C.pages.shipping+'\n\n'+C.pages.returns]};
   if(k==='faq')return{t:'پرسش‌های پرتکرار | COA',b:'<div class="wrap" style="max-width:860px">'+crumb([['خانه','/'],['پرسش‌های پرتکرار','']])+'<h1 style="margin-bottom:24px">پرسش‌های پرتکرار</h1>'+C.faq.map(function(x){return '<details class="acc"><summary>'+esc(x.q)+'</summary><div>'+esc(x.a)+'</div></details>'}).join('')+'</div>'};
   if(k==='size-guide')return{t:'راهنمای سایز | COA',b:'<div class="wrap" style="max-width:860px">'+crumb([['خانه','/'],['راهنمای سایز','']])+'<h1>راهنمای سایز</h1><p class="muted" style="margin:8px 0 24px">اندازه‌ها به سانتی‌متر و برگرفته از کانال COA هستند. در این فروشگاه دوخت سفارشی یا تغییر اندازه ثبت نمی‌شود؛ از بین سایزهای موجود انتخاب کنید.</p><h2 class="h4" style="margin-bottom:8px">دامن ساتن</h2><div class="scroll" tabindex="0" role="group" aria-label="جدول؛ برای دیدن ستون‌های بیشتر بکشید"><table class="t"><caption class="sr">سایز دامن ساتن</caption><thead><tr><th>سایز</th><th>دور کمر</th><th>قد دامن</th></tr></thead><tbody><tr><td>۱</td><td>۷۰</td><td>۸۵</td></tr><tr><td>۲</td><td>۷۵</td><td>۸۵</td></tr></tbody></table></div><h2 class="h4" style="margin:32px 0 8px">نیم‌زیپ پلار، فری‌سایز</h2><div class="scroll" tabindex="0" role="group" aria-label="جدول؛ برای دیدن ستون‌های بیشتر بکشید"><table class="t"><caption class="sr">اندازه نیم‌زیپ پلار</caption><thead><tr><th>عرض</th><th>قد</th><th>آستین</th></tr></thead><tbody><tr><td>۶۲</td><td>۶۵</td><td>۶۷</td></tr></tbody></table></div><p class="sup muted" style="margin-top:24px">کاردیگن پلار و ترنچ‌کت ماه کامل هم فری‌سایز هستند.</p></div>'};
-  var m=map[k];return{t:m[0]+' | COA',b:'<div class="wrap" style="max-width:760px">'+crumb([['خانه','/'],[m[0],'']])+'<h1 style="margin-bottom:24px">'+m[0]+'</h1>'+esc(m[1]).split('\n').filter(Boolean).map(function(p){return '<p class="lg" style="margin-bottom:16px">'+p+'</p>'}).join('')+(k==='about'?'<p class="sup muted">متن معرفی برند هنوز از طرف COA ارائه نشده است.</p>':'')+'</div>'}}
+  var m=map[k];return{t:m[0]+' | COA',b:'<div class="wrap" style="max-width:760px">'+crumb([['خانه','/'],[m[0],'']])+'<h1 style="margin-bottom:24px">'+m[0]+'</h1>'+esc(m[1]).split('\n').filter(Boolean).map(function(p){return '<p class="lg" style="margin-bottom:16px">'+p+'</p>'}).join('')+(k==='about'?'<div class="ab-l"><a class="btn" href="#/shop">مشاهده محصولات</a><a class="btn ghost" href="#/contact">تماس با ما</a></div><p class="sup muted" style="margin-top:24px">این متن از روی محصولات و کانال‌های COA نوشته شده و هنوز به تأیید برند نرسیده است.</p>':'')+'</div>'}}
+function vContact(){return{t:'تماس با ما | COA',d:'راه‌های ارتباط با COA: اینستاگرام و تلگرام.',b:'<div class="wrap" style="max-width:860px">'+crumb([['خانه','/'],['تماس با ما','']])+'<h1>تماس با ما</h1><p class="lg muted" style="margin:8px 0 32px">برای پرسش دربارهٔ محصول، سایز یا سفارش، از این راه‌ها با COA در ارتباط باشید.</p>'+
+  '<dl class="ct"><div><dt>اینستاگرام</dt><dd><a class="lnk" href="https://instagram.com/coa.is.coa" target="_blank" rel="noopener">'+ltr('@coa.is.coa')+'</a></dd></div><div><dt>تلگرام</dt><dd><a class="lnk" href="https://t.me/coaiscoa" target="_blank" rel="noopener">'+ltr('@coaiscoa')+'</a></dd></div><div><dt>تلفن و ایمیل</dt><dd class="muted">هنوز از طرف COA اعلام نشده است.</dd></div></dl>'+
+  '<h2 class="h4" style="margin:48px 0 16px">شاید پاسخ اینجا باشد</h2><ul class="ct-l"><li><a class="lnk" href="#/faq">پرسش‌های پرتکرار</a></li><li><a class="lnk" href="#/size-guide">راهنمای سایز</a></li><li><a class="lnk" href="#/shipping">ارسال و مرجوعی</a></li><li><a class="lnk" href="#/account/orders">پیگیری سفارش‌های من</a></li></ul></div>'}}
 function vCollection(){var C=S.content,act=S.products.filter(function(p){return p.active});return{t:C.storyTitle+' | COA',b:'<div class="wrap">'+crumb([['خانه','/'],[C.storyTitle,'']])+'<div class="g split"><div class="tx"><div class="folio" data-rv>'+esc(C.storyTitle)+'</div><h1 class="display" style="margin-top:24px" data-rv="up" style="--i:1">'+esc(C.storyBody)+'</h1></div><div class="ph r45" data-rv="img" data-plx><img src="'+IMG.wind+'" alt="مدل با پیراهن چهارخانه در دشت" width="1100" height="1261" style="object-position:50% 30%"></div></div><div class="grid v3">'+act.map(card).join('')+'</div></div>'}}
 function vJournal(id){var ps=S.content.posts;if(id){var p=ps.filter(function(x){return x.id===id})[0];if(!p)return v404();return{t:p.title+' | ژورنال COA',b:'<article class="wrap" style="max-width:760px">'+crumb([['خانه','/'],['ژورنال','/journal'],[p.title,'']])+'<span class="cap muted">'+fdate(p.ts)+' '+DEMO+'</span><h1 style="margin:8px 0 24px">'+esc(p.title)+'</h1><div class="ph r32" style="margin-bottom:32px"><img src="'+IMG[p.img]+'" alt="" width="900" height="600"></div>'+esc(p.body).split('\n').filter(Boolean).map(function(x){return '<p class="lg" style="margin-bottom:16px">'+x+'</p>'}).join('')+'<a class="lnk" href="#/journal">بازگشت به ژورنال</a></article>'}}
   return{t:'ژورنال | COA',b:'<div class="wrap">'+crumb([['خانه','/'],['ژورنال','']])+'<h1 style="margin-bottom:24px">ژورنال</h1>'+(ps.length?'<div class="g jr">'+ps.map(function(p,i){return postCard(p,i,2)}).join('')+'</div>':'<div class="empty"><p>هنوز نوشته‌ای منتشر نشده است.</p></div>')+'</div>'}}
@@ -961,7 +1047,7 @@ var app=document.getElementById('app');
 function view(seg,q){switch(seg[0]||''){
   case '':return vHome();case 'shop':return vShop(q);case 'product':return vProduct(seg[1]);case 'cart':return vCart();case 'checkout':return vCheckout();
   case 'done':return vDone(seg[1]);case 'track':return vTrack(seg[1]);case 'collection':return vCollection();case 'journal':return vJournal(seg[1]);
-  case 'about':case 'faq':case 'shipping':case 'size-guide':return vStatic(seg[0]);case 'account':return vAccount(seg);case 'admin':return vAdmin(seg);case 'design-system':return vDS();
+  case 'contact':return vContact();case 'about':case 'faq':case 'shipping':case 'size-guide':return vStatic(seg[0]);case 'account':return vAccount(seg);case 'admin':return vAdmin(seg);case 'design-system':return vDS();
   default:return v404()}}
 var io=null,skipSk=false;
 function needSk(seg){return !RM&&(seg[0]==='shop'||seg[0]==='collection')}
@@ -1000,6 +1086,7 @@ function commit(msg){save();if(msg)toast(msg);render()}
 /* ---------- actions ---------- */
 var A={
  menu:function(){openOv('menu')},
+ filters:function(){openOv('filters')},
  search:function(){openOv('search')},
  cart:function(){openOv('cart')},
  ovclose:function(){closeOv()},
@@ -1069,6 +1156,15 @@ document.addEventListener('click',function(e){
 document.addEventListener('submit',function(e){var f=e.target.closest('[data-form]');if(f&&F[f.dataset.form]){e.preventDefault();F[f.dataset.form](new FormData(f),f)}});
 document.addEventListener('change',function(e){if(e.target.dataset&&e.target.dataset.change==='sort'){ui.f.sort=e.target.value;render();var s=document.getElementById('sort');if(s)s.focus()}});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ui.ov)closeOv()});
+function ddSet(b,o){b.setAttribute('aria-expanded',o?'true':'false');var p=document.getElementById(b.getAttribute('aria-controls'));if(p)p.hidden=!o}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.dd-b'),op=document.querySelector('.dd-b[aria-expanded=true]');
+  if(b){ddSet(b,b.getAttribute('aria-expanded')!=='true');return}if(op&&!(e.target.closest&&e.target.closest('.dd-p')))ddSet(op,false)});
+document.addEventListener('keydown',function(e){var op=document.querySelector('.dd-b[aria-expanded=true]');
+  if(e.key==='Escape'&&op){ddSet(op,false);op.focus();return}
+  if(e.key==='Tab'&&ui.ov){var d=document.querySelector('.ov .ov-p');if(!d)return;var f=[].filter.call(d.querySelectorAll('a[href],button:not([disabled]),input,select,textarea,summary,[tabindex]:not([tabindex="-1"])'),function(x){return x.offsetParent!==null});if(!f.length)return;
+    var a=f[0],z=f[f.length-1];if(e.shiftKey&&(document.activeElement===a||!d.contains(document.activeElement))){e.preventDefault();z.focus()}else if(!e.shiftKey&&(document.activeElement===z||!d.contains(document.activeElement))){e.preventDefault();a.focus()}}});
+document.addEventListener('focusout',function(e){var dd=e.target.closest&&e.target.closest('.dd');if(dd&&!(e.relatedTarget&&dd.contains(e.relatedTarget))){var b=dd.querySelector('.dd-b');if(b&&b.getAttribute('aria-expanded')==='true')ddSet(b,false)}});
+if(PHONE){var phCh=function(){if(/^\/shop/.test(route))render()};if(PHONE.addEventListener)PHONE.addEventListener('change',phCh);else if(PHONE.addListener)PHONE.addListener(phCh)}
 function prev(e){var a=e.target.closest&&e.target.closest('[data-prev]');if(!a)return;var t=a.closest('.toc,.pal'),im=t&&t.querySelectorAll('.prev img');if(!im)return;for(var i=0;i<im.length;i++)im[i].classList.toggle('on',i===+a.dataset.prev);var bd=a.dataset.hex&&a.closest('.pal-band');if(bd)bd.style.setProperty('--pc',a.dataset.hex)}
 document.addEventListener('mouseover',prev);document.addEventListener('focusin',prev);
 document.addEventListener('mouseout',function(e){var o=e.target.closest&&e.target.closest('.toc ol');if(!o||(e.relatedTarget&&o.contains(e.relatedTarget)))return;var im=o.parentNode.querySelectorAll('.prev img');for(var i=0;i<im.length;i++)im[i].classList.toggle('on',i===0)});
