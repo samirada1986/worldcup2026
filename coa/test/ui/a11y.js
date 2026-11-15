@@ -3,7 +3,9 @@
  *   npm i --no-save axe-core playwright && BASE=http://localhost:3000 node test/ui/a11y.js */
 const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
 const axe=require('fs').readFileSync(require.resolve('axe-core/axe.min.js'),'utf8');
-const R=['/','/shop','/product/p1','/product/p4','/cart','/collection','/journal','/about','/faq','/size-guide'];
+const R=['/','/shop','/product/p1','/product/p4','/cart','/collection','/journal','/about','/faq','/size-guide','/login','/contact','/checkout'];
+// signed-in customer pages (demo login), scanned after the public routes
+const RA=['/account','/account/orders','/account/order/COA-1006','/account/wishlist','/account/addresses','/account/settings','/track/COA-1006'];
 (async()=>{
  const b=await chromium.launch({executablePath:process.env.CHROME||undefined,args:['--no-sandbox']});
  const res={};
@@ -17,6 +19,15 @@ const R=['/','/shop','/product/p1','/product/p4','/cart','/collection','/journal
    await page.addScriptTag({content:axe});
    const v=await page.evaluate(()=>axe.run(document,{runOnly:['wcag2a','wcag2aa','wcag21aa','wcag22aa','best-practice']}).then(r=>r.violations.map(v=>({id:v.id,impact:v.impact,n:v.nodes.length,ex:v.nodes.slice(0,2).map(n=>n.target.join(' ')+' :: '+(n.any[0]||n.all[0]||n.none[0]||{}).message?.slice(0,110))}))));
    res[w+r]=v;
+  }
+  await page.evaluate(h=>{location.hash=h},'/login');await page.waitForTimeout(500);
+  const lb=await page.$('[data-act=login]');if(lb){await lb.click();await page.waitForTimeout(600)}
+  for(const r of RA){
+   await page.evaluate(h=>{location.hash=h},r);await page.waitForTimeout(600);
+   await page.evaluate(async()=>{for(let y=0;y<document.body.scrollHeight;y+=600){window.scrollTo(0,y);await new Promise(r=>setTimeout(r,60))}window.scrollTo(0,0)});
+   await page.evaluate(()=>{document.querySelectorAll('[data-rv]').forEach(e=>e.classList.add('seen'))});await page.waitForTimeout(1300);
+   await page.addScriptTag({content:axe});
+   res[w+r]=await page.evaluate(()=>axe.run(document,{runOnly:['wcag2a','wcag2aa','wcag21aa','wcag22aa','best-practice']}).then(r=>r.violations.map(v=>({id:v.id,impact:v.impact,n:v.nodes.length,ex:v.nodes.slice(0,2).map(n=>n.target.join(' ')+' :: '+(n.any[0]||n.all[0]||n.none[0]||{}).message?.slice(0,110))}))));
   }
  }
  const agg={};
