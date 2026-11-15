@@ -142,8 +142,12 @@ const assert = require('assert');
       ok(w + 'px /account' + r + ': no horizontal overflow', (await overflow(p)) === 0);
     }
     await go(p, '#/account');
-    const tiny = await p.evaluate(() => [...document.querySelectorAll('.ac-link,.ac-body .btn,.ac-body .chip,.stat')].filter((e) => e.offsetParent && e.getBoundingClientRect().height < 40).length);
+    const tiny = await p.evaluate(() => [...document.querySelectorAll('.ac-link,.ac-body .btn,.ac-body .chip,.stat')].filter((e) => e.offsetParent && e.getBoundingClientRect().height < 39.5).length); // 0.5px tolerance: a 40px min-height can measure 39.9999 at some sub-pixel offsets
     ok(w + 'px: account controls are touch-sized (>=40px)', tiny === 0);
+    await go(p, '#/account/orders');
+    const primary = await p.evaluate(() => [...document.querySelectorAll('.oc-act .btn')].filter((e) => e.offsetParent && e.getBoundingClientRect().height < 43.5).length);
+    ok(w + 'px: order-card primary action is >=44px', primary === 0);
+    await go(p, '#/account');
     const fs = await p.evaluate(() => [...document.querySelectorAll('.ac-body h1,.ac-body p,.ac-body span,.ac-body b')].filter((e) => e.offsetParent && parseFloat(getComputedStyle(e).fontSize) < 12).length);
     ok(w + 'px: no text below 12px', fs === 0);
     await ctx.close();
