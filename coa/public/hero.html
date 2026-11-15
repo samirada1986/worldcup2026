@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COA — مجموعهٔ فصل</title>
+<meta name="description" content="کوآ، به رنگِ حالِ تو — مجموعه‌ای از دامن، تاپ، پلار و ترنچ.">
+<style>
+/* ---------- fonts (local, no external request) ---------- */
+@font-face{font-family:'Vazirmatn';src:url('/assets/fonts/vazirmatn-var.woff2') format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url('/assets/fonts/cormorant-500.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url('/assets/fonts/cormorant-400.woff2') format('woff2');font-weight:400;font-display:swap}
+
+/* ---------- brand tokens (from the COA logo) ---------- */
+:root{
+  --navy:#324156; --navy-deep:#232C38; --sage:#899989; --sage-soft:#A9B6A8;
+  --rose:#C9A9AC; --rose-soft:#E7D3D4; --cocoa:#6F4E36;
+  --orange:#E87536; --orange-ink:#B4521C; /* accent: lines/markers only; text uses --orange-ink (4.8:1) */
+  --ivory:#FAF8F5; --stone:#F0ECE7; --mist:#D9D4CB; --ink:#232C38; --muted:#5A616C;
+  --ff:'Vazirmatn',system-ui,sans-serif; --ff-lat:'Cormorant Garamond',Georgia,serif;
+  --steel-1:#cfd3d6; --steel-2:#eef1f2; --steel-3:#a7adb2;
+  --ease-settle:cubic-bezier(.22,1.18,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:var(--ff); color:var(--ink); background:var(--ivory);
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- header ---------- */
+.hdr{
+  position:fixed;inset-inline:0;top:0;z-index:40;height:64px;
+  display:flex;align-items:center;gap:18px;padding:0 clamp(16px,4vw,48px);
+  background:color-mix(in srgb,var(--ivory) 82%,transparent);backdrop-filter:blur(10px);
+  border-bottom:1px solid color-mix(in srgb,var(--mist) 70%,transparent);
+}
+.brand{display:flex;align-items:center;gap:10px;margin-inline-end:auto}
+.brand img{width:34px;height:34px;display:block}
+.brand .wm{font-family:var(--ff-lat);font-size:22px;letter-spacing:.28em;color:var(--navy);padding-inline-start:.28em}
+.nav{display:flex;gap:26px;font-size:14px;color:var(--muted)}
+.nav a{position:relative;padding:6px 0}
+.nav a[aria-current]{color:var(--ink)}
+.nav a::after{content:"";position:absolute;inset-inline:0;bottom:0;height:2px;background:var(--orange);transform:scaleX(0);transition:transform .3s}
+.nav a:hover::after,.nav a[aria-current]::after{transform:scaleX(1)}
+.hdr .util{display:flex;gap:16px;color:var(--muted)}
+@media(max-width:860px){.nav{display:none}}
+
+/* ---------- stage ---------- */
+.stage{
+  position:relative;min-height:100svh;padding-top:64px;
+  display:grid;grid-template-columns:.6fr 1.4fr;align-items:center;gap:16px;
+  padding-inline:clamp(16px,4vw,56px);
+  background:
+    radial-gradient(120% 80% at 70% 18%,#fff 0%,var(--ivory) 42%,var(--stone) 100%);
+  overflow:hidden;
+}
+.stage::after{ /* soft floor shadow */
+  content:"";position:absolute;inset-inline:6%;bottom:8%;height:90px;z-index:0;
+  background:radial-gradient(60% 100% at 50% 50%,rgba(35,44,56,.14),transparent 70%);
+  filter:blur(6px);
+}
+
+/* ---------- editorial column ---------- */
+.copy{position:relative;z-index:5;max-width:30ch}
+.copy .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:0 0 14px}
+.copy .eyebrow::before{content:"";width:30px;height:2px;border-radius:2px;background:var(--orange);transform:scaleX(0);transform-origin:right center;transition:transform .8s cubic-bezier(.2,.7,.2,1) .2s}
+body.ready .copy .eyebrow::before{transform:scaleX(1)}
+.copy h1{
+  font-family:var(--ff);font-weight:500;color:var(--navy);
+  font-size:clamp(38px,5.4vw,66px);line-height:1.18;margin:0;white-space:pre-line;
+  letter-spacing:0;
+}
+.copy p{color:var(--muted);font-size:clamp(15px,1.5vw,17px);line-height:1.9;margin:20px 0 28px;max-width:34ch}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;white-space:nowrap;font-size:15px;cursor:pointer;border:1px solid transparent;transition:transform .2s,background .2s,color .2s}
+.btn:active{transform:translateY(1px)}
+.btn-pri{background:var(--navy);color:var(--ivory);padding-inline-end:10px}
+.btn-pri .arr{width:28px;height:28px;border-radius:50%;background:var(--orange);color:var(--ink);display:grid;place-items:center;font-size:15px;line-height:1;transition:transform .25s}
+.btn-pri:hover .arr{transform:translateX(-4px)}
+.btn-pri:hover{background:var(--navy-deep)}
+.btn-sec{background:transparent;color:var(--navy);border-color:var(--navy)}
+.btn-sec:hover{background:var(--navy);color:var(--ivory)}
+
+/* ---------- rack scene ---------- */
+.scene{position:relative;z-index:2;height:min(78svh,680px);align-self:center}
+.rack{position:absolute;inset:0}
+/* vertical legs + feet */
+.leg{position:absolute;bottom:4%;width:6px;border-radius:3px;height:70%;
+  background:linear-gradient(90deg,var(--steel-3),var(--steel-2) 45%,var(--steel-1));
+  box-shadow:0 0 0 .5px rgba(0,0,0,.05)}
+.leg.l{inset-inline-start:12%} .leg.r{inset-inline-end:12%}
+.foot{position:absolute;bottom:3.5%;width:72px;height:8px;border-radius:4px;background:linear-gradient(180deg,var(--steel-1),var(--steel-3));opacity:.9}
+.foot.l{inset-inline-start:calc(12% - 33px)} .foot.r{inset-inline-end:calc(12% - 33px)}
+/* top bar */
+.bar{position:absolute;top:24%;inset-inline:8%;height:10px;border-radius:6px;
+  background:linear-gradient(180deg,var(--steel-2),var(--steel-1) 40%,var(--steel-3));
+  box-shadow:0 6px 14px rgba(35,44,56,.18), inset 0 1px 0 rgba(255,255,255,.7);
+  transform-origin:center}
+
+/* orange signature: sequence progress, then selection marker riding the bar */
+.prog{position:absolute;top:8px;inset-inline:0;height:2px;border-radius:2px;background:var(--orange);transform:scaleX(0);transform-origin:right center;z-index:4;pointer-events:none}
+.mark{position:absolute;top:7px;left:0;width:44px;height:4px;border-radius:2px;background:var(--orange);opacity:0;z-index:4;pointer-events:none;will-change:transform;transition:transform .5s var(--ease-settle),opacity .35s}
+/* hanging items row */
+.rail{position:absolute;top:24%;inset-inline:8%;height:0;z-index:3}
+.item{
+  position:absolute;top:0;transform-origin:top center;will-change:transform,opacity;
+  cursor:pointer;
+}
+.hook{display:block;margin:0 auto;width:30px;height:34px}
+.hook path{fill:none;stroke:var(--steel-3);stroke-width:3;stroke-linecap:round}
+.cord{width:1.5px;height:16px;margin:0 auto;background:linear-gradient(var(--steel-3),transparent)}
+.frame{
+  position:relative;width:var(--cw,150px);border-radius:10px;overflow:hidden;
+  background:#fff;padding:7px 7px 0;
+  box-shadow:0 18px 34px -18px rgba(35,44,56,.45),0 2px 6px rgba(35,44,56,.10);
+  transition:transform .35s var(--ease-settle),box-shadow .35s;
+}
+.frame .ph{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:6px;background:var(--stone)}
+.tag{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:9px 8px 11px}
+.tag .nm{font-size:12.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tag .pr{font-size:11.5px;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap}
+.item .cat{position:absolute;top:44px;inset-inline-start:12px;z-index:2;font-size:10px;letter-spacing:.14em;
+  color:#fff;background:color-mix(in srgb,var(--navy) 86%,transparent);padding:3px 8px;border-radius:999px;opacity:0;transform:translateY(-4px);transition:.25s}
+/* hover / selected emphasis */
+.scene[data-ready] .item:hover,.item.sel{z-index:6}
+.scene[data-ready] .item:hover .frame,.item.sel .frame{transform:translateY(-12px) scale(1.035);box-shadow:0 34px 50px -20px rgba(35,44,56,.5)}
+.scene[data-ready] .item:hover .cat,.item.sel .cat{opacity:1;transform:none}
+.scene[data-ready][data-hovering] .item:not(:hover){opacity:.62;filter:saturate(.9)}
+
+/* mobile hint */
+.mhint{display:none}
+
+@media(max-width:860px){
+  .stage{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:4px;padding-top:72px;text-align:center}
+  .copy{max-width:none;margin:0 auto;order:1}
+  .copy p{margin-inline:auto}
+  .cta{justify-content:center}
+  .scene{order:2;height:52svh;width:100%}
+  .mhint{display:block;font-size:12px;color:var(--muted);margin-top:10px}
+  .copy h1{font-size:clamp(34px,8.6vw,46px);line-height:1.24}
+  .tag{flex-direction:column;align-items:flex-start;gap:2px;padding:8px 8px 10px}
+  .tag .nm{white-space:normal;max-width:100%}
+}
+
+/* ---------- reduced motion / no-JS: show final state ---------- */
+@media(prefers-reduced-motion:reduce){
+  .item{transition:none!important}
+}
+.no-js .scene .item{opacity:1!important;transform:none!important}
+</style>
+</head>
+<body class="no-js">
+<header class="hdr">
+  <a class="brand" href="/" aria-label="COA خانه">
+    <img src="/assets/brand/coa-mark.png" alt="" width="34" height="34">
+    <span class="wm">COA</span>
+  </a>
+  <nav class="nav" aria-label="اصلی">
+    <a href="/" aria-current="page">خانه</a>
+    <a href="/#/shop">فروشگاه</a>
+    <a href="/#/shop">تازه‌ها</a>
+    <a href="/#/collections">مجموعه‌ها</a>
+    <a href="/#/about">دربارهٔ کوآ</a>
+  </nav>
+  <div class="util" aria-hidden="true">جست‌وجو · سبد</div>
+</header>
+
+<main class="stage" id="stage">
+  <section class="copy" id="copy" aria-live="polite">
+    <p class="eyebrow" data-rise></p>
+    <h1 data-rise></h1>
+    <p class="lead" data-rise></p>
+    <div class="cta" data-rise>
+      <a class="btn btn-pri" id="ctaPri" href="/#/shop"><span></span><i class="arr" aria-hidden="true">←</i></a>
+      <a class="btn btn-sec" id="ctaSec" href="/#/shop"><span></span></a>
+    </div>
+    <p class="mhint">برای دیدن هر محصول، روی آن ضربه بزنید</p>
+  </section>
+
+  <section class="scene" id="scene" aria-label="رگال مجموعهٔ کوآ">
+    <div class="rack" aria-hidden="true">
+      <div class="foot l"></div><div class="foot r"></div>
+      <div class="leg l"></div><div class="leg r"></div>
+      <div class="bar" id="bar"></div>
+    </div>
+    <div class="rail" id="rail"><span class="prog" id="prog"></span><span class="mark" id="mark"></span></div>
+  </section>
+</main>
+
+<script src="/hero-config.js"></script>
+<script>
+(function(){
+  'use strict';
+  document.body.classList.remove('no-js');
+  var CFG = window.COA_HERO_CONFIG || {};
+  var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var isMobile = matchMedia('(max-width:860px)').matches;
+  var fmt = function(n){ return new Intl.NumberFormat('fa-IR').format(n) + ' تومان'; };
+
+  // --- resolve product data: live API first, snapshot fallback ---
+  function resolve(){
+    var snap = CFG.snapshot || {};
+    return fetch('/api/products').then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+      .then(function(d){
+        var by = {}; (d.products||[]).forEach(function(p){ by[p.id]=p; });
+        return (CFG.garments||[]).map(function(g){
+          var p = by[g.id];
+          if(!p) return snap[g.id] ? Object.assign({id:g.id,img:g.img,enter:g.enter,inStock:true}, snap[g.id]) : null;
+          return { id:g.id, img:g.img, enter:g.enter, name:p.name, price:p.price,
+                   cat:(snap[g.id]||{}).cat||p.cat, inStock:p.inStock!==false };
+        }).filter(Boolean);
+      })
+      .catch(function(){
+        return (CFG.garments||[]).map(function(g){
+          var s = snap[g.id]; return s ? Object.assign({id:g.id,img:g.img,enter:g.enter,inStock:true}, s) : null;
+        }).filter(Boolean);
+      });
+  }
+
+  function build(items){
+    if(isMobile && items.length>3){ items = items.slice(0,3); } // tighter mobile rail
+    var rail = document.getElementById('rail');
+    var n = items.length;
+    // even positions across the rail; centre piece slightly larger
+    items.forEach(function(it, i){
+      var el = document.createElement('a');
+      el.className = 'item'; el.href = (CFG.productHref? CFG.productHref(it.id) : '/#/product/'+it.id);
+      el.setAttribute('aria-label', it.name + (it.inStock===false?' — ناموجود':''));
+      var center = Math.abs(i-(n-1)/2) < .6;
+      var cw = isMobile ? 120 : (center ? 142 : 132);
+      // distribute: start..end across inner rail width
+      var pct = n===1 ? 50 : (6 + i*(88/(n-1)));
+      el.style.insetInlineStart = pct + '%';
+      el.style.transform = 'translateX(50%)';
+      el.style.setProperty('--cw', cw+'px');
+      el.innerHTML =
+        '<svg class="hook" viewBox="0 0 30 34" aria-hidden="true"><path d="M15 3c5 0 5 6 0 6M15 9v4M4 31l11-18 11 18"/></svg>'+
+        '<div class="cord"></div>'+
+        '<div class="frame">'+
+          '<span class="cat">'+(it.cat||'')+'</span>'+
+          '<img class="ph" loading="eager" src="/assets/img/'+it.img+'.jpg" alt="'+it.name+'">'+
+          '<div class="tag"><span class="nm">'+it.name+'</span><span class="pr">'+(it.price?fmt(it.price):'')+'</span></div>'+
+        '</div>';
+      el.style.opacity = 0;
+      rail.appendChild(el);
+      it._el = el; it._cw = cw;
+    });
+    return items;
+  }
+
+  // --- choreography: rail draws in, garments arrive + settle, copy rises ---
+  function enterTransform(kind){
+    switch(kind){
+      case 'left':  return 'translateX(50%) translate(-120px,-40px) rotate(-10deg)';
+      case 'right': return 'translateX(50%) translate(120px,-40px) rotate(10deg)';
+      case 'drop':  return 'translateX(50%) translateY(-120px) rotate(2deg)';
+      default:      return 'translateX(50%) translateY(70px) rotate(-3deg)'; // 'up'
+    }
+  }
+
+  var T = 'translateX(50%)';
+  function seen(){ try{ return sessionStorage.getItem('coaHeroSeen')==='1'; }catch(e){ return false; } }
+  function markSeen(){ try{ sessionStorage.setItem('coaHeroSeen','1'); }catch(e){} }
+
+  // orange marker rides the bar above the active garment
+  function moveMark(it){
+    var mark = document.getElementById('mark'), rail = document.getElementById('rail');
+    if(!it || !mark) return;
+    var r = rail.getBoundingClientRect(), f = it._el.querySelector('.frame').getBoundingClientRect();
+    mark.style.transform = 'translateX(' + Math.round(f.left + f.width/2 - r.left - 22) + 'px)';
+    mark.style.opacity = 1;
+  }
+
+  // very light, endless fabric sway (each garment on its own period)
+  function idle(items){
+    if(reduce) return;
+    items.forEach(function(it,i){
+      var a = .45 + (i%3)*.12;
+      it._idle = it._el.animate(
+        [{transform:T+' rotate('+(-a)+'deg)'},{transform:T+' rotate('+a+'deg)'}],
+        {duration:3400+i*380,direction:'alternate',iterations:Infinity,easing:'ease-in-out'});
+    });
+  }
+
+  function finish(items, instant){
+    var scene = document.getElementById('scene');
+    scene.setAttribute('data-ready',''); document.body.classList.add('ready');
+    var mid = items[Math.floor((items.length-1)/2)];
+    scene._home = mid; moveMark(mid);
+    if(!instant) markSeen();
+    idle(items);
+  }
+
+  function animate(items){
+    var scene = document.getElementById('scene');
+    var bar = document.getElementById('bar'), prog = document.getElementById('prog');
+    var rackParts = document.querySelectorAll('.leg,.foot');
+    wire(items);
+
+    // reduced motion, or already played this session: final composition at once
+    if(reduce || seen()){
+      items.forEach(function(it){ it._el.style.opacity=1; it._el.style.transform=T; });
+      revealCopy(0, true); finish(items, true); return;
+    }
+
+    // 1) the rack itself walks in: legs + feet rise, then the bar sweeps across
+    rackParts.forEach(function(el,i){
+      el.animate([{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],
+        {duration:520,delay:i*40,easing:'cubic-bezier(.2,.7,.2,1)',fill:'both'});
+    });
+    bar.animate([{transform:'scaleX(0)'},{transform:'scaleX(1)'}],
+      {duration:650,delay:120,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+
+    var stagger = 170, startDelay = 520, settle = 900;
+    var done = startDelay + items.length*stagger + settle;
+
+    // 2) orange progress line runs along the bar for the length of the sequence
+    prog.animate([{transform:'scaleX(0)',opacity:1},{transform:'scaleX(1)',opacity:1,offset:.9},{transform:'scaleX(1)',opacity:0}],
+      {duration:done,delay:200,easing:'linear',fill:'both'});
+
+    items.forEach(function(it,i){
+      var el = it._el, from = enterTransform(it.enter), at = startDelay+i*stagger;
+      el.style.transform = from;
+      // 3) garment arrives, overshoots a touch, settles on its hanger
+      el.animate(
+        [{opacity:0,transform:from,offset:0},
+         {opacity:1,offset:.35},
+         {transform:T+' translateY(7px) rotate(1.6deg)',offset:.72},
+         {transform:T,opacity:1,offset:1}],
+        {duration:settle,delay:at,easing:'cubic-bezier(.22,1.18,.36,1)',fill:'both'});
+      // 4) the bar flexes under the weight as each piece lands
+      setTimeout(function(){
+        bar.animate([{transform:'translateY(0)'},{transform:'translateY(3px)'},{transform:'translateY(-1px)'},{transform:'translateY(0)'}],
+          {duration:460,easing:'ease-out'});
+      }, at + settle*.7);
+      // 5) decaying swing after landing
+      setTimeout(function(){
+        el.animate(
+          [{transform:T+' rotate(0deg)'},{transform:T+' rotate(1.6deg)'},{transform:T+' rotate(-1.1deg)'},
+           {transform:T+' rotate(.5deg)'},{transform:T+' rotate(0deg)'}],
+          {duration:1900,easing:'ease-in-out'});
+      }, at + settle - 40);
+    });
+
+    revealCopy(done - 520, false);
+    setTimeout(function(){ finish(items, false); }, done + 300);
+  }
+
+  function revealCopy(delay, instant){
+    var c = CFG.copy||{};
+    var stage = document.getElementById('copy');
+    stage.querySelector('.eyebrow').textContent = c.eyebrow||'';
+    stage.querySelector('h1').textContent = c.headline||'';
+    stage.querySelector('.lead').textContent = c.sub||'';
+    if(c.ctaPrimary){ var a=document.getElementById('ctaPri'); a.href=c.ctaPrimary.href; a.firstElementChild.textContent=c.ctaPrimary.label; }
+    if(c.ctaSecondary){ var b=document.getElementById('ctaSec'); b.href=c.ctaSecondary.href; b.firstElementChild.textContent=c.ctaSecondary.label; }
+    if(instant) return;
+    document.querySelectorAll('[data-rise]').forEach(function(el,i){
+      el.animate([{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],
+        {duration:720,delay:Math.max(0,delay)+i*110,easing:'cubic-bezier(.2,.7,.2,1)',fill:'both'});
+    });
+  }
+
+  function swing(it){
+    if(reduce) return;
+    it._el.animate(
+      [{transform:T+' rotate(0deg)'},{transform:T+' rotate(2.4deg)'},{transform:T+' rotate(-1.5deg)'},
+       {transform:T+' rotate(.6deg)'},{transform:T+' rotate(0deg)'}],
+      {duration:1100,easing:'ease-out'});
+  }
+
+  function wire(items){
+    var scene = document.getElementById('scene');
+    if(!isMobile){
+      items.forEach(function(it){
+        it._el.addEventListener('mouseenter',function(){
+          if(!scene.hasAttribute('data-ready')) return;
+          scene.setAttribute('data-hovering',''); moveMark(it); swing(it);
+        });
+        it._el.addEventListener('mouseleave',function(){ scene.removeAttribute('data-hovering'); moveMark(scene._home); });
+        it._el.addEventListener('focus',function(){ moveMark(it); });
+      });
+    } else {
+      // tap selects (marker + chip + lift); a second tap follows the link
+      items.forEach(function(it){
+        it._el.addEventListener('click',function(e){
+          if(!it._el.classList.contains('sel')){
+            e.preventDefault();
+            items.forEach(function(o){ o._el.classList.remove('sel'); });
+            it._el.classList.add('sel'); scene._home = it; moveMark(it); swing(it);
+          }
+        });
+      });
+    }
+    addEventListener('resize', function(){ moveMark(scene._home); });
+  }
+
+  resolve().then(build).then(animate);
+})();
+</script>
+</body>
+</html>
