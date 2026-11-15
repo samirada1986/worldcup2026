@@ -151,9 +151,9 @@ violations), API smoke test (16/16). Screens: `docs/screens/home-rack-*.jpg`.
 
 ## 8. Not done / next steps
 
-- **Orange across the rest of the site** (shop, PDP, cart, checkout, about,
-  contact) is not applied yet; only the hero carries it.
-- The circular logo mark is not yet in the main site header (wordmark only).
+- Orange now runs through the whole storefront and the circular mark sits in
+  the header, mobile menu and footer — see the "نارنجی" section of
+  `brand-direction-2026-11.md`.
 
 - **Integration into `index.html`** is intentionally deferred to avoid colliding
   with the active homepage redesign on this branch; the hero is a standalone,

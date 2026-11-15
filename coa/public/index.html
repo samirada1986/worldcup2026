@@ -11,7 +11,8 @@
 <meta property="og:locale" content="fa_IR">
 <meta property="og:title" content="COA — دامن ساتن و پوشاک زنانه">
 <meta property="og:description" content="COA، برند مستقل پوشاک زنانه: دامن ساتن در ۹ رنگ، تاپ سیلک، پلار و ترنچ‌کت.">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/coa-mark-128.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/coa-mark.png">
 <link rel="preload" href="assets/fonts/vazirmatn-var.woff2" as="font" type="font/woff2" crossorigin>
 <script type="application/ld+json" id="ld-org">{"@context":"https://schema.org","@type":"Organization","name":"COA","alternateName":"COA is COA","sameAs":["https://instagram.com/coa.is.coa","https://t.me/coaiscoa"]}</script>
 <script type="application/ld+json" id="ld">{}</script>
@@ -722,6 +723,50 @@ details.acc[open] summary::after{transform:rotate(180deg)}
   .hero.rk-h .cta .btn{white-space:nowrap}.hero.rk-h .cta .btn.ghost{flex:0 0 auto}
 }
 @media (hover:none){.rk-hint{display:block}}
+
+/* ---------- orange accent system ----------
+   Orange is the brand's signature accent, never a text colour on light
+   grounds (2.8:1). Rules: lines, markers and small filled chips only;
+   text on orange is --ink (4.7:1); orange *text* uses --orange-ink (4.8:1). */
+/* section titles: every folio rule opens with an orange lead-in that draws with the reveal */
+.folio::after{height:2px;background:linear-gradient(var(--orange),var(--orange)) right center/36px 2px no-repeat,linear-gradient(var(--line),var(--line)) center/100% 1px no-repeat}
+/* navigation: active / hover underline */
+.nav a::after{height:2px;bottom:0;background:var(--orange)}
+.ov-menu .big[aria-current=page] .lat{color:var(--orange-ink)}
+.acct nav a[aria-current=page]{box-shadow:inset -3px 0 0 var(--orange)}
+@media (max-width:1023px){.acct nav a[aria-current=page]{box-shadow:inset 0 -2px 0 var(--orange)}}
+/* links */
+.lnk:hover{color:var(--ink);text-decoration-color:var(--orange);text-decoration-thickness:2px}
+/* buttons: navy stays primary; the arrow picks up orange on hover */
+.btn:hover .i.arr{color:var(--orange)}
+.btn[disabled]:hover .i.arr{color:inherit}
+/* accent CTA — one per view at most, for the decisive action */
+.btn.accent{background:var(--orange);border-color:var(--orange);color:var(--ink)}
+.btn.accent:hover{background:var(--orange);border-color:var(--ink);color:var(--ivory)}
+.btn.accent:hover .i.arr{color:var(--ivory)}
+.btn.accent[disabled],.btn.accent[disabled]:hover{background:var(--dis-bg);border-color:var(--dis-bg);color:var(--dis)}
+/* small signature chips */
+.card .nw{background:var(--orange);color:var(--ink)}
+.icon .n{background:var(--orange);color:var(--ink)}
+.bar{background:var(--orange)}
+.toast{box-shadow:inset -3px 0 0 var(--orange)}
+/* selection + progress */
+.chip[aria-pressed=true]{box-shadow:0 2px 0 var(--orange)}
+.steps li[aria-current=step]{border-bottom:2px solid var(--orange)}
+.opt:has(input:checked){box-shadow:inset -3px 0 0 var(--orange)}
+/* the one section where orange leads: brand statement band */
+.story.ab{background:var(--orange);color:var(--ink)}
+.story.ab .tx .cap,.story.ab h2{color:var(--ink)}
+.story.ab h2{font-size:clamp(28px,3.1vw,44px);line-height:1.5;font-weight:500;max-width:20ch}
+.story.ab .btn{background:var(--ink);border-color:var(--ink);color:var(--ivory)}
+.story.ab .btn::before{background:var(--navy)}
+.story.ab .btn:hover .i.arr{color:var(--ivory)}
+/* brand mark beside the wordmark */
+.hd a.mark,.ov-menu .ov-h .mark{display:inline-flex;align-items:center;gap:10px}
+.mark .mk{width:32px;height:32px;border-radius:50%;flex:none;transition:width var(--m-hover) var(--e-io),height var(--m-hover) var(--e-io)}
+.hd.scrolled .mark .mk{width:26px;height:26px}
+.ft .mark{display:inline-flex;align-items:center;gap:12px}
+.ft .mark .mk{width:44px;height:44px}
 </style>
 </head>
 <body>
@@ -868,7 +913,7 @@ function overlay(){var o=ui.ov;if(!o)return '';var inner='';
   if(o==='filters')inner='<div class="ov-p" role="dialog" aria-modal="true" aria-label="فیلتر و مرتب‌سازی"><div class="ov-h"><h2 class="h4">فیلتر و مرتب‌سازی</h2><button class="icon" data-act="ovclose" aria-label="بستن فیلترها">'+ic('x')+'</button></div><div class="ov-b">'+(ui.fxh||'')+'</div><div class="ov-f"><button class="btn ghost" data-act="clearf">پاک کردن</button><button class="btn" data-act="ovclose">نمایش '+fa(ui.fxn||0)+' محصول</button></div></div>';
   if(o==='zoom')inner='<div class="ov-p" role="dialog" aria-modal="true" aria-label="تصویر بزرگ‌تر"><button class="icon zx" data-act="ovclose" aria-label="بستن تصویر">'+ic('x')+'</button><img src="'+esc(ui.zoom||'')+'" alt="'+esc(ui.zoomAlt||'')+'" data-act="ovclose"></div>';
   if(o==='menu'){var r0=route.split('?')[0];function big(h,l,i){return '<a class="big" style="--i:'+i+'" href="#'+h+'"'+(r0===h?' aria-current="page"':'')+'><span class="lat">0'+(i+1)+'</span>'+l+'</a>'}
-    inner='<div class="ov-p" role="dialog" aria-modal="true" aria-label="منو"><div class="ov-h"><a href="#/" class="mark" aria-label="COA، صفحه اصلی">COA</a><button class="icon" data-act="ovclose" aria-label="بستن منو">'+ic('x')+'</button></div><nav aria-label="منوی اصلی">'+big('/','صفحه اصلی',0)+big('/shop','فروشگاه',1)+
+    inner='<div class="ov-p" role="dialog" aria-modal="true" aria-label="منو"><div class="ov-h"><a href="#/" class="mark" aria-label="COA، صفحه اصلی"><img class="mk" src="assets/brand/coa-mark-128.png" alt="" width="32" height="32">COA</a><button class="icon" data-act="ovclose" aria-label="بستن منو">'+ic('x')+'</button></div><nav aria-label="منوی اصلی">'+big('/','صفحه اصلی',0)+big('/shop','فروشگاه',1)+
     '<details class="big-d" style="--i:2"><summary class="big"><span class="lat">03</span>دسته‌بندی‌ها</summary><ul>'+CATS.map(function(c){var k=S.products.filter(function(p){return p.active&&p.cat===c.id}).length;return k?'<li><a href="#/shop?cat='+c.id+'"><span>'+esc(c.name)+'</span><span class="cap muted">'+fa(k)+' محصول</span></a></li>':''}).join('')+'<li><a href="#/shop"><span>همه محصولات</span></a></li></ul></details>'+
     big('/about','درباره ما',3)+big('/contact','تماس با ما',4)+'</nav><div class="sm"><a href="#/journal">ژورنال</a><a href="#/account">حساب من</a><a href="#/account/wishlist">علاقه‌مندی‌ها</a><a href="#/size-guide">راهنمای سایز</a><a href="#/faq">پرسش‌های پرتکرار</a></div><div class="end"><span class="lat">COA is COA</span><span class="cap">'+ltr('@coa.is.coa')+'</span></div></div>'}
   return '<div class="ov ov-'+o+(ui.ovNew?'':' still')+'"><button class="ov-bg" data-act="ovclose" aria-label="بستن" tabindex="-1"></button>'+inner+'</div>'}
@@ -879,7 +924,7 @@ function storeShell(v,seg){var n=cartCount(),wn=S.wishlist.length,cm=seg[0]==='s
    '<nav class="nav" aria-label="اصلی"><a href="#/"'+cur(seg[0]||'','')+'>صفحه اصلی</a><a href="#/shop"'+(seg[0]==='shop'&&!catOn?' aria-current="page"':'')+'>فروشگاه</a>'+
    '<div class="dd"><button class="dd-b'+(catOn?' on':'')+'" type="button" aria-expanded="false" aria-controls="dd-cat">دسته‌بندی‌ها'+ic('chev','s')+'</button><div class="dd-p" id="dd-cat" hidden><ul>'+CATS.map(function(c){var k=S.products.filter(function(p){return p.active&&p.cat===c.id}).length;return k?'<li><a href="#/shop?cat='+c.id+'"'+(catOn===c.id?' aria-current="page"':'')+'><span>'+esc(c.name)+'</span><span class="cap muted">'+fa(k)+'</span></a></li>':''}).join('')+'</ul><a class="lnk sup" href="#/shop">همه محصولات</a></div></div>'+
    '<a href="#/about"'+cur(seg[0],'about')+'>درباره ما</a><a href="#/contact"'+cur(seg[0],'contact')+'>تماس با ما</a></nav></div>'+
-   '<a href="#/" class="mark" aria-label="COA، صفحه اصلی">COA</a>'+
+   '<a href="#/" class="mark" aria-label="COA، صفحه اصلی"><img class="mk" src="assets/brand/coa-mark-128.png" alt="" width="32" height="32">COA</a>'+
    '<div class="tools"><button class="icon" data-act="search" aria-haspopup="dialog" aria-label="جست‌وجو">'+ic('search')+'</button>'+
    '<a class="icon d-only" href="#/account" aria-label="حساب کاربری">'+ic('user')+'</a>'+
    '<a class="icon d-only" href="#/account/wishlist" aria-label="علاقه‌مندی‌ها، '+fa(wn)+' مورد">'+ic('heart')+(wn?'<span class="n" aria-hidden="true">'+fa(wn)+'</span>':'')+'</a>'+
@@ -887,7 +932,7 @@ function storeShell(v,seg){var n=cartCount(),wn=S.wishlist.length,cm=seg[0]==='s
   '</div></div></header>'+
   (storageOK?'':'<div class="wrap"><p class="note warn" role="alert" style="margin-top:16px">ذخیره‌سازی مرورگر در دسترس نیست. تغییرات فقط تا بستن این صفحه می‌مانند.</p></div>')+
   '<main id="main" tabindex="-1">'+v+'</main>'+
-  '<footer class="ft"><div class="wrap"><div class="cols"><div><div class="mark">COA</div><p style="margin-top:16px;max-width:36ch">پوشاک زنانه؛ دامن ساتن، تاپ سیلک، پلار و ترنچ‌کت.</p><p class="sup soc"><a class="lnk" href="https://instagram.com/coa.is.coa" target="_blank" rel="noopener">اینستاگرام '+ltr('@coa.is.coa')+'</a><a class="lnk" href="https://t.me/coaiscoa" target="_blank" rel="noopener">تلگرام '+ltr('@coaiscoa')+'</a></p></div>'+
+  '<footer class="ft"><div class="wrap"><div class="cols"><div><div class="mark"><img class="mk" src="assets/brand/coa-mark-128.png" alt="" width="44" height="44">COA</div><p style="margin-top:16px;max-width:36ch">پوشاک زنانه؛ دامن ساتن، تاپ سیلک، پلار و ترنچ‌کت.</p><p class="sup soc"><a class="lnk" href="https://instagram.com/coa.is.coa" target="_blank" rel="noopener">اینستاگرام '+ltr('@coa.is.coa')+'</a><a class="lnk" href="https://t.me/coaiscoa" target="_blank" rel="noopener">تلگرام '+ltr('@coaiscoa')+'</a></p></div>'+
   '<div><h2>فروشگاه</h2><ul><li><a href="#/shop">همه محصولات</a></li>'+CATS.map(function(c){return '<li><a href="#/shop?cat='+c.id+'">'+c.name+'</a></li>'}).join('')+'<li><a href="#/collection">'+esc(S.content.storyTitle)+'</a></li></ul></div>'+
   '<div><h2>COA</h2><ul><li><a href="#/about">درباره ما</a></li><li><a href="#/journal">ژورنال</a></li><li><a href="#/contact">تماس با ما</a></li></ul></div>'+
   '<div><h2>راهنما</h2><ul><li><a href="#/size-guide">راهنمای سایز</a></li><li><a href="#/shipping">ارسال و مرجوعی</a></li><li><a href="#/faq">پرسش‌های پرتکرار</a></li></ul></div>'+
@@ -984,7 +1029,7 @@ function vCheckout(){var L=cartLines();if(!L.length)return vCart();
   if(c.step===1)body='<form data-form="co1" novalidate><h2 class="h4" style="margin-bottom:16px">مشخصات گیرنده</h2><div class="fgrid">'+fld('name','نام و نام خانوادگی','autocomplete="name"')+fld('mobile','شماره موبایل','inputmode="numeric" dir="ltr" style="text-align:left" placeholder="09xxxxxxxxx" autocomplete="tel"')+'</div><h2 class="h4" style="margin:32px 0 16px">نشانی ارسال</h2><div class="fgrid"><label class="f"><span>استان</span><select class="in" name="province"'+(e.province?' aria-invalid="true"':'')+'><option value="">انتخاب کنید</option>'+PROV.map(function(p){return '<option'+(f.province===p?' selected':'')+'>'+p+'</option>'}).join('')+'</select>'+(e.province?'<div class="errt">'+e.province+'</div>':'')+'</label>'+fld('city','شهر')+fld('address','نشانی کامل','',1)+fld('postal','کد پستی','inputmode="numeric" dir="ltr" style="text-align:left" placeholder="۱۰ رقم"')+'</div><label class="opt" style="margin-top:24px"><input type="checkbox" name="guest"'+(f.guest?' checked':'')+'><span>خرید به‌صورت مهمان<br><span class="sup muted">سفارش در حساب نمایشی ثبت نمی‌شود و فقط با شماره سفارش قابل پیگیری است.</span></span></label><button class="btn" style="margin-top:24px">ادامه</button></form>';
   if(c.step===2)body='<form data-form="co2"><h2 class="h4" style="margin-bottom:16px">روش ارسال '+DEMO+'</h2>'+shipM().map(function(m){return '<label class="opt"><input type="radio" name="ship" value="'+m.id+'"'+(c.ship===m.id?' checked':'')+'><span><b style="font-weight:500">'+m.name+'</b> · '+(t.ship===0&&t.sub-t.disc>=S.settings.freeOver?'رایگان':toman(m.cost))+'<br><span class="sup muted">'+m.eta+'</span></span></label>'}).join('')+'<div class="row-b"><button class="btn">ادامه</button><button type="button" class="btn ghost" data-act="costep" data-v="1">بازگشت</button></div></form>';
   if(c.step===3)body='<form data-form="co3"><h2 class="h4" style="margin-bottom:16px">روش پرداخت</h2><p class="note" style="margin-bottom:16px">هیچ درگاه پرداختی به این پروتوتایپ وصل نیست. هر دو گزینه فقط جریان را شبیه‌سازی می‌کنند و پولی جابه‌جا نمی‌شود.</p><label class="opt"><input type="radio" name="pay" value="online"'+(c.pay==='online'?' checked':'')+'><span><b style="font-weight:500">پرداخت آنلاین</b> '+DEMO+'<br><span class="sup muted">سفارش با وضعیت «پرداخت‌شده (نمایشی)» ثبت می‌شود.</span></span></label><label class="opt"><input type="radio" name="pay" value="card"'+(c.pay==='card'?' checked':'')+'><span><b style="font-weight:500">کارت‌به‌کارت</b> '+DEMO+'<br><span class="sup muted">سفارش با وضعیت «در انتظار پرداخت» ثبت می‌شود.</span></span></label><div class="row-b"><button class="btn">ادامه</button><button type="button" class="btn ghost" data-act="costep" data-v="2">بازگشت</button></div></form>';
-  if(c.step===4){var m=shipM().filter(function(x){return x.id===c.ship})[0];body='<h2 class="h4" style="margin-bottom:16px">بازبینی سفارش</h2><div class="panel"><p><b style="font-weight:500">'+esc(f.name)+'</b> · '+ltr(f.mobile)+'</p><p class="sup muted">'+esc(f.province)+'، '+esc(f.city)+'، '+esc(f.address)+' · کد پستی '+ltr(f.postal)+'</p><button class="lnk sup" data-act="costep" data-v="1">ویرایش</button></div><div class="panel"><p>'+m.name+' · '+m.eta+'</p><p class="sup muted">'+(c.pay==='online'?'پرداخت آنلاین (نمایشی)':'کارت‌به‌کارت (نمایشی)')+(f.guest?' · خرید مهمان':'')+'</p></div>'+L.map(function(x){return '<div class="line"><img src="'+pim(x.p,x.l.color)+'" alt="" width="88" height="117"><div><b style="font-weight:500">'+esc(x.p.name)+'</b><div class="sup muted">'+esc(x.l.color)+' · سایز '+esc(x.l.size)+' · '+fa(x.l.qty)+' عدد</div></div><div class="amt">'+toman(x.sum)+'</div></div>'}).join('')+(c.err?'<p class="note err" role="alert" style="margin-top:16px">'+esc(c.err)+'</p>':'')+'<div class="row-b"><button class="btn" data-act="place">ثبت سفارش نمایشی</button><button class="btn ghost" data-act="costep" data-v="3">بازگشت</button></div>'}
+  if(c.step===4){var m=shipM().filter(function(x){return x.id===c.ship})[0];body='<h2 class="h4" style="margin-bottom:16px">بازبینی سفارش</h2><div class="panel"><p><b style="font-weight:500">'+esc(f.name)+'</b> · '+ltr(f.mobile)+'</p><p class="sup muted">'+esc(f.province)+'، '+esc(f.city)+'، '+esc(f.address)+' · کد پستی '+ltr(f.postal)+'</p><button class="lnk sup" data-act="costep" data-v="1">ویرایش</button></div><div class="panel"><p>'+m.name+' · '+m.eta+'</p><p class="sup muted">'+(c.pay==='online'?'پرداخت آنلاین (نمایشی)':'کارت‌به‌کارت (نمایشی)')+(f.guest?' · خرید مهمان':'')+'</p></div>'+L.map(function(x){return '<div class="line"><img src="'+pim(x.p,x.l.color)+'" alt="" width="88" height="117"><div><b style="font-weight:500">'+esc(x.p.name)+'</b><div class="sup muted">'+esc(x.l.color)+' · سایز '+esc(x.l.size)+' · '+fa(x.l.qty)+' عدد</div></div><div class="amt">'+toman(x.sum)+'</div></div>'}).join('')+(c.err?'<p class="note err" role="alert" style="margin-top:16px">'+esc(c.err)+'</p>':'')+'<div class="row-b"><button class="btn accent" data-act="place">ثبت سفارش نمایشی</button><button class="btn ghost" data-act="costep" data-v="3">بازگشت</button></div>'}
   return{t:'تسویه حساب | COA',b:'<div class="wrap" style="padding-top:24px"><h1 style="margin-bottom:16px">تسویه حساب</h1><ol class="steps" aria-label="مراحل">'+names.map(function(n,i){return '<li'+(c.step===i+1?' aria-current="step"':'')+'>'+fa(i+1)+'. '+n+'</li>'}).join('')+'</ol><div class="two g"><div class="main">'+body+'</div>'+sumBox(t)+'</div></div>'}}
 function validate(f){var e={},m=en(f.mobile).replace(/\s/g,''),p=en(f.postal).replace(/[\s-]/g,'');
   if(f.name.trim().length<3)e.name='نام و نام خانوادگی را کامل وارد کنید.';
