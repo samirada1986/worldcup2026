@@ -9,10 +9,10 @@ export default function NotFound() {
         <span className="mt-2 block font-fa text-stone">این صفحه یافت نشد.</span>
       </h1>
       <div className="mt-8 flex gap-8">
-        <Link href="/en" className="font-sans text-sm text-ink link-quiet">
+        <Link href="/en" className="font-sans text-ui text-ink link-quiet">
           Home →
         </Link>
-        <Link href="/fa" className="font-fa text-sm text-stone link-quiet">
+        <Link href="/fa" className="font-fa text-ui text-stone link-quiet">
           خانه ←
         </Link>
       </div>

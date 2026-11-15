@@ -1,183 +1,87 @@
 # Samira Dadashi — Portfolio
 
-The digital home of **Samira Dadashi** (سمیرا داداشی), Iranian visual artist and
-photographer — an exhibition-quality, bilingual (English + Persian/RTL) portfolio
-built around her documentary work and the ongoing project **Conatus**.
+The website of **Samira Dadashi** (سمیرا داداشی), Iranian visual artist and photographer. Bilingual (English + Persian, full right-to-left), built like a quiet gallery and a photobook: the photographs are the experience; the site stays out of their way.
 
-Built to feel like a quiet contemporary-art exhibition: warm paper and ink, a
-single restrained clay accent, generous whitespace, and photography that stays
-the dominant experience.
+Design documentation (audit, practice assessment, benchmark, directions, design system, QA, open questions): **[`docs/redesign/`](docs/redesign/README.md)**.
 
 ---
 
-## Tech stack
+## Stack
 
-| | |
-|---|---|
-| Framework | Next.js 15 (App Router) + React 19 + TypeScript |
-| Styling | Tailwind CSS v3 (design tokens in `tailwind.config.ts` / `globals.css`) |
-| Motion | Framer Motion (quiet reveals; respects `prefers-reduced-motion`) |
-| Fonts | Fraunces (display serif), Inter (UI), Vazirmatn (Persian) — self-hosted via `next/font` |
-| i18n | `/en` (default) and `/fa` (full RTL), middleware-routed, `hreflang` + localized metadata |
-| CMS | Decap CMS (git-based) at `/admin` for Journal + Contact/CV |
-| Images | `next/image` (AVIF/WebP, responsive, blur placeholders) |
-
----
-
-## Local development
+Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS 3 · `sharp` (build-time image metadata) · Decap CMS (self-hosted admin) · no animation library (CSS + a tiny observer).
 
 ```bash
 npm install
+npm run dev      # http://localhost:3000  (redirects to /en; Persian at /fa)
+npm run build    # type-check + lint + static build
+npm run start    # serve the production build
+```
+
+---
+
+## Editing content (no code)
+
+Open **`/admin`**. There are two areas:
+
+### Projects
+Each project is one series of photographs.
+
+- **Add photographs / reorder:** use *Photographs ▸ Add*, and **drag the grip handle** to change order. The order in the panel is the order on the site; plate numbers follow automatically.
+- **Cover:** choose the cover photograph (it must be one of the project's photographs).
+- **Layout:** *Editorial sequence* (large plates, pairs, singles), *Visual essay* (one at a time) or *Research archive* (photograph beside a note).
+- **Placement (optional, per photograph):** Auto / Large / Pair with next / Single left / Single right.
+- **Draft or published:** the **Published** switch. A draft does not exist anywhere on the website (no page, list, sitemap or preview image).
+- **Featured on the home page**, **order in the Works list**, **search & sharing (SEO)**: all in the form.
+- **Persian is optional** everywhere; if a Persian field is empty, the English text is shown instead.
+- Photographs are **never cropped** and **never enlarged beyond their own pixel size**. Upload the largest web version you have; width/height and the blur placeholder are read from the file automatically.
+
+### Biography, CV, Journal & Contact
+Edit the biography, CV lists (education, exhibitions, publications, awards), journal notes and contact details. Empty sections simply do not appear. The **Journal** link appears in the navigation only once it has at least one note.
+
+### Where the content lives
+`src/content/projects/*.json` · `src/content/data/{about,settings,journal}.json`. The admin panel edits these files through Git; every save is a commit and triggers a new deploy.
+
+### One-time admin setup (Netlify)
+1. Netlify dashboard ▸ **Identity ▸ Enable**; then **Identity ▸ Services ▸ Git Gateway ▸ Enable**.
+2. Identity ▸ Registration ▸ **Invite only**; invite the artist's email.
+3. She logs in at `/admin`.
+
+**Paths in `public/admin/config.yml`** are relative to the *Git repository root*. While this project sits in the `samira-portfolio/` sub-folder of a larger repository they start with `samira-portfolio/`. If the project is moved to its own repository, remove that prefix everywhere in that file.
+
+### Try the admin locally (no login)
+```bash
+# terminal 1, from the REPOSITORY ROOT:
+npx decap-server
+# terminal 2, from this folder:
 npm run dev
-```
-
-Then open <http://localhost:3000> (it redirects to `/en`, or `/fa` for Persian).
-
-```bash
-npm run build   # production build (also type-checks + lints)
-npm run start   # serve the production build
+# open http://localhost:3000/admin
 ```
 
 ---
 
-## Project structure
+## Deploying on Netlify
 
-```
-src/
-  app/[locale]/            # all pages, per-locale (en | fa)
-    page.tsx               # home
-    works/                 # archive, conatus, documentary
-    about/ cv/ journal/ contact/
-    layout.tsx             # <html lang/dir>, fonts, header/footer, JSON-LD
-  components/              # Header, Footer, Figure, LightboxProvider, ChapterGallery, …
-  content/
-    projects.ts            # Conatus + Documentary (text, chapters, image lists)
-    site.ts                # bio, themes, CV, journal, contact
-    data/                  # CMS-editable JSON (journal.json, settings.json)
-  lib/                     # i18n dictionaries, types, nav, blur placeholders
-  middleware.ts            # locale routing
-public/
-  works/ about/ og/        # the photographs (optimised web versions)
-  admin/                   # Decap CMS (config.yml + index.html)
-```
+1. Import the repository. If this project is in a sub-folder, set **Base directory** to `samira-portfolio`. Next.js is detected automatically (`netlify.toml`).
+2. Set **`NEXT_PUBLIC_SITE_URL`** to the final domain (for canonical links, sitemap and sharing previews). If unset, Netlify's own `URL` is used.
+3. Add the custom domain; enable Identity + Git Gateway (above).
+
+`npm run build` runs `scripts/copy-cms.mjs` first, which copies the CMS runtime into `public/admin/vendor/` (git-ignored). The editor therefore never depends on a third-party CDN.
 
 ---
 
-## Content management
+## Not yet released
 
-There are two editing surfaces, by design:
+Work the artist has not released is kept out of every public surface (pages, lists, sitemap, sharing images, journal, biography, CV, and the browser JavaScript) by a switch in `src/content/visibility.ts`, a non-routed `_`-prefixed page folder, and a guard.
 
-### 1. Browser CMS — `/admin` (no coding)
-
-[Decap CMS](https://decapcms.org) edits **Journal notes** and **Contact / CV
-lists** (exhibitions, publications, awards) straight from the browser, committing
-to GitHub. These are the things that change often.
-
-**One-time setup after deploying:**
-
-1. In `public/admin/config.yml`, set `repo:` to your GitHub repository.
-2. Connect an auth backend — the simplest options:
-   - **Netlify:** host on Netlify and enable *Identity* + *Git Gateway*, or
-   - **GitHub OAuth:** deploy a small OAuth proxy (e.g. one of the community
-     [external OAuth clients](https://decapcms.org/docs/external-oauth-clients/)).
-3. Visit `yourdomain.com/admin` and log in.
-
-**Try it locally (no login):**
-
-```bash
-npx decap-server      # terminal 1
-npm run dev           # terminal 2
-# open http://localhost:3000/admin  (uses your local git via local_backend)
-```
-
-### 2. Content files — projects & biography (structured editing)
-
-The **projects** (Conatus, Documentary) have bespoke, curated gallery layouts, so
-they live in `src/content/projects.ts` as clean, commented, bilingual data. The
-**biography / themes** live in `src/content/site.ts`. Editing these is a small,
-safe text change — no layout code involved.
-
-#### Adding a new project
-
-1. Drop optimised images into `public/works/<project>/…` (see *Preparing images*).
-2. Add a `Project` object to `src/content/projects.ts` (copy an existing one as a
-   template). Each image needs `src`, intrinsic `w`/`h`, and bilingual `alt`.
-3. Add a route folder `src/app/[locale]/works/<slug>/page.tsx` — reuse the
-   Conatus page (chapters) or Documentary page (sequence) as a starting point.
-4. Regenerate blur placeholders: see `scripts` note below.
-
-#### Preparing images
-
-Originals should never be published at full print resolution. Export web versions
-(long edge ≈ 2000px, quality ~88) and keep the aspect ratio — **artwork is never
-cropped** by the layout. After adding images, regenerate the tiny blur
-placeholders in `src/lib/blur.ts` (a short ImageMagick/sharp loop; ask your
-developer, or see the project notes).
+- **The guard:** `npm run build` ends with `scripts/check-private.mjs`, which scans everything a visitor could receive (client bundle, pre-rendered pages, generated sitemap/robots, `public/`) and **fails the build** if unreleased work is mentioned. It exists because a content module imported by a client component is shipped to every visitor in full, even if the page that shows it is hidden.
+- **Rule:** client components (`"use client"`) may import only `@/content/identity`, never `site`, `projects` or `visibility`.
+- **Releasing:** see the three steps in `src/content/visibility.ts`.
+- **The repository itself:** anything committed is visible to anyone who can read the repository, and to its history. Keep the repository private, or keep unreleased text out of it.
 
 ---
 
-## Internationalization & RTL
+## Quality gates
 
-- English is the default (`/en`); Persian (`/fa`) is a full right-to-left
-  experience — not a mirrored afterthought — using Vazirmatn.
-- The visitor's first visit is routed by their browser language; their choice is
-  remembered via a cookie.
-- Every page sets `lang` + `dir`, localized `<title>`/description, and `hreflang`
-  alternates. A sitemap and robots file are generated automatically.
-
----
-
-## Deployment
-
-### Netlify (recommended — also powers the `/admin` CMS)
-
-1. Push this project to a GitHub repository.
-2. In Netlify: **Add new site → Import an existing project →** pick the repo.
-   - If the project lives in a subfolder, set **Base directory** to that folder
-     (e.g. `samira-portfolio`).
-   - Build command `npm run build` and the Next.js runtime are detected
-     automatically (`netlify.toml` makes this explicit). No env vars required.
-3. Deploy. Add your custom domain.
-4. **Enable the CMS login:** Netlify dashboard → **Identity** → *Enable Identity*;
-   then **Identity → Services → Git Gateway → Enable**. Under Identity →
-   *Registration*, set it to **Invite only** and invite the artist's email.
-   She can then log in at `yourdomain.com/admin`.
-5. Update the hard-coded site URL in `src/app/sitemap.ts`, `robots.ts`, and
-   `layout.tsx` (`metadataBase`) to the real domain.
-
-### Vercel (alternative)
-
-Import the repo in Vercel → it detects Next.js and deploys with no config. For
-the `/admin` CMS there, switch the Decap backend in `public/admin/config.yml`
-from `git-gateway` to `github` and connect a GitHub OAuth proxy.
-
----
-
-## What is real, and what is waiting on content
-
-Everything is sourced from the artist's own portfolio — **no biography,
-exhibitions, awards or statements are invented.**
-
-- **Real & complete:** biography, practice themes, Conatus statement + research
-  (Spinoza · Sontag · Deleuze & Guattari), the four Conatus movements (Archival,
-  Root, Overlap, Erosion), documentary sequence, two journal notes (drawn from
-  her own writing), all photographs.
-- **Intentionally empty, ready for her to fill (via `/admin`):** CV *Exhibitions*,
-  *Publications*, and *Awards & grants*. These sections simply don't appear on the
-  public CV until entries are added.
-- **Placeholders to revisit:** education degrees and project date ranges are
-  reasonable from the biography but should be confirmed; the English site URL
-  `samiradadashi.com` is assumed — change it to the real domain.
-
----
-
-## Accessibility & performance
-
-- Semantic HTML, skip-link, keyboard-operable nav and lightbox (Esc / arrows),
-  visible focus styles, descriptive `alt` text on every image.
-- WCAG-AA-minded contrast; motion fully disabled under `prefers-reduced-motion`.
-- Static generation, responsive images with AVIF/WebP, lean JS (~150 kB first load).
-
----
+`npm run build` type-checks and lints. Measured on a production build with Lighthouse (mobile, simulated slow 4G): Accessibility 100 · Best practices 100 · SEO 100 · Performance 92 (home) / 88 (series). Details and the responsive/RTL checks in `docs/redesign/06-qa-report.md`.
 
 _All photographs © Samira Dadashi. All rights reserved._

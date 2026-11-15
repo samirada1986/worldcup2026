@@ -1,12 +1,15 @@
 import type { MetadataRoute } from "next";
 import { locales } from "@/lib/i18n";
-import { projects } from "@/content/projects";
+import { getProjects } from "@/content/projects";
 import { journal } from "@/content/site";
 
-const BASE = "https://samiradadashi.com";
+import { site } from "@/content/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPaths = ["", "/works", "/about", "/journal", "/cv", "/contact"];
+const BASE = site.url;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const projects = await getProjects();
+  const staticPaths = ["", "/works", "/about", ...(journal.length ? ["/journal"] : []), "/cv", "/contact"];
   const projectPaths = projects.map((p) => `/works/${p.slug}`);
   const notePaths = journal.map((n) => `/journal/${n.slug}`);
   const all = [...staticPaths, ...projectPaths, ...notePaths];

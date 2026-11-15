@@ -26,7 +26,7 @@ function Section({
       <h2 className="eyebrow pt-1">{title}</h2>
       <ul className="flex flex-col gap-2.5">
         {items.map((it) => (
-          <li key={it} className={`${faFont ? "font-fa" : "font-serif"} text-lg leading-relaxed text-ink`}>
+          <li key={it} className={`${faFont ? "font-fa" : "font-serif"} text-body leading-relaxed text-ink`}>
             {it}
           </li>
         ))}
@@ -51,7 +51,7 @@ export default async function CVPage({ params }: { params: Promise<{ locale: str
           <h1 className={`${faFont ? "font-fa" : "font-serif"} mt-4 text-display-md font-light text-ink`}>
             {site.name[l]}
           </h1>
-          <p className="mt-2 font-serif text-lg text-stone">
+          <p className="mt-2 font-serif text-body text-stone">
             {site.role[l]} · {d.cv.based}
           </p>
         </div>
@@ -76,7 +76,7 @@ export default async function CVPage({ params }: { params: Promise<{ locale: str
 
         <Reveal as="section" className="grid gap-4 border-y border-line py-7 sm:grid-cols-[0.5fr_1.5fr] sm:gap-10">
           <h2 className="eyebrow pt-1">{s.contact}</h2>
-          <ul className="flex flex-col gap-2 font-sans text-base text-ink">
+          <ul className="flex flex-col gap-2 font-sans text-body text-ink">
             <li>
               <a href={`mailto:${site.email}`} className="link-quiet">{site.email}</a>
             </li>

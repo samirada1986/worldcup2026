@@ -8,11 +8,11 @@
   --paper-deep: 238 233 222;   /* deeper paper */
   --ink: 26 23 20;             /* warm near-black */
   --ink-soft: 44 38 33;        /* body text */
-  --stone: 122 113 103;        /* muted caption grey */
-  --stone-light: 160 152 142;  /* metadata grey */
+  --stone: 98 91 82;        /* muted caption grey */
+  --stone-light: 108 100 91;  /* metadata grey */
   --line: 214 207 194;         /* hairlines */
   --clay: 150 97 68;           /* quiet clay accent, hairline use only */
-  --charcoal: 22 19 15;        /* Conatus immersive ground */
+  --charcoal: 22 19 15;        /* viewer / dark ground */
   --charcoal-soft: 33 28 23;
 }
 
@@ -72,8 +72,8 @@ body {
   /* Small tracked label, used for section eyebrows, metadata */
   .eyebrow {
     @apply font-sans uppercase text-stone-light;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
   }
   [dir="rtl"] .eyebrow {
     letter-spacing: 0.06em;
@@ -82,7 +82,7 @@ body {
 
   .caption {
     @apply font-sans text-stone;
-    font-size: 0.82rem;
+    font-size: 0.8125rem;
     letter-spacing: 0.02em;
     line-height: 1.6;
   }
@@ -90,8 +90,8 @@ body {
   /* Long-form reading text */
   .prose-quiet p {
     @apply font-serif;
-    font-size: 1.075rem;
-    line-height: 1.78;
+    font-size: 1.0625rem;
+    line-height: 1.74;
     color: rgb(var(--ink-soft));
     margin-bottom: 1.3em;
   }
@@ -127,3 +127,43 @@ img { image-rendering: auto; }
 /* Hide scrollbar on horizontal rails but keep function */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+
+/* ───────────────────────── Motion system ─────────────────────────
+ * Three behaviours only, each with a job:
+ *   unveil  – photographs. A slow mask lifts while the image settles. (data-reveal="mask")
+ *   text    – prose. Opacity only, short. (data-reveal="fade")
+ *   page    – route change. A quiet fade of the whole page.
+ * Content is always visible without JavaScript; below-the-fold items are armed on the client
+ * and released once, as they enter the viewport. Reduced motion turns all of it off.
+ */
+:root { --ease-quiet: cubic-bezier(0.22, 1, 0.36, 1); }
+
+@keyframes rv-fade   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rv-mask   { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes rv-settle { from { transform: scale(1.035); } to { transform: scale(1); } }
+@keyframes page-in   { from { opacity: 0; } to { opacity: 1; } }
+
+[data-reveal][data-state="armed"]           { opacity: 0; }
+[data-reveal="mask"][data-state="armed"]    { opacity: 1; clip-path: inset(0 0 100% 0); }
+[data-reveal="fade"][data-state="shown"]    { animation: rv-fade 0.8s ease-out var(--d, 0s) both; }
+[data-reveal="mask"][data-state="shown"]    { animation: rv-mask 1.25s var(--ease-quiet) var(--d, 0s) both; }
+[data-reveal="mask"][data-state="shown"] img{ animation: rv-settle 1.8s var(--ease-quiet) var(--d, 0s) both; }
+
+.page-in { animation: page-in 0.5s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal], [data-reveal] img, .page-in { animation: none !important; clip-path: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ───────────── Print / "Save as PDF" (used by the CV page) ───────────── */
+@media print {
+  header, footer, .print\:hidden, a[href="#main"] { display: none !important; }
+  html, body { background: #fff !important; }
+  body { color: #000; }
+  main { padding: 0 !important; }
+  [data-reveal], .page-in { opacity: 1 !important; animation: none !important; clip-path: none !important; }
+  a { color: inherit; text-decoration: none; }
+  section { break-inside: avoid; }
+  @page { margin: 18mm 16mm; }
+}

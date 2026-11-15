@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { site } from "@/content/site";
+import { site } from "@/content/identity";
 import type { Dict } from "@/lib/i18n";
 
 export default function ContactForm({ d }: { d: Dict }) {
@@ -17,7 +17,7 @@ export default function ContactForm({ d }: { d: Dict }) {
   };
 
   const field =
-    "w-full border-b border-line bg-transparent py-3 font-sans text-base text-ink placeholder:text-stone-light focus:border-ink focus:outline-none transition-colors";
+    "w-full border-b border-line bg-transparent py-3 font-sans text-body text-ink placeholder:text-stone-light focus:border-ink focus:outline-none transition-colors";
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-7">
@@ -55,7 +55,7 @@ export default function ContactForm({ d }: { d: Dict }) {
       <div className="flex flex-col gap-3 pt-2">
         <button
           type="submit"
-          className="group inline-flex w-fit items-center gap-3 border border-ink px-7 py-3 font-sans text-sm text-ink transition-colors duration-500 hover:bg-ink hover:text-paper"
+          className="group inline-flex w-fit items-center gap-3 border border-ink px-7 py-3 font-sans text-ui text-ink transition-colors duration-500 hover:bg-ink hover:text-paper"
         >
           {d.contact.formSend}
           <span className="transition-transform duration-500 group-hover:translate-x-1 rtl:group-hover:-translate-x-1">→</span>

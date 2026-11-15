@@ -2,19 +2,35 @@ import type { Locale } from "./i18n";
 
 export type Localized<T = string> = Record<Locale, T>;
 
+/** How a photograph asks to be placed in an editorial sequence. */
+export type PlateHint = "auto" | "large" | "pair" | "left" | "right";
+
 export interface Artwork {
   src: string;
+  /** Intrinsic pixel size. Read from the file at build time when not given. */
   w: number;
   h: number;
-  /** Descriptive alt text (what is visible) — not an invented title. */
+  /** Tiny base64 placeholder, generated at build time. */
+  blur?: string;
+  /** Descriptive alt text (what is visible) — never an invented title. */
   alt: Localized;
-  /** Optional restrained caption (medium/year or the artist's own term). */
+  /** Optional caption, only when the artist supplies one. */
   caption?: Localized;
-  /** Display emphasis within a sequence. */
+  /** Optional note shown beside the image in archive layouts. */
+  text?: Localized<string[]>;
+  /** Display emphasis within a sequence (cinematic / chapter layouts). */
   feature?: boolean;
+  /** Editorial placement hint. "auto" lets the layout compose the sequence. */
+  hint?: PlateHint;
 }
 
-export type LayoutMode = "cinematic" | "sequence" | "archive";
+/**
+ * Project presentation modes. They share one visual language and differ in rhythm:
+ *  - essay:     one photograph at a time, long pauses (cinematic visual essay)
+ *  - editorial: singles, pairs and offsets (photobook sequence)
+ *  - archive:   photographs alongside text, documents and notes (research archive)
+ */
+export type LayoutMode = "essay" | "editorial" | "archive";
 
 export interface Chapter {
   id: string;
@@ -27,20 +43,32 @@ export interface Chapter {
   mode?: "single" | "diptych" | "triptych" | "grid" | "fullbleed" | "stagger";
 }
 
+export interface ProjectSeo {
+  title?: Localized;
+  description?: Localized;
+  /** Path of the social-sharing image (defaults to the cover). */
+  image?: string;
+}
+
 export interface Project {
   slug: string;
   title: Localized;
   kicker: Localized;
+  /** Empty string = not shown. Never guess dates. */
   year: Localized;
   medium: Localized;
   status: "ongoing" | "complete";
   mode: LayoutMode;
+  /** Draft projects are not routed, listed or put in the sitemap. */
+  published: boolean;
+  featured?: boolean;
   cover: Artwork;
   intro: Localized<string[]>;
   statement?: Localized<string[]>;
   context?: Localized<string[]>;
   chapters?: Chapter[];
   images?: Artwork[];
+  seo?: ProjectSeo;
   order: number;
 }
 

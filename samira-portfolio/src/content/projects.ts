@@ -1,4 +1,8 @@
-import type { Project } from "@/lib/types";
+import fs from "node:fs";
+import path from "node:path";
+import type { Artwork, Project } from "@/lib/types";
+import { enrich } from "@/lib/imagemeta";
+import { withFallback } from "@/lib/localized";
 import { PUBLISH_CONATUS } from "./visibility";
 
 /**
@@ -11,7 +15,8 @@ const conatus: Project = {
   slug: "conatus",
   order: 1,
   status: "ongoing",
-  mode: "cinematic",
+  mode: "essay",
+  published: true,
   title: { en: "Conatus", fa: "کوناتوس" },
   kicker: { en: "Ongoing · 2025–2026", fa: "در حال انجام · ۱۴۰۴–۱۴۰۵" },
   year: { en: "2025 – ongoing", fa: "۱۴۰۴ – تاکنون" },
@@ -184,50 +189,70 @@ const conatus: Project = {
   ],
 };
 
-const documentary: Project = {
-  slug: "documentary",
-  order: 2,
-  status: "complete",
-  mode: "sequence",
-  title: { en: "Documentary", fa: "مستند" },
-  kicker: { en: "Street & documentary photography", fa: "عکاسیِ مستند و خیابانی" },
-  year: { en: "2016 – 2022", fa: "۱۳۹۵ – ۱۴۰۱" },
-  medium: { en: "Digital photography", fa: "عکاسیِ دیجیتال" },
-  cover: {
-    src: "/works/documentary/archway.jpg",
-    w: 1109,
-    h: 740,
-    alt: {
-      en: "A black-and-white street scene: a man crosses toward a receding tiled archway in Tehran.",
-      fa: "صحنه‌ای خیابانی به سیاه‌وسفید: مردی به‌سمتِ طاقیِ کاشی‌کاری‌شده‌ای در تهران عبور می‌کند.",
-    },
-  },
-  intro: {
-    en: [
-      "Samira Dadashi's camera is turned outward — to the street, to the ordinary choreography of the city.",
-      "These photographs attend to the relationship between people and their surroundings: painted walls that stand in for landscape, equations chalked on concrete, figures passing through Tehran's constructed scenery. The attention is documentary, but never neutral — it waits for the moment the everyday turns strange.",
-    ],
-    fa: [
-      "دوربینِ سمیرا داداشی رو به بیرون است — به خیابان، به نظمِ روزمره‌ی شهر.",
-      "این عکس‌ها به رابطه‌ی انسان و پیرامونش توجه می‌کنند: دیوارهایی نقاشی‌شده که جای منظره می‌نشینند، معادله‌هایی بر بتن، و پیکرهایی که از دلِ صحنه‌آراییِ شهرِ تهران عبور می‌کنند. نگاه مستند است، اما هرگز بی‌طرف نیست — در انتظارِ لحظه‌ای است که امرِ روزمره غریب می‌شود.",
-    ],
-  },
-  images: [
-    { src: "/works/documentary/archway.jpg", w: 1109, h: 740, alt: { en: "A man walks toward a tiled archway tunnel; a small figure stands deep inside it.", fa: "مردی به‌سمتِ تونلی طاقی و کاشی‌کاری‌شده قدم می‌زند؛ پیکری کوچک در عمقِ آن ایستاده است." } },
-    { src: "/works/documentary/mural-trees.jpg", w: 1093, h: 740, alt: { en: "A painted wall of trees and a path; a lone figure walks the real pavement below.", fa: "دیواری نقاشی‌شده از درختان و یک مسیر؛ پیکری تنها بر پیاده‌روِ واقعیِ زیرِ آن راه می‌رود." } },
-    { src: "/works/documentary/swan-mural.jpg", w: 1109, h: 740, alt: { en: "A man passes a mural of swans, dappled light falling across the wall.", fa: "مردی از کنارِ دیوارنگاره‌ای از قوها می‌گذرد و نورِ لکه‌لکه بر دیوار می‌افتد." } },
-    { src: "/works/documentary/mathwall.jpg", w: 1109, h: 740, alt: { en: "A figure in a hood walks past a wall chalked with mathematical equations and a cube.", fa: "پیکری با کلاه از کنارِ دیواری می‌گذرد که معادله‌های ریاضی و یک مکعب رویش کشیده شده است." } },
-    { src: "/works/documentary/lake-pointing.jpg", w: 1109, h: 740, alt: { en: "Three women at the water's edge; two point up toward the sky.", fa: "سه زن در لبه‌ی آب؛ دو نفر رو به آسمان اشاره می‌کنند." } },
-    { src: "/works/documentary/tetrapods.jpg", w: 1109, h: 740, alt: { en: "A lone figure sits atop a heap of concrete tetrapods against a clear sky.", fa: "پیکری تنها بر تلی از تتراپادهای بتنی، زیرِ آسمانی صاف نشسته است." } },
-    { src: "/works/documentary/two-women.jpg", w: 1110, h: 740, alt: { en: "Two women in headscarves stand at a railing, looking out over a lake toward a distant bridge.", fa: "دو زنِ روسری‌به‌سر کنارِ نرده ایستاده‌اند و به دریاچه و پلی دوردست می‌نگرند." } },
-    { src: "/works/documentary/canyon-tent.jpg", w: 1110, h: 740, alt: { en: "A small blue tent pitched in a red-rock canyon with pale mountains beyond.", fa: "چادری کوچک و آبی در دره‌ای از صخره‌های سرخ، با کوه‌های کم‌رنگ در دوردست." } },
-  ],
-};
+/* ───────────────────────── Loader ─────────────────────────
+ * Projects live in two places:
+ *  - src/content/projects/*.json   ← edited by the artist in the admin panel (/admin)
+ *  - `conatus` above               ← unreleased; only exists while PUBLISH_CONATUS is true
+ * Image width/height and blur placeholders are read from the files at build time.
+ */
 
-const all: Project[] = [conatus, documentary].sort((a, b) => a.order - b.order);
+interface RawProject extends Omit<Project, "cover" | "images"> {
+  layout?: Project["mode"];
+  cover: string;
+  images?: (Partial<Artwork> & { src: string })[];
+}
 
-/** Only released projects. Unreleased work never reaches a page, list or sitemap. */
-export const projects: Project[] = all.filter((p) => PUBLISH_CONATUS || p.slug !== "conatus");
-export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
-/** The project shown first on the home page. */
-export const featuredProject: Project = PUBLISH_CONATUS ? conatus : documentary;
+function readJsonProjects(): RawProject[] {
+  const dir = path.join(process.cwd(), "src/content/projects");
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => withFallback(JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")) as RawProject));
+}
+
+const emptyAlt = { en: "", fa: "" };
+
+async function fromRaw(r: RawProject): Promise<Project> {
+  const images = await Promise.all(
+    (r.images ?? []).map((im) => enrich({ alt: emptyAlt, ...im }) as Promise<Artwork>)
+  );
+  const cover = images.find((im) => im.src === r.cover) ?? images[0] ?? (await enrich({ src: r.cover, alt: emptyAlt }));
+  const { layout, ...rest } = r;
+  return { ...rest, mode: layout ?? rest.mode ?? "editorial", cover, images, published: r.published !== false };
+}
+
+async function withMeta(p: Project): Promise<Project> {
+  // The hand-written project (Conatus) gets the same build-time metadata pass.
+  const fix = (a: Artwork) => enrich(a) as Promise<Artwork>;
+  return {
+    ...p,
+    cover: await fix(p.cover),
+    images: p.images ? await Promise.all(p.images.map(fix)) : undefined,
+    chapters: p.chapters
+      ? await Promise.all(p.chapters.map(async (c) => ({ ...c, images: await Promise.all(c.images.map(fix)) })))
+      : undefined,
+  };
+}
+
+let cached: Promise<Project[]> | null = null;
+
+/** Published projects only, in the artist's order. Drafts never reach a page, list or sitemap. */
+export function getProjects(): Promise<Project[]> {
+  cached ??= (async () => {
+    const json = await Promise.all(readJsonProjects().map(fromRaw));
+    const all = [...json, ...(PUBLISH_CONATUS ? [await withMeta(conatus)] : [])];
+    return all.filter((p) => p.published).sort((a, b) => a.order - b.order);
+  })();
+  return cached;
+}
+
+export async function getProject(slug: string): Promise<Project | undefined> {
+  return (await getProjects()).find((p) => p.slug === slug);
+}
+
+/** The project shown first on the home page: the one marked featured, else the first. */
+export async function getFeaturedProject(): Promise<Project | undefined> {
+  const all = await getProjects();
+  return all.find((p) => p.featured) ?? all[0];
+}

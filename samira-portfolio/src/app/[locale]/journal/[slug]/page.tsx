@@ -40,13 +40,13 @@ export default async function NotePage({ params }: { params: Promise<{ locale: s
         </Link>
         <p className="eyebrow mt-10">{n.kicker?.[l]}</p>
         <h1 className={`${faTitle} mt-4 text-display-md font-light text-ink`}>{n.title[l]}</h1>
-        <p className="mt-4 font-sans text-sm text-stone-light">{fmt}</p>
+        <p className="mt-4 font-sans text-ui text-stone-light">{fmt}</p>
         <div className="rule-clay mt-8" />
       </Reveal>
 
       {n.pull && (
         <Reveal delay={0.06}>
-          <p className={`${faTitle} my-10 text-2xl font-light leading-snug text-ink sm:text-3xl`}>
+          <p className={`${faTitle} my-10 text-lede font-light leading-snug text-ink sm:text-display-md`}>
             {n.pull[l]}
           </p>
         </Reveal>
@@ -59,7 +59,7 @@ export default async function NotePage({ params }: { params: Promise<{ locale: s
       </Reveal>
 
       <Reveal className="mt-16 border-t border-line pt-8">
-        <Link href={href(l, "/journal")} className="font-sans text-sm text-stone link-quiet">
+        <Link href={href(l, "/journal")} className="font-sans text-ui text-stone link-quiet">
           {l === "fa" ? "→" : "←"} {d.journal.back}
         </Link>
       </Reveal>

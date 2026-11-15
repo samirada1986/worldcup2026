@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /private-assets/
+
+# self-hosted CMS runtime (copied from node_modules at build)
+/public/admin/vendor/

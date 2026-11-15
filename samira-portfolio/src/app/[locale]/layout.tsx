@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Fraunces, Inter, Vazirmatn } from "next/font/google";
+import { Newsreader, Inter, Vazirmatn } from "next/font/google";
 import "../globals.css";
 import { isLocale, dir, type Locale, getDict } from "@/lib/i18n";
-import { site } from "@/content/site";
+import { site, journal } from "@/content/site";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import LightboxProvider from "@/components/LightboxProvider";
 
-const fraunces = Fraunces({
+// Variable fonts: one file per family covers every weight we use (no per-weight downloads).
+const serif = Newsreader({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
+  axes: ["opsz"],
   variable: "--font-serif",
   display: "swap",
 });
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500"],
   variable: "--font-sans",
   display: "swap",
 });
+// Persian type is only needed on Persian pages, so it is not preloaded on English ones.
 const vazir = Vazirmatn({
   subsets: ["arabic", "latin"],
-  weight: ["300", "400", "500", "600"],
   variable: "--font-fa",
   display: "swap",
+  preload: false,
 });
 
 export function generateStaticParams() {
@@ -46,6 +46,7 @@ export async function generateMetadata({
       ? "پورتفولیوی سمیرا داداشی، هنرمند تجسمی و عکاسِ ایرانی. آثار مستند و خیابانی."
       : "Portfolio of Samira Dadashi, Iranian visual artist and photographer. Documentary and street photography.";
   return {
+    metadataBase: new URL(site.url),
     title,
     description,
     alternates: {
@@ -82,11 +83,11 @@ export default async function LocaleLayout({
   const d = getDict(l);
 
   return (
-    <html lang={l} dir={dir(l)} className={`${fraunces.variable} ${inter.variable} ${vazir.variable}`}>
+    <html lang={l} dir={dir(l)} className={`${serif.variable} ${inter.variable} ${vazir.variable}`}>
       <body className={l === "fa" ? "font-fa" : "font-sans"}>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-paper focus:px-4 focus:py-2 focus:text-sm"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-paper focus:px-4 focus:py-2 focus:text-ui"
         >
           {d.skipToContent}
         </a>
@@ -107,9 +108,9 @@ export default async function LocaleLayout({
           }}
         />
         <LightboxProvider>
-          <Header locale={l} />
+          <Header locale={l} hasJournal={journal.length > 0} />
           <main id="main">{children}</main>
-          <Footer locale={l} />
+          <Footer locale={l} hasJournal={journal.length > 0} />
         </LightboxProvider>
       </body>
     </html>

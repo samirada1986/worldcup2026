@@ -6,15 +6,15 @@ import { useEffect, useState } from "react";
 import { clsx } from "clsx";
 import { type Locale, getDict } from "@/lib/i18n";
 import { href, navItems } from "@/lib/nav";
-import { site } from "@/content/site";
+import { site } from "@/content/identity";
 import LocaleSwitcher from "./LocaleSwitcher";
 
-export default function Header({ locale }: { locale: Locale }) {
+export default function Header({ locale, hasJournal = true }: { locale: Locale; hasJournal?: boolean }) {
   const d = getDict(locale);
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const items = navItems(locale, d);
+  const items = navItems(locale, d, hasJournal);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -48,13 +48,12 @@ export default function Header({ locale }: { locale: Locale }) {
       >
         <Link
           href={href(locale)}
-          className="group flex flex-col leading-none"
-          aria-label={site.name[locale]}
+          className="group -my-3 flex flex-col py-3 leading-none"
         >
           <span
             className={clsx(
               locale === "fa" ? "font-fa" : "font-serif",
-              "text-[1.12rem] tracking-tight text-ink"
+              "text-body tracking-tight text-ink"
             )}
           >
             {site.name[locale]}
@@ -69,7 +68,7 @@ export default function Header({ locale }: { locale: Locale }) {
               key={it.href}
               href={it.href}
               className={clsx(
-                "font-sans text-[0.82rem] tracking-wide transition-colors duration-300 hover:text-ink",
+                "-mx-2 -my-3 px-2 py-3 font-sans text-meta tracking-wide transition-colors duration-300 hover:text-ink",
                 isActive(it.href) ? "text-ink" : "text-stone"
               )}
               aria-current={isActive(it.href) ? "page" : undefined}
@@ -80,13 +79,13 @@ export default function Header({ locale }: { locale: Locale }) {
           <span className="h-3 w-px bg-line" aria-hidden />
           <LocaleSwitcher
             locale={locale}
-            className="font-sans text-[0.82rem] tracking-wide text-stone transition-colors hover:text-ink"
+            className="-mx-2 -my-3 px-2 py-3 font-sans text-meta tracking-wide text-stone transition-colors hover:text-ink"
           />
         </nav>
 
         {/* Mobile toggle */}
         <button
-          className="relative z-50 flex h-9 w-9 items-center justify-center md:hidden"
+          className="relative z-50 -me-2 flex h-11 w-11 items-center justify-center md:hidden"
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
           aria-label={open ? d.close : d.menu}
@@ -126,7 +125,7 @@ export default function Header({ locale }: { locale: Locale }) {
               href={it.href}
               style={{ transitionDelay: open ? `${120 + i * 55}ms` : "0ms" }}
               className={clsx(
-                "font-serif text-4xl tracking-tight transition-all duration-500",
+                "font-serif text-display-md tracking-tight transition-all duration-500",
                 open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
                 isActive(it.href) ? "text-ink" : "text-stone"
               )}
@@ -137,7 +136,7 @@ export default function Header({ locale }: { locale: Locale }) {
           <div className="rule-clay mt-8" />
           <LocaleSwitcher
             locale={locale}
-            className="mt-6 font-sans text-sm uppercase tracking-[0.2em] text-stone"
+            className="mt-6 font-sans text-ui uppercase tracking-[0.2em] text-stone"
           />
         </nav>
       </div>

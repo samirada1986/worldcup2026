@@ -28,7 +28,7 @@ export default function LocaleSwitcher({
       onClick={setCookie}
       hrefLang={other}
       className={className}
-      aria-label={other === "fa" ? "تغییر زبان به فارسی" : "Switch language to English"}
+      lang={other}
     >
       {other === "fa" ? "فارسی" : "EN"}
     </Link>

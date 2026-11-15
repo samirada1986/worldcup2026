@@ -5,7 +5,7 @@ export default function PrintButton({ label }: { label: string }) {
     <button
       type="button"
       onClick={() => window.print()}
-      className="font-sans text-sm text-ink link-quiet print:hidden"
+      className="font-sans text-ui text-ink link-quiet print:hidden"
     >
       {label} ↓
     </button>

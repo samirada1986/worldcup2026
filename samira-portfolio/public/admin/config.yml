@@ -1,39 +1,218 @@
-# Decap CMS — browser-based editing, backed by your Git repo.
+# Admin panel (Decap CMS) — edits the site's content files and uploads photographs through Git.
 #
-# Deploying on NETLIFY (recommended): the git-gateway backend below works once
-# you enable Identity + Git Gateway in the Netlify dashboard (see README). No
-# GitHub OAuth app needed.
+# PATHS: every path below is relative to the ROOT OF THE GIT REPOSITORY. While this project lives
+# in a sub-folder of a larger repository the prefix "samira-portfolio/" is required. If you move
+# the project to its own repository, delete that prefix everywhere (search for "samira-portfolio/").
 #
-# Prefer plain GitHub instead? Replace the backend block with:
-#   backend:
-#     name: github
-#     repo: OWNER/REPOSITORY
-#     branch: main
-# …and connect a GitHub OAuth proxy.
-#
-# Try it locally (no login): `npx decap-server` + `npm run dev`, then open
-# http://localhost:3000/admin
+# LOGIN (Netlify): enable Identity + Git Gateway in the Netlify dashboard (see README).
+# LOCAL TRY-OUT (no login): from the REPOSITORY ROOT run `npx decap-server`, and from the project
+# folder run `npm run dev`; then open http://localhost:3000/admin.
 
 backend:
   name: git-gateway
-  branch: main                  # the branch the CMS commits to
+  branch: main
 
-local_backend: true             # enables local editing via `npx decap-server`
+local_backend: true
 
-media_folder: "public/uploads"  # where uploaded files are stored in the repo
-public_folder: "/uploads"       # how they are referenced on the site
+media_folder: "samira-portfolio/public/uploads"
+public_folder: "/uploads"
 
+publish_mode: simple
 locale: "en"
+logo_url: /og/default.jpg
 
 collections:
+  # ───────────────────────── Projects ─────────────────────────
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
+    description: >-
+      Each project is a series of photographs. Drag the photographs to change their order, pick the
+      cover, choose how the series is laid out, and switch "Published" on when it is ready.
+      A project that is not published does not appear anywhere on the website.
+    folder: "samira-portfolio/src/content/projects"
+    extension: "json"
+    format: "json"
+    create: true
+    delete: false
+    identifier_field: "slug"
+    slug: "{{slug}}"
+    summary: "{{title.en}}  ·  {{layout}}  ·  {{published}}"
+    sortable_fields: ["order", "published"]
+    fields:
+      - { label: "URL name", name: "slug", widget: "string", pattern: ["^[a-z0-9-]+$", "Lowercase letters, numbers and hyphens only"], hint: "Appears in the web address, e.g. documentary → /en/works/documentary. Do not change after publishing." }
+      - { label: "Published", name: "published", widget: "boolean", default: false, hint: "Off = draft. A draft is invisible on the website." }
+      - { label: "Featured on the home page", name: "featured", widget: "boolean", default: false }
+      - { label: "Order in the Works list", name: "order", widget: "number", value_type: "int", min: 1, default: 1, hint: "1 appears first." }
+      - label: "Layout"
+        name: "layout"
+        widget: "select"
+        default: "editorial"
+        options:
+          - { label: "Editorial sequence — large plates, pairs and single photographs", value: "editorial" }
+          - { label: "Visual essay — one photograph at a time, long pauses", value: "essay" }
+          - { label: "Research archive — photographs beside notes and documents", value: "archive" }
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        default: "complete"
+        options: [{ label: "Complete", value: "complete" }, { label: "Ongoing", value: "ongoing" }]
+      - label: "Title"
+        name: "title"
+        widget: "object"
+        fields:
+          - { label: "English", name: "en", widget: "string" }
+          - { label: "Persian", name: "fa", widget: "string", required: false }
+      - label: "Short line under the title"
+        name: "kicker"
+        widget: "object"
+        fields:
+          - { label: "English", name: "en", widget: "string" }
+          - { label: "Persian", name: "fa", widget: "string", required: false }
+      - label: "Year or dates"
+        name: "year"
+        widget: "object"
+        hint: "Leave empty if you prefer not to show dates."
+        fields:
+          - { label: "English", name: "en", widget: "string", required: false }
+          - { label: "Persian", name: "fa", widget: "string", required: false }
+      - label: "Medium"
+        name: "medium"
+        widget: "object"
+        fields:
+          - { label: "English", name: "en", widget: "string" }
+          - { label: "Persian", name: "fa", widget: "string", required: false }
+      - { label: "Cover photograph", name: "cover", widget: "image", choose_url: false, hint: "Must be one of the photographs below (upload it there first)." }
+      - label: "Introduction"
+        name: "intro"
+        widget: "object"
+        fields:
+          - { label: "English paragraphs", name: "en", widget: "list", field: { label: "Paragraph", name: "p", widget: "text" } }
+          - { label: "Persian paragraphs", name: "fa", widget: "list", required: false, field: { label: "Paragraph", name: "p", widget: "text" } }
+      - label: "Photographs"
+        name: "images"
+        widget: "list"
+        label_singular: "Photograph"
+        hint: "Drag to reorder. The order here is the order on the website. Photographs are never cropped."
+        summary: "{{fields.alt.en}}"
+        fields:
+          - { label: "Photograph", name: "src", widget: "image", choose_url: false }
+          - label: "Placement"
+            name: "hint"
+            widget: "select"
+            default: "auto"
+            hint: "Optional. “Auto” lets the layout decide from the order."
+            options:
+              - { label: "Auto", value: "auto" }
+              - { label: "Large (wide plate)", value: "large" }
+              - { label: "Pair with the next photograph", value: "pair" }
+              - { label: "Single, aligned left", value: "left" }
+              - { label: "Single, aligned right", value: "right" }
+          - label: "Description for screen readers (alt text)"
+            name: "alt"
+            widget: "object"
+            hint: "Describe what is visible. Do not invent a title."
+            fields:
+              - { label: "English", name: "en", widget: "text" }
+              - { label: "Persian", name: "fa", widget: "text", required: false }
+          - label: "Caption (optional)"
+            name: "caption"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "English", name: "en", widget: "string", required: false }
+              - { label: "Persian", name: "fa", widget: "string", required: false }
+          - label: "Note beside the photograph (Research archive layout only)"
+            name: "text"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "English paragraphs", name: "en", widget: "list", required: false, field: { label: "Paragraph", name: "p", widget: "text" } }
+              - { label: "Persian paragraphs", name: "fa", widget: "list", required: false, field: { label: "Paragraph", name: "p", widget: "text" } }
+      - label: "Search & sharing (optional)"
+        name: "seo"
+        widget: "object"
+        required: false
+        collapsed: true
+        fields:
+          - label: "Page title"
+            name: "title"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "English", name: "en", widget: "string", required: false }
+              - { label: "Persian", name: "fa", widget: "string", required: false }
+          - label: "Description (about 150 characters)"
+            name: "description"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "English", name: "en", widget: "text", required: false }
+              - { label: "Persian", name: "fa", widget: "text", required: false }
+          - { label: "Sharing image", name: "image", widget: "image", choose_url: false, required: false, hint: "Defaults to the cover photograph." }
+
+  # ───────────────────────── Site content ─────────────────────────
   - name: "content"
-    label: "Content"
+    label: "Biography, CV, Journal & Contact"
     files:
-      # ─────────────── Journal ───────────────
+      - name: "about"
+        label: "Biography & CV"
+        file: "samira-portfolio/src/content/data/about.json"
+        description: "Verified information only. Anything left empty simply does not appear."
+        fields:
+          - label: "Biography"
+            name: "biography"
+            widget: "object"
+            fields:
+              - { label: "English paragraphs", name: "en", widget: "list", field: { label: "Paragraph", name: "p", widget: "text" } }
+              - { label: "Persian paragraphs", name: "fa", widget: "list", required: false, field: { label: "Paragraph", name: "p", widget: "text" } }
+          - label: "Selected themes"
+            name: "themes"
+            widget: "object"
+            fields:
+              - { label: "English", name: "en", widget: "list", field: { label: "Theme", name: "t", widget: "string" } }
+              - { label: "Persian", name: "fa", widget: "list", required: false, field: { label: "Theme", name: "t", widget: "string" } }
+          - label: "Education"
+            name: "education"
+            widget: "object"
+            fields:
+              - { label: "English", name: "en", widget: "list", required: false, field: { label: "Entry (degree, institution, years)", name: "e", widget: "string" } }
+              - { label: "Persian", name: "fa", widget: "list", required: false, field: { label: "Entry", name: "e", widget: "string" } }
+
+      - name: "settings"
+        label: "Contact & CV lists"
+        file: "samira-portfolio/src/content/data/settings.json"
+        description: "Email, Instagram, and the curator-facing CV lists."
+        fields:
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Instagram handle (no @)", name: "instagram", widget: "string" }
+          - label: "CV"
+            name: "cv"
+            widget: "object"
+            fields:
+              - label: "Exhibitions"
+                name: "exhibitions"
+                widget: "object"
+                fields:
+                  - { label: "English", name: "en", widget: "list", required: false, field: { label: "Entry (year, title, venue, city)", name: "e", widget: "string" } }
+                  - { label: "Persian", name: "fa", widget: "list", required: false, field: { label: "Entry", name: "e", widget: "string" } }
+              - label: "Publications"
+                name: "publications"
+                widget: "object"
+                fields:
+                  - { label: "English", name: "en", widget: "list", required: false, field: { label: "Entry", name: "e", widget: "string" } }
+                  - { label: "Persian", name: "fa", widget: "list", required: false, field: { label: "Entry", name: "e", widget: "string" } }
+              - label: "Awards & grants"
+                name: "awards"
+                widget: "object"
+                fields:
+                  - { label: "English", name: "en", widget: "list", required: false, field: { label: "Entry", name: "e", widget: "string" } }
+                  - { label: "Persian", name: "fa", widget: "list", required: false, field: { label: "Entry", name: "e", widget: "string" } }
+
       - name: "journal"
         label: "Journal"
-        file: "src/content/data/journal.json"
-        description: "Notes and short essays. Each note is bilingual (English + Persian)."
+        file: "samira-portfolio/src/content/data/journal.json"
+        description: "Notes and short essays. English required; Persian optional."
         fields:
           - label: "Notes"
             name: "notes"
@@ -41,17 +220,18 @@ collections:
             label_singular: "Note"
             summary: "{{fields.title.en}}"
             fields:
-              - { label: "Slug (URL)", name: "slug", widget: "string", pattern: ["^[a-z0-9-]+$", "lowercase letters, numbers and hyphens only"] }
+              - { label: "URL name", name: "slug", widget: "string", pattern: ["^[a-z0-9-]+$", "Lowercase letters, numbers and hyphens only"] }
               - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
               - label: "Title"
                 name: "title"
                 widget: "object"
                 fields:
                   - { label: "English", name: "en", widget: "string" }
-                  - { label: "Persian", name: "fa", widget: "string" }
-              - label: "Kicker (small label)"
+                  - { label: "Persian", name: "fa", widget: "string", required: false }
+              - label: "Small label above the title"
                 name: "kicker"
                 widget: "object"
+                required: false
                 fields:
                   - { label: "English", name: "en", widget: "string", required: false }
                   - { label: "Persian", name: "fa", widget: "string", required: false }
@@ -67,35 +247,4 @@ collections:
                 widget: "object"
                 fields:
                   - { label: "English paragraphs", name: "en", widget: "list", field: { label: "Paragraph", name: "p", widget: "text" } }
-                  - { label: "Persian paragraphs", name: "fa", widget: "list", field: { label: "Paragraph", name: "p", widget: "text" } }
-
-      # ─────────────── Contact & CV ───────────────
-      - name: "settings"
-        label: "Contact & CV"
-        file: "src/content/data/settings.json"
-        description: "Email, Instagram, and the curator-facing CV lists."
-        fields:
-          - { label: "Email", name: "email", widget: "string" }
-          - { label: "Instagram handle (no @)", name: "instagram", widget: "string" }
-          - label: "CV"
-            name: "cv"
-            widget: "object"
-            fields:
-              - label: "Exhibitions"
-                name: "exhibitions"
-                widget: "object"
-                fields:
-                  - { label: "English", name: "en", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
-                  - { label: "Persian", name: "fa", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
-              - label: "Publications"
-                name: "publications"
-                widget: "object"
-                fields:
-                  - { label: "English", name: "en", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
-                  - { label: "Persian", name: "fa", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
-              - label: "Awards & grants"
-                name: "awards"
-                widget: "object"
-                fields:
-                  - { label: "English", name: "en", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
-                  - { label: "Persian", name: "fa", widget: "list", field: { label: "Entry", name: "e", widget: "string" }, required: false }
+                  - { label: "Persian paragraphs", name: "fa", widget: "list", required: false, field: { label: "Paragraph", name: "p", widget: "text" } }

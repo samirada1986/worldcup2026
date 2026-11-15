@@ -4,8 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { isLocale, type Locale, getDict } from "@/lib/i18n";
 import { href } from "@/lib/nav";
-import { blur } from "@/lib/blur";
-import { getProject } from "@/content/projects";
+import { getProject, getProjects } from "@/content/projects";
 import Reveal from "@/components/Reveal";
 import ChapterGallery from "@/components/ChapterGallery";
 import { PUBLISH_CONATUS } from "@/content/visibility";
@@ -13,7 +12,7 @@ import { PUBLISH_CONATUS } from "@/content/visibility";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const l: Locale = isLocale(locale) ? locale : "en";
-  const p = getProject("conatus");
+  const p = await getProject("conatus");
   if (!PUBLISH_CONATUS || !p) return { title: "Not found", robots: { index: false } };
   return {
     title: `${p.title[l]} — Samira Dadashi`,
@@ -27,7 +26,9 @@ export default async function ConatusPage({ params }: { params: Promise<{ locale
   if (!isLocale(locale) || !PUBLISH_CONATUS) notFound();
   const l: Locale = locale;
   const d = getDict(l);
-  const p = getProject("conatus")!;
+  const p = await getProject("conatus");
+  if (!p) notFound();
+  const nextProject = (await getProjects()).find((x) => x.slug !== "conatus");
   const faTitle = l === "fa" ? "font-fa" : "font-serif";
 
   return (
@@ -41,7 +42,7 @@ export default async function ConatusPage({ params }: { params: Promise<{ locale
             fill
             priority
             placeholder="blur"
-            blurDataURL={blur[p.cover.src]}
+            blurDataURL={p.cover.blur}
             sizes="100vw"
             className="object-cover"
           />
@@ -172,7 +173,7 @@ export default async function ConatusPage({ params }: { params: Promise<{ locale
           <Link href={href(l, "/works/documentary")} className="group font-sans text-sm text-ink">
             <span className="eyebrow block text-end">{d.project.next}</span>
             <span className={`${faTitle} text-xl`}>
-              {getProject("documentary")!.title[l]} {l === "fa" ? "←" : "→"}
+              {(nextProject?.title[l] ?? d.project.back)} {l === "fa" ? "←" : "→"}
             </span>
           </Link>
         </div>

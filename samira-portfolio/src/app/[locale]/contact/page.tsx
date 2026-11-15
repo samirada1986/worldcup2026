@@ -34,7 +34,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             <div>
               <dt className="eyebrow mb-2">{d.contact.email}</dt>
               <dd>
-                <a href={`mailto:${site.email}`} className={`${faTitle} text-xl text-ink link-quiet`}>
+                <a href={`mailto:${site.email}`} className={`${faTitle} -my-3 inline-block py-3 text-lede text-ink link-quiet`}>
                   {site.email}
                 </a>
               </dd>
@@ -46,7 +46,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                   href={site.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${faTitle} text-xl text-ink link-quiet`}
+                  className={`${faTitle} -my-3 inline-block py-3 text-lede text-ink link-quiet`}
                 >
                   @{site.instagram}
                 </a>
@@ -54,7 +54,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             </div>
             <div>
               <dt className="eyebrow mb-2">{d.contact.location}</dt>
-              <dd className={`${faTitle} text-xl text-ink`}>{site.location[l]}</dd>
+              <dd className={`${faTitle} text-lede text-ink`}>{site.location[l]}</dd>
             </div>
           </dl>
         </Reveal>

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { isLocale, type Locale, getDict } from "@/lib/i18n";
 import { href } from "@/lib/nav";
-import { blur } from "@/lib/blur";
+import { enrich } from "@/lib/imagemeta";
 import { site, about } from "@/content/site";
 import Reveal from "@/components/Reveal";
 
@@ -20,6 +20,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const l: Locale = locale;
   const d = getDict(l);
   const faTitle = l === "fa" ? "font-fa" : "font-serif";
+  const portrait = await enrich(about.portrait);
 
   return (
     <div className="mx-auto max-w-wide px-6 pt-16 sm:px-10 sm:pt-24">
@@ -32,7 +33,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <div>
           <Reveal>
             <h1 className={`${faTitle} text-display-md font-light text-ink`}>{site.name[l]}</h1>
-            <p className="mt-3 font-serif text-lg text-stone">
+            <p className="mt-3 font-serif text-body text-stone">
               {site.role[l]} · {site.location[l]}
             </p>
           </Reveal>
@@ -48,7 +49,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             <h2 className="eyebrow mb-5">{d.about.themes}</h2>
             <ul className="flex flex-col gap-2.5">
               {about.themes[l].map((t) => (
-                <li key={t} className={`${faTitle} text-xl font-light text-ink sm:text-2xl`}>
+                <li key={t} className={`${faTitle} text-lede font-light text-ink sm:text-lede`}>
                   {t}
                 </li>
               ))}
@@ -56,10 +57,10 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           </Reveal>
 
           <Reveal className="mt-12 flex flex-wrap gap-x-8 gap-y-3">
-            <Link href={href(l, "/cv")} className="font-sans text-sm text-ink link-quiet">
+            <Link href={href(l, "/cv")} className="inline-flex min-h-11 items-center font-sans text-ui text-ink link-quiet">
               {d.about.downloadCv} {l === "fa" ? "←" : "→"}
             </Link>
-            <Link href={href(l, "/contact")} className="font-sans text-sm text-stone link-quiet">
+            <Link href={href(l, "/contact")} className="inline-flex min-h-11 items-center font-sans text-ui text-stone link-quiet">
               {d.contact.title}
             </Link>
           </Reveal>
@@ -69,12 +70,12 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <Reveal delay={0.12}>
           <div className="relative overflow-hidden bg-charcoal lg:sticky lg:top-28">
             <Image
-              src={about.portrait.src}
-              alt={about.portrait.alt[l]}
-              width={about.portrait.w}
-              height={about.portrait.h}
+              src={portrait.src}
+              alt={portrait.alt[l]}
+              width={portrait.w}
+              height={portrait.h}
               placeholder="blur"
-              blurDataURL={blur[about.portrait.src]}
+              blurDataURL={portrait.blur}
               sizes="(max-width:1024px) 100vw, 40vw"
               className="h-auto w-full"
             />

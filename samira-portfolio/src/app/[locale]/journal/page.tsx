@@ -21,6 +21,7 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
   const fmt = (iso: string) =>
     new Intl.DateTimeFormat(l === "fa" ? "fa-IR" : "en-GB", { year: "numeric", month: "long" }).format(new Date(iso));
 
+  if (journal.length === 0) notFound(); // an empty Journal is not shown
   const notes = [...journal].sort((a, b) => +new Date(b.date) - +new Date(a.date));
 
   return (
@@ -43,18 +44,18 @@ export default async function JournalPage({ params }: { params: Promise<{ locale
             >
               <div>
                 <p className="eyebrow">{n.kicker?.[l]}</p>
-                <p className="mt-2 font-sans text-sm text-stone-light">{fmt(n.date)}</p>
+                <p className="mt-2 font-sans text-ui text-stone-light">{fmt(n.date)}</p>
               </div>
               <div>
                 <h2 className={`${faTitle} text-display-md font-light text-ink transition-colors group-hover:text-clay`}>
                   {n.title[l]}
                 </h2>
                 {n.pull && (
-                  <p className="mt-4 max-w-reading font-serif text-lg leading-relaxed text-stone">
+                  <p className="mt-4 max-w-reading font-serif text-body leading-relaxed text-stone">
                     {n.pull[l]}
                   </p>
                 )}
-                <span className="mt-5 inline-block font-sans text-sm text-ink link-quiet">
+                <span className="mt-5 inline-block font-sans text-ui text-ink link-quiet">
                   {l === "fa" ? "ادامه ←" : "Read →"}
                 </span>
               </div>

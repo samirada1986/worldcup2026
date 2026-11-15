@@ -1,0 +1,112 @@
+{
+  "slug": "documentary",
+  "published": true,
+  "featured": true,
+  "order": 1,
+  "layout": "editorial",
+  "status": "complete",
+  "title": {
+    "en": "Documentary",
+    "fa": "مستند"
+  },
+  "kicker": {
+    "en": "Street & documentary photography",
+    "fa": "عکاسیِ مستند و خیابانی"
+  },
+  "year": {
+    "en": "",
+    "fa": ""
+  },
+  "medium": {
+    "en": "Photography",
+    "fa": "عکاسی"
+  },
+  "cover": "/works/documentary/archway.jpg",
+  "intro": {
+    "en": [
+      "Documentary and street photography, concerned above all with the relationship between people and their surroundings, with everyday moments and lived experience.",
+      "Figures pass painted walls and chalked equations. People look out over water. A single tent stands in a canyon."
+    ],
+    "fa": [
+      "عکاسیِ مستند و خیابانی؛ آثاری که در آن‌ها بیش از هر چیز به رابطه‌ی انسان با محیط، لحظه‌های روزمره و تجربه‌های زیسته توجه شده است.",
+      "پیکرهایی از کنارِ دیوارهای نقاشی‌شده و معادله‌های روی دیوار می‌گذرند. آدم‌ها به آب نگاه می‌کنند. یک چادر مسافرتیِ تنها در دره‌ای ایستاده است."
+    ]
+  },
+  "images": [
+    {
+      "src": "/works/documentary/archway.jpg",
+      "hint": "large",
+      "alt": {
+        "en": "A man walks toward a tiled archway tunnel; a small figure stands deep inside it.",
+        "fa": "مردی به‌سمتِ تونلی طاقی و کاشی‌کاری‌شده قدم می‌زند؛ پیکری کوچک در عمقِ آن ایستاده است."
+      }
+    },
+    {
+      "src": "/works/documentary/mural-trees.jpg",
+      "hint": "pair",
+      "alt": {
+        "en": "A painted wall of trees and a path; a lone figure walks the real pavement below.",
+        "fa": "دیواری نقاشی‌شده از درختان و یک مسیر؛ پیکری تنها بر پیاده‌روِ واقعیِ زیرِ آن راه می‌رود."
+      }
+    },
+    {
+      "src": "/works/documentary/swan-mural.jpg",
+      "hint": "auto",
+      "alt": {
+        "en": "A man passes a mural of swans, dappled light falling across the wall.",
+        "fa": "مردی از کنارِ دیوارنگاره‌ای از قوها می‌گذرد و نورِ لکه‌لکه بر دیوار می‌افتد."
+      }
+    },
+    {
+      "src": "/works/documentary/mathwall.jpg",
+      "hint": "left",
+      "alt": {
+        "en": "A figure in a hood walks past a wall chalked with mathematical equations and a cube.",
+        "fa": "پیکری با کلاه از کنارِ دیواری می‌گذرد که معادله‌های ریاضی و یک مکعب رویش کشیده شده است."
+      }
+    },
+    {
+      "src": "/works/documentary/lake-pointing.jpg",
+      "hint": "pair",
+      "alt": {
+        "en": "Three women at the water's edge; two point up toward the sky.",
+        "fa": "سه زن در لبه‌ی آب؛ دو نفر رو به آسمان اشاره می‌کنند."
+      }
+    },
+    {
+      "src": "/works/documentary/two-women.jpg",
+      "hint": "auto",
+      "alt": {
+        "en": "Two women in headscarves stand at a railing, looking out over a lake toward a distant bridge.",
+        "fa": "دو زنِ روسری‌به‌سر کنارِ نرده ایستاده‌اند و به دریاچه و پلی دوردست می‌نگرند."
+      }
+    },
+    {
+      "src": "/works/documentary/tetrapods.jpg",
+      "hint": "pair",
+      "alt": {
+        "en": "A lone figure sits atop a heap of concrete tetrapods against a clear sky.",
+        "fa": "پیکری تنها بر تلی از تتراپادهای بتنی، زیرِ آسمانی صاف نشسته است."
+      }
+    },
+    {
+      "src": "/works/documentary/canyon-tent.jpg",
+      "hint": "auto",
+      "alt": {
+        "en": "A small blue tent pitched in a red-rock canyon with pale mountains beyond.",
+        "fa": "چادری مسافرتی و آبی در دره‌ای از صخره‌های سرخ، با کوه‌های کم‌رنگ در دوردست."
+      }
+    }
+  ],
+  "seo": {
+    "title": {
+      "en": "Documentary — Samira Dadashi",
+      "fa": "مستند — سمیرا داداشی"
+    },
+    "description": {
+      "en": "Documentary and street photography by Samira Dadashi, concerned with people and their surroundings.",
+      "fa": "عکاسیِ مستند و خیابانیِ سمیرا داداشی؛ رابطه‌ی انسان و پیرامونش."
+    },
+    "image": "/works/documentary/archway.jpg"
+  }
+}
