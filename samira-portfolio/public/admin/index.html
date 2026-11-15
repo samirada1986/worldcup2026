@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Samira Dadashi — Content</title>
+    <!-- Absolute path: /admin and /admin/ both work, whatever the host does with trailing slashes. -->
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+    <!-- Netlify Identity: login for the git-gateway backend -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+  <body>
+    <!-- The CMS runtime is self-hosted (copied from node_modules by scripts/copy-cms.mjs). -->
+    <script src="/admin/vendor/decap-cms.js"></script>
+    <script>
+      // After an Identity invite or login, return to the editor.
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", function (user) {
+          if (!user) {
+            window.netlifyIdentity.on("login", function () {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
