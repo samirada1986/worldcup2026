@@ -1,0 +1,21 @@
+# Netlify config for the COA storefront.
+#
+# Netlify is a static / serverless host — it does NOT run the long-running
+# Node server (coa/server.js). The COA frontend, however, is fully standalone,
+# so publishing it as static files gives a complete, working live store here.
+#
+# This makes the Netlify URL serve the COA storefront at "/" (instead of the
+# repo-root World Cup page) and the live API explorer at "/api-docs.html".
+#
+# For the DYNAMIC backend API (POST orders, stock changes, coupons that persist)
+# use Render — see coa/DEPLOY.md — which runs coa/server.js as a real server.
+
+[build]
+  publish = "coa/public"
+  command = "echo 'static publish — no build step'"
+
+# SPA-style fallback so deep links resolve to the storefront.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
