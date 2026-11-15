@@ -124,11 +124,36 @@ makes it swing. The opening sequence plays once per browser session
 
 Frames: `docs/screens/hero-motion-frames.jpg`, hover state `hero-hover.jpg`.
 
+## 7c. Integrated into the homepage (`public/index.html`)
+
+The rack now **is** the homepage hero (it replaced the three-image fan). It is
+built inside the app, not embedded:
+
+- `vHome()` renders it from live store state — real names, prices, stock and the
+  app's own `#/product/<id>` routes; an out-of-stock piece shows «ناموجود», an
+  inactive or deleted product is dropped and the rail re-spaces itself.
+- Headline, sub-line and CTAs are the existing admin-managed hero copy
+  (`heroTitle`, `heroSub`); a secondary «تازه‌ها» CTA was added.
+- **Admin → محتوا → «لباس‌های رگال صفحه اصلی»**: five ordered slots choose which
+  products hang on the rail and in what order (`S.content.rack`, stable product
+  ids; default `RACK`).
+- `initRack()` runs after each render: the sequence plays once per page load;
+  later re-renders, back-navigation and `prefers-reduced-motion` get the settled
+  composition immediately.
+- Responsive: 5 garments ≥640px, 3 on phones (tap to select, tap again to open).
+
+Checks run against the integrated page: Playwright at 1920 / 1440 / 1280 / 768 /
+430 / 390 / 375 (no horizontal overflow, no console errors), existing
+`test/ui/e2e.js` (desktop + mobile OK), `test/ui/a11y.js` axe scan (0
+violations), API smoke test (16/16). Screens: `docs/screens/home-rack-*.jpg`.
+
+`public/hero.html` + `hero-config.js` remain as the standalone lab version.
+
 ## 8. Not done / next steps
 
 - **Orange across the rest of the site** (shop, PDP, cart, checkout, about,
-  contact) is not applied here — those live in `index.html`, which another
-  session is actively editing.
+  contact) is not applied yet; only the hero carries it.
+- The circular logo mark is not yet in the main site header (wordmark only).
 
 - **Integration into `index.html`** is intentionally deferred to avoid colliding
   with the active homepage redesign on this branch; the hero is a standalone,
