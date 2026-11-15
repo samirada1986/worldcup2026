@@ -184,8 +184,16 @@ textarea.in{min-height:96px;line-height:var(--lh-body);padding-block:12px}
 .fab>div{grid-column:span 4;border-top:1px solid var(--ink);padding-top:var(--s4)}
 .fab p{margin-block:var(--s4) var(--s2)}
 .jr>article{grid-column:span 6}
-.jr .ph{margin-bottom:var(--s4)}
-.jr h3{margin-top:var(--s1)}
+.jr-card a{display:block;color:inherit}
+.jr-card .ph{margin-bottom:var(--s4)}
+.jr-tx{display:flex;flex-direction:column;align-items:flex-start;gap:var(--s3)}
+.jr-date{font-size:var(--t-cap);line-height:1.6;color:var(--muted);letter-spacing:.01em}
+.jr-title{font-size:clamp(20px,2vw,26px);font-weight:500;line-height:1.7;margin:0}
+.jr-desc{font-size:var(--t-body);line-height:var(--lh-body);color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.jr-read{display:inline-flex;align-items:center;gap:var(--s2);font-size:var(--t-sm);color:var(--navy);margin-top:var(--s1)}
+.jr-read .i{width:16px;height:16px;transition:transform var(--m-hover) var(--e-out)}
+@media (hover:hover){.jr-card a:hover .jr-read{color:var(--ink)}.jr-card a:hover .jr-read .i.arr{transform:translateX(-4px);color:var(--orange)}}
+@media (max-width:639px){.jr-title{font-size:clamp(18px,5.5vw,22px)}}
 .ig>div{grid-column:span 3}
 .nl{background:var(--bg-2);padding:var(--s12);border-radius:var(--r);align-items:center}
 .nl>div{grid-column:span 6}
@@ -958,9 +966,16 @@ function vHome(){var C=S.content,act=S.products.filter(function(p){return p.acti
   (nw.length?'<section class="wrap sec">'+fol('03','تازه‌ها')+'<div class="sec-h" data-rv="up"><h2>تازه رسیده</h2><a class="lnk sup" href="#/shop?new=1">همه تازه‌ها</a></div>'+grid(nw)+'</section>':'')+
   (ft.length?'<section class="wrap sec">'+fol('04','منتخب')+'<div class="sec-h" data-rv="up"><div><h2>انتخاب‌های COA</h2><p class="muted" style="margin-top:8px">از دسته‌های مختلف، برای کنار هم پوشیدن.</p></div><a class="lnk sup" href="#/shop">فروشگاه</a></div>'+grid(ft)+'</section>':'')+
   '<section class="story ab"><div class="wrap"><div class="g"><div class="tx"><span class="cap" data-rv="up">درباره COA</span><h2 data-rv="up" style="--i:1">'+esc(C.stmt)+'</h2><a class="btn" href="#/about" style="margin-top:16px;--i:3" data-rv="up">بیشتر دربارهٔ COA'+ic('arrow','arr')+'</a></div><div class="ph r45" data-rv="img"><img src="'+IMG.wind+'" alt="مدل با پیراهن چهارخانه در دشت" loading="lazy" width="1100" height="1261" style="object-position:50% 30%"></div></div></div></section>'+
-  ((C.posts||[]).length?'<section class="wrap sec">'+fol('05','ژورنال')+'<div class="sec-h" data-rv="up"><h2>از ژورنال</h2><a class="lnk sup" href="#/journal">همه نوشته‌ها</a></div><div class="g jr">'+C.posts.slice(0,2).map(postCard).join('')+'</div></section>':'')+
+  ((C.posts||[]).length?'<section class="wrap sec">'+fol('05','ژورنال')+'<div class="sec-h" data-rv="up"><h2>از ژورنال</h2><a class="lnk sup" href="#/journal">همه نوشته‌ها</a></div><div class="g jr">'+C.posts.slice(0,2).map(function(p,i){return postCard(p,i,3)}).join('')+'</div></section>':'')+
   '<section class="wrap sec"><div class="g nl" data-rv="up"><div><h2 class="h3">خبرنامه</h2><p class="muted" style="margin-top:8px">تازه‌ها و نوشته‌های ژورنال، بدون شلوغی. '+DEMO+'</p></div>'+(ui.nl?'<p class="note ok" role="status">ثبت شد. در این نسخه نمایشی ایمیلی فرستاده نمی‌شود.</p>':'<form data-form="nl" class="inline-f"><label class="f"><span>ایمیل</span><input class="in" id="nle" name="email" type="email" required dir="ltr" style="text-align:left" autocomplete="email"></label><button class="btn">عضویت</button></form>')+'</div></section>'}}
-function postCard(p,i,lv){lv=lv||3;return '<article data-rv="up" style="--i:'+((+i||0)%2)+'"><a href="#/journal/'+p.id+'"><div class="ph r32" data-rv="img"><img src="'+IMG[p.img]+'" alt="" loading="lazy" width="900" height="600"></div><span class="cap muted">'+fdate(p.ts)+'</span><h'+lv+' class="h4">'+esc(p.title)+'</h'+lv+'></a></article>'}
+function excerpt(s,n){s=String(s||'').replace(/\s+/g,' ').trim();if(!s)return '';var cut=s.split('\n')[0];if(cut.length<=n)return cut;cut=s.slice(0,n);var sp=cut.lastIndexOf(' ');return (sp>n*0.6?cut.slice(0,sp):cut).trim()+'…'}
+function postCard(p,i,lv){lv=(lv===2||lv===3||lv===4)?lv:3;var d=excerpt(p.body,90);
+  return '<article class="jr-card" data-rv="up" style="--i:'+((+i||0)%2)+'"><a href="#/journal/'+p.id+'">'+
+    '<div class="ph r32" data-rv="img"><img src="'+IMG[p.img]+'" alt="" loading="lazy" width="900" height="600"></div>'+
+    '<div class="jr-tx"><time class="jr-date" datetime="'+new Date(p.ts).toISOString().slice(0,10)+'">'+fdate(p.ts)+'</time>'+
+    '<h'+lv+' class="jr-title">'+esc(p.title)+'</h'+lv+'>'+
+    (d?'<p class="jr-desc">'+esc(d)+'</p>':'')+
+    '<span class="jr-read">خواندن یادداشت'+ic('arrow','arr')+'</span></div></a></article>'}
 function vShop(q){var f=ui.f;if(navd){f.cat=q.cat||'';f.size='';f.color='';f.stock=false}
   var list=S.products.filter(function(p){return p.active}),term=(q.q||'').trim();
   if(q['new'])list=list.filter(function(p){return p.isNew});
@@ -1060,7 +1075,7 @@ function vContact(){return{t:'تماس با ما | COA',d:'راه‌های ار�
   '<dl class="ct"><div><dt>اینستاگرام</dt><dd><a class="lnk" href="https://instagram.com/coa.is.coa" target="_blank" rel="noopener">'+ltr('@coa.is.coa')+'</a></dd></div><div><dt>تلگرام</dt><dd><a class="lnk" href="https://t.me/coaiscoa" target="_blank" rel="noopener">'+ltr('@coaiscoa')+'</a></dd></div><div><dt>تلفن و ایمیل</dt><dd class="muted">هنوز از طرف COA اعلام نشده است.</dd></div></dl>'+
   '<h2 class="h4" style="margin:48px 0 16px">شاید پاسخ اینجا باشد</h2><ul class="ct-l"><li><a class="lnk" href="#/faq">پرسش‌های پرتکرار</a></li><li><a class="lnk" href="#/size-guide">راهنمای سایز</a></li><li><a class="lnk" href="#/shipping">ارسال و مرجوعی</a></li><li><a class="lnk" href="#/account/orders">پیگیری سفارش‌های من</a></li></ul></div>'}}
 function vCollection(){var C=S.content,act=S.products.filter(function(p){return p.active});return{t:C.storyTitle+' | COA',b:'<div class="wrap">'+crumb([['خانه','/'],[C.storyTitle,'']])+'<div class="g split"><div class="tx"><div class="folio" data-rv>'+esc(C.storyTitle)+'</div><h1 class="display" style="margin-top:24px" data-rv="up" style="--i:1">'+esc(C.storyBody)+'</h1></div><div class="ph r45" data-rv="img" data-plx><img src="'+IMG.wind+'" alt="مدل با پیراهن چهارخانه در دشت" width="1100" height="1261" style="object-position:50% 30%"></div></div><div class="grid v3">'+act.map(card).join('')+'</div></div>'}}
-function vJournal(id){var ps=S.content.posts;if(id){var p=ps.filter(function(x){return x.id===id})[0];if(!p)return v404();return{t:p.title+' | ژورنال COA',b:'<article class="wrap" style="max-width:760px">'+crumb([['خانه','/'],['ژورنال','/journal'],[p.title,'']])+'<span class="cap muted">'+fdate(p.ts)+' '+DEMO+'</span><h1 style="margin:8px 0 24px">'+esc(p.title)+'</h1><div class="ph r32" style="margin-bottom:32px"><img src="'+IMG[p.img]+'" alt="" width="900" height="600"></div>'+esc(p.body).split('\n').filter(Boolean).map(function(x){return '<p class="lg" style="margin-bottom:16px">'+x+'</p>'}).join('')+'<a class="lnk" href="#/journal">بازگشت به ژورنال</a></article>'}}
+function vJournal(id){var ps=S.content.posts;if(id){var p=ps.filter(function(x){return x.id===id})[0];if(!p)return v404();return{t:p.title+' | ژورنال COA',b:'<article class="wrap" style="max-width:760px">'+crumb([['خانه','/'],['ژورنال','/journal'],[p.title,'']])+'<p class="cap muted" style="display:flex;gap:8px;align-items:center;margin:0 0 12px"><time datetime="'+new Date(p.ts).toISOString().slice(0,10)+'">'+fdate(p.ts)+'</time>'+DEMO+'</p><h1 style="margin:0 0 24px;line-height:1.5">'+esc(p.title)+'</h1><div class="ph r32" style="margin-bottom:32px"><img src="'+IMG[p.img]+'" alt="" width="900" height="600"></div>'+esc(p.body).split('\n').filter(Boolean).map(function(x){return '<p class="lg" style="margin-bottom:16px">'+x+'</p>'}).join('')+'<a class="lnk" href="#/journal">بازگشت به ژورنال</a></article>'}}
   return{t:'ژورنال | COA',b:'<div class="wrap">'+crumb([['خانه','/'],['ژورنال','']])+'<h1 style="margin-bottom:24px">ژورنال</h1>'+(ps.length?'<div class="g jr">'+ps.map(function(p,i){return postCard(p,i,2)}).join('')+'</div>':'<div class="empty"><p>هنوز نوشته‌ای منتشر نشده است.</p></div>')+'</div>'}}
 function v404(){return{t:'صفحه پیدا نشد | COA',b:'<div class="wrap"><div class="empty" style="margin-top:48px"><p class="display">۴۰۴</p><p class="h3">این صفحه پیدا نشد.</p><a class="btn" href="#/">صفحه اصلی</a> <a class="btn ghost" href="#/shop">فروشگاه</a></div></div>'}}
 /* ---------- account ---------- */
