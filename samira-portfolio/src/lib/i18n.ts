@@ -22,6 +22,9 @@ export const dict = {
       enterConatus: "Enter Conatus",
       practiceTitle: "On the practice",
       viewAll: "All works",
+      lede: "The street, and the moment the everyday turns strange.",
+      selectedPhotographs: "Selected photographs",
+      enterSeries: "Enter the series",
     },
     works: {
       title: "Works",
@@ -91,7 +94,7 @@ export const dict = {
         "This opens your email client. You can also write directly to the address above.",
     },
     footer: {
-      tagline: "A quiet space for photography, memory and the body.",
+      tagline: "A quiet attention to the street, the everyday and the people of a city.",
       colophon: "Design & build",
       rights: "All images © Samira Dadashi. All rights reserved.",
       toTop: "To top",
@@ -111,6 +114,9 @@ export const dict = {
       enterConatus: "ورود به کوناتوس",
       practiceTitle: "درباره‌ی کار",
       viewAll: "همه‌ی آثار",
+      lede: "خیابان، و لحظه‌ای که امرِ روزمره غریب می‌شود.",
+      selectedPhotographs: "عکس‌های منتخب",
+      enterSeries: "ورود به مجموعه",
     },
     works: {
       title: "آثار",
@@ -180,7 +186,7 @@ export const dict = {
         "این فرم برنامه‌ی ایمیل شما را باز می‌کند. می‌توانید مستقیم هم به نشانی بالا بنویسید.",
     },
     footer: {
-      tagline: "فضایی آرام برای عکاسی، حافظه و بدن.",
+      tagline: "توجهی آرام به خیابان، امرِ روزمره و مردمِ یک شهر.",
       colophon: "طراحی و ساخت",
       rights: "تمام تصاویر © سمیرا داداشی. همه‌ی حقوق محفوظ است.",
       toTop: "بالا",

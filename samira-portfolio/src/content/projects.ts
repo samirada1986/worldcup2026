@@ -195,8 +195,8 @@ const documentary: Project = {
   medium: { en: "Digital photography", fa: "عکاسیِ دیجیتال" },
   cover: {
     src: "/works/documentary/archway.jpg",
-    w: 1660,
-    h: 795,
+    w: 1109,
+    h: 740,
     alt: {
       en: "A black-and-white street scene: a man crosses toward a receding tiled archway in Tehran.",
       fa: "صحنه‌ای خیابانی به سیاه‌وسفید: مردی به‌سمتِ طاقیِ کاشی‌کاری‌شده‌ای در تهران عبور می‌کند.",
@@ -204,23 +204,23 @@ const documentary: Project = {
   },
   intro: {
     en: [
-      "Before Conatus, the camera was turned outward — to the street, to the ordinary choreography of the city.",
+      "Samira Dadashi's camera is turned outward — to the street, to the ordinary choreography of the city.",
       "These photographs attend to the relationship between people and their surroundings: painted walls that stand in for landscape, equations chalked on concrete, figures passing through Tehran's constructed scenery. The attention is documentary, but never neutral — it waits for the moment the everyday turns strange.",
     ],
     fa: [
-      "پیش از کوناتوس، دوربین رو به بیرون داشت — به خیابان، به نظمِ روزمره‌ی شهر.",
+      "دوربینِ سمیرا داداشی رو به بیرون است — به خیابان، به نظمِ روزمره‌ی شهر.",
       "این عکس‌ها به رابطه‌ی انسان و پیرامونش توجه می‌کنند: دیوارهایی نقاشی‌شده که جای منظره می‌نشینند، معادله‌هایی بر بتن، و پیکرهایی که از دلِ صحنه‌آراییِ شهرِ تهران عبور می‌کنند. نگاه مستند است، اما هرگز بی‌طرف نیست — در انتظارِ لحظه‌ای است که امرِ روزمره غریب می‌شود.",
     ],
   },
   images: [
-    { src: "/works/documentary/archway.jpg", w: 1660, h: 795, alt: { en: "A man walks toward a tiled archway tunnel; a small figure stands deep inside it.", fa: "مردی به‌سمتِ تونلی طاقی و کاشی‌کاری‌شده قدم می‌زند؛ پیکری کوچک در عمقِ آن ایستاده است." } },
-    { src: "/works/documentary/mural-trees.jpg", w: 1664, h: 853, alt: { en: "A painted wall of trees and a path; a lone figure walks the real pavement below.", fa: "دیواری نقاشی‌شده از درختان و یک مسیر؛ پیکری تنها بر پیاده‌روِ واقعیِ زیرِ آن راه می‌رود." } },
-    { src: "/works/documentary/swan-mural.jpg", w: 1660, h: 812, alt: { en: "A man passes a mural of swans, dappled light falling across the wall.", fa: "مردی از کنارِ دیوارنگاره‌ای از قوها می‌گذرد و نورِ لکه‌لکه بر دیوار می‌افتد." } },
-    { src: "/works/documentary/mathwall.jpg", w: 1664, h: 871, alt: { en: "A figure in a hood walks past a wall chalked with mathematical equations and a cube.", fa: "پیکری با کلاه از کنارِ دیواری می‌گذرد که معادله‌های ریاضی و یک مکعب رویش کشیده شده است." } },
-    { src: "/works/documentary/lake-pointing.jpg", w: 1660, h: 796, alt: { en: "Three women at the water's edge; two point up toward the sky.", fa: "سه زن در لبه‌ی آب؛ دو نفر رو به آسمان اشاره می‌کنند." } },
-    { src: "/works/documentary/tetrapods.jpg", w: 1664, h: 899, alt: { en: "A lone figure sits atop a heap of concrete tetrapods against a clear sky.", fa: "پیکری تنها بر تلی از تتراپادهای بتنی، زیرِ آسمانی صاف نشسته است." } },
-    { src: "/works/documentary/two-women.jpg", w: 1660, h: 764, alt: { en: "Two women in headscarves stand at a railing, looking out over a lake toward a distant bridge.", fa: "دو زنِ روسری‌به‌سر کنارِ نرده ایستاده‌اند و به دریاچه و پلی دوردست می‌نگرند." } },
-    { src: "/works/documentary/canyon-tent.jpg", w: 1664, h: 859, alt: { en: "A small blue tent pitched in a red-rock canyon with pale mountains beyond.", fa: "چادری کوچک و آبی در دره‌ای از صخره‌های سرخ، با کوه‌های کم‌رنگ در دوردست." } },
+    { src: "/works/documentary/archway.jpg", w: 1109, h: 740, alt: { en: "A man walks toward a tiled archway tunnel; a small figure stands deep inside it.", fa: "مردی به‌سمتِ تونلی طاقی و کاشی‌کاری‌شده قدم می‌زند؛ پیکری کوچک در عمقِ آن ایستاده است." } },
+    { src: "/works/documentary/mural-trees.jpg", w: 1093, h: 740, alt: { en: "A painted wall of trees and a path; a lone figure walks the real pavement below.", fa: "دیواری نقاشی‌شده از درختان و یک مسیر؛ پیکری تنها بر پیاده‌روِ واقعیِ زیرِ آن راه می‌رود." } },
+    { src: "/works/documentary/swan-mural.jpg", w: 1109, h: 740, alt: { en: "A man passes a mural of swans, dappled light falling across the wall.", fa: "مردی از کنارِ دیوارنگاره‌ای از قوها می‌گذرد و نورِ لکه‌لکه بر دیوار می‌افتد." } },
+    { src: "/works/documentary/mathwall.jpg", w: 1109, h: 740, alt: { en: "A figure in a hood walks past a wall chalked with mathematical equations and a cube.", fa: "پیکری با کلاه از کنارِ دیواری می‌گذرد که معادله‌های ریاضی و یک مکعب رویش کشیده شده است." } },
+    { src: "/works/documentary/lake-pointing.jpg", w: 1109, h: 740, alt: { en: "Three women at the water's edge; two point up toward the sky.", fa: "سه زن در لبه‌ی آب؛ دو نفر رو به آسمان اشاره می‌کنند." } },
+    { src: "/works/documentary/tetrapods.jpg", w: 1109, h: 740, alt: { en: "A lone figure sits atop a heap of concrete tetrapods against a clear sky.", fa: "پیکری تنها بر تلی از تتراپادهای بتنی، زیرِ آسمانی صاف نشسته است." } },
+    { src: "/works/documentary/two-women.jpg", w: 1110, h: 740, alt: { en: "Two women in headscarves stand at a railing, looking out over a lake toward a distant bridge.", fa: "دو زنِ روسری‌به‌سر کنارِ نرده ایستاده‌اند و به دریاچه و پلی دوردست می‌نگرند." } },
+    { src: "/works/documentary/canyon-tent.jpg", w: 1110, h: 740, alt: { en: "A small blue tent pitched in a red-rock canyon with pale mountains beyond.", fa: "چادری کوچک و آبی در دره‌ای از صخره‌های سرخ، با کوه‌های کم‌رنگ در دوردست." } },
   ],
 };
 
